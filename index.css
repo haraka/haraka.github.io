@@ -1,0 +1,61 @@
+body {
+  font: 14px Georgia, serif;
+  line-height: 1.5;
+}
+
+#wrapper {
+  width: 340px;
+  margin: 15% auto;
+}
+
+/* iPad [portrait + landscape] */
+@media only screen and (min-device-width: 768px) and (max-device-width: 1024px) {
+}
+
+/* iPhone [portrait + landscape] */
+@media only screen and (max-device-width: 480px) {
+  #wrapper {
+    margin: 15px auto;
+  }
+}
+
+#title {
+  text-align: center;
+  border-bottom: 1px solid black;
+}
+
+#title h1 {
+  font-size: 72px;
+  line-height: 1;
+  border-bottom: 1px solid black;
+}
+
+ul#menu {
+  padding-top: 10px;
+}
+
+ul#menu li a {
+  display: block;
+  padding: 10px 10px 10px 78px;
+  background: 10px 18px no-repeat;
+  text-decoration: none;
+  color: black;
+}
+
+ul#menu li a:hover {
+  background-color: #eee;
+}
+
+ul#menu li {
+  margin: 5px 0;
+  line-height: 1.2;
+}
+
+ul#menu li.manual a   { background-image: url("manual.png"); }
+ul#menu li.question a { background-image: url("question.png"); }
+ul#menu li.code a   { background-image: url("code.png"); }
+
+ul#menu li h2 {
+  font-size: 18px;
+  margin-bottom: 6px;
+}

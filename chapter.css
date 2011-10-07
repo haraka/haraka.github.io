@@ -1,0 +1,61 @@
+body {
+  font: 14px Georgia, serif;
+  line-height: 1.5;
+}
+
+a:link, a:visited {
+  color: #0000ab;
+}
+
+h1, h2, h3, h4, h5, h6, p, ul, ol, pre {
+  margin-bottom: 21px;
+}
+
+h1 {
+  font-size: 24px;
+  line-height: 28px;
+}
+
+h2 {
+  font-size: 18px;
+  line-height: 28px;
+}
+
+pre, code {
+  background: #eee;
+}
+
+code {
+  padding: 1px 3px;
+  font: 12px Monaco, monospace;
+}
+
+pre code {
+  padding: 0;
+}
+
+pre {
+  padding: 10px;
+  line-height: 1.2;
+}
+
+ol {
+  list-style-type: decimal;
+}
+
+ul {
+  list-style-type: disc;
+}
+
+ol, ul {
+  margin-left: 40px;
+}
+
+#content {
+  position: relative;
+  margin: 20px 20px 80px;
+}
+
+a.edit {
+  float: right;
+}
