@@ -30,6 +30,26 @@
         <div id="content">
             <h1>data.uribl</h1>
 
+<p>This plugin extracts URLs and feeds them to URL based DNS blocklists such
+as <a href="http://www.surbl.org/">SURBL</a> and <a href="http://www.uribl.com/">URIBL</a>.</p>
+
+<p>URLs are reduced to their second level of domain (e.g. <code>www.example.com</code> is
+reduced to <code>example.com</code>, apart from those domains listed in
+<code>data.uribl.two_level_tlds</code>, which are reduced to their third level.</p>
+
+<h2>Configuration</h2>
+
+<ul>
+<li><p>data.uribl.zones</p>
+
+<p>A list of DNS zones to query.</p></li>
+<li><p>data.uribl.two<em>level</em>tlds</p>
+
+<p>A list of top level domains to extend to two levels of stripping rather
+than one. You may wish to add sites like wordpress.com and blogger.com
+to this list.</p></li>
+</ul>
+
         </div>
     </body>
 </html>

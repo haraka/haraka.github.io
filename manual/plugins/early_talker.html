@@ -30,6 +30,21 @@
         <div id="content">
             <h1>early_talker</h1>
 
+<p>This plugin checks for early talkers. These are violators of the SMTP
+specification, which demands that clients must wait for responses before
+sending the next command.</p>
+
+<p>This plugin checks for early talkers at the DATA command.</p>
+
+<h2>Configuration</h2>
+
+<ul>
+<li><p>early_talker.pause</p>
+
+<p>Specifies a delay in milliseconds to delay at the DATA command before
+sending the response, while waiting for early talkers. Default is no pause.</p></li>
+</ul>
+
         </div>
     </body>
 </html>

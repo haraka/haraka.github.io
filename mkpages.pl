@@ -20,7 +20,7 @@ sub dirname {
 sub convert {
     my $file = shift;
     open(my $fh, "./Markdown.pl $file |") || die "Cannot run Markdown.pl: $!";
-    local $\;
+    local $/;
     my $md2html = <$fh>;
     return $md2html;
 }

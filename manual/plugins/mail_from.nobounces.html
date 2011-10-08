@@ -30,6 +30,13 @@
         <div id="content">
             <h1>mail_from.nobounces</h1>
 
+<p>This mail blocks all bounce messages using the simple rule of checking
+for <code>MAIL FROM:&lt;&gt;</code>.</p>
+
+<p>This is useful to enable if you have a mail server that gets spoofed too
+much but very few legitimate users. It is potentially bad to block all
+bounce messages, but unfortunately for some hosts, sometimes necessary.</p>
+
         </div>
     </body>
 </html>

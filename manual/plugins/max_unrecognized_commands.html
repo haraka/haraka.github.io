@@ -30,6 +30,21 @@
         <div id="content">
             <h1>max<em>unrecognized</em>commands</h1>
 
+<p>This plugin places a maximum limit on the number of unrecognized commands
+allowed before recognising that the connection is bad.</p>
+
+<p>If the limit is reached the connecting client is sent an error message and
+immediately (and rudely - technically an RFC violation) disconnected.</p>
+
+<h2>Configuration</h2>
+
+<ul>
+<li><p>max<em>unrecognized</em>commands</p>
+
+<p>Specifies the number of unrecognised commands to allow before disconnecting.
+Default: 10.</p></li>
+</ul>
+
         </div>
     </body>
 </html>

@@ -30,6 +30,106 @@
         <div id="content">
             <h1>Transaction Object</h1>
 
+<p>An SMTP transaction is valid from MAIL FROM time until RSET or "final-dot".</p>
+
+<h2>API</h2>
+
+<ul>
+<li>transaction.uuid</li>
+</ul>
+
+<p>A unique UUID for this transaction. Is equal to the connection.uuid + '.N'
+where N increments for each transaction on this connection.</p>
+
+<ul>
+<li>transaction.mail_from</li>
+</ul>
+
+<p>The value of the MAIL FROM command as an <code>Address</code> object.</p>
+
+<ul>
+<li>transaction.rcpt_to</li>
+</ul>
+
+<p>An Array of <code>Address</code> objects of recipients from the RCPT TO command.</p>
+
+<ul>
+<li>transaction.data_lines</li>
+</ul>
+
+<p>An Array of the lines of the email after DATA.</p>
+
+<ul>
+<li>transaction.data_bytes</li>
+</ul>
+
+<p>The number of bytes in the email after DATA.</p>
+
+<ul>
+<li>transaction.add_data(line)</li>
+</ul>
+
+<p>Adds a line of data to the email. Note this is RAW email - it isn't useful
+for adding banners to the email.</p>
+
+<ul>
+<li>transaction.notes</li>
+</ul>
+
+<p>A safe place to store transaction specific values.</p>
+
+<ul>
+<li>transaction.add_header(key, value)</li>
+</ul>
+
+<p>Adds a header to the email.</p>
+
+<ul>
+<li>transaction.remove_header(key)</li>
+</ul>
+
+<p>Deletes a header from the email.</p>
+
+<ul>
+<li>transaction.header</li>
+</ul>
+
+<p>The header of the email. See <code>Header Object</code>.</p>
+
+<ul>
+<li>transaction.parse_body</li>
+</ul>
+
+<p>Set to 1 to enable parsing of the mail body. Make sure you set this in
+hook_data or before.</p>
+
+<ul>
+<li>transaction.body</li>
+</ul>
+
+<p>The body of the email if you set <code>parse_body</code> above. See <code>Body Object</code>.</p>
+
+<ul>
+<li>transaction.attachment_hooks(start, data, end)</li>
+</ul>
+
+<p>Sets event emitter hooks for attachments if you set <code>parse_body</code> above.</p>
+
+<p>The <code>start</code> event will receive <code>(content_type, filename, body)</code> as parameters.</p>
+
+<p>The <code>data</code> event will receive a <code>Buffer</code> object containing some of the
+attachment data.</p>
+
+<p>The <code>end</code> event will be called with no parameters when an attachment ends.</p>
+
+<p>Both the <code>data</code> and <code>end</code> params are optional.</p>
+
+<p>Note that in the <code>start</code> event, you can set per-attachment events via:</p>
+
+<pre><code>body.on('attachment_data', cb)
+body.on('attachment_end', cb)
+</code></pre>
+
         </div>
     </body>
 </html>

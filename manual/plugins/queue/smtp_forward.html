@@ -30,6 +30,38 @@
         <div id="content">
             <h1>queue/smtp_forward</h1>
 
+<p>This plugin delivers to another mail server. This is a common setup when you
+want to have a mail server with a solid pedigree of outbound delivery to
+other hosts, and inbound delivery to users.</p>
+
+<p>In comparison to <code>queue/smtp_proxy</code>, this plugin waits until queue time to
+attempt the ongoing connection. This can be a benefit in reducing connections
+to your inbound mail server when you have content filtering (such as
+spamassassin) enabled. However you miss out on the benefits of recipient
+filtering that the ongoing mail server may provide.</p>
+
+<h2>Configuration</h2>
+
+<ul>
+<li><p>smtp_forward.ini</p>
+
+<p>Configuration is stored in this file in the following keys:</p>
+
+<ul>
+<li>host=HOST</li>
+</ul>
+
+<p>The host to connect to.</p>
+
+<ul>
+<li>port=PORT</li>
+</ul>
+
+<p>The port to connect to.</p>
+
+<p><p>Both values are required.</p></li>
+</ul></p>
+
         </div>
     </body>
 </html>

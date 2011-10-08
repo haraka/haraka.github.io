@@ -30,6 +30,64 @@
         <div id="content">
             <h1>Header Object</h1>
 
+<p>The Header object gives programmatic access to email headers. It is primarily
+used from <code>transaction.header</code> but also each MIME part of the <code>Body</code> will
+also have its own header object.</p>
+
+<h2>API</h2>
+
+<ul>
+<li>header.get(key)</li>
+</ul>
+
+<p>Returns the header with the name <code>key</code>. If there are multiple headers with
+the given name (as is usually the case with "Received" for example) they will
+be concatenated together with "\n".</p>
+
+<ul>
+<li>header.get_all(key)</li>
+</ul>
+
+<p>Returns the headers with the name <code>key</code> as an array. Multi-valued headers
+will have multiple entries in the array.</p>
+
+<ul>
+<li>header.get_decoded(key)</li>
+</ul>
+
+<p>Works like <code>get(key)</code>, only it gives you headers decoded from any MIME encoding
+they may have used.</p>
+
+<ul>
+<li>header.remove(key)</li>
+</ul>
+
+<p>Removes all headers with the given name. DO NOT USE. This is transparent to
+the transaction and it will not see the header(s) you removed. Instead use
+<code>transaction.remove_header(key)</code> which will also correct the data part of
+the email.</p>
+
+<ul>
+<li>header.add(key, value)</li>
+</ul>
+
+<p>Adds a header with the given name and value. DO NOT USE. This is transparent
+to the transaction and it will not see the header you added. Instead use
+<code>transaction.add_header(key, value)</code> which will add the header to the data
+part of the email.</p>
+
+<ul>
+<li>header.lines()</li>
+</ul>
+
+<p>Returns the entire header as a list of lines.</p>
+
+<ul>
+<li>header.toString()</li>
+</ul>
+
+<p>Returns the entire header as a string.</p>
+
         </div>
     </body>
 </html>

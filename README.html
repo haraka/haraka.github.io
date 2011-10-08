@@ -30,6 +30,144 @@
         <div id="content">
             <h2>Haraka - a Node.js Mail Server</h2>
 
+<p>Haraka is a plugin capable SMTP server. It uses a highly scalable event
+model to be able to cope with thousands of concurrent connections. Plugins
+are written in Javascript using <a href="http://nodejs.org/">Node.js</a>, and as such perform extremely
+quickly.</p>
+
+<p>Haraka can be used either as an inbound SMTP server, and is designed with
+good anti-spam protections in mind (see the plugins directory), or it can
+be used as an outbound mail server (run it on port 587 with an "auth" plugin
+to authenticate your users). Or of course it can function as both.</p>
+
+<p>What Haraka doesn't do is fully replace your mail system (yet). It currently
+has no built-in facilities for mapping email addresses to user accounts and
+delivering them to said accounts. For that we expect you to keep something
+like postfix, exim or any other user-based mail system, and have Haraka
+deliver mail to those systems for inbound email. However nothing is stopping
+someone writing a plugin which replicates that facility - it just has yet to
+be done.</p>
+
+<p>Haraka does have a scalable outbound mail delivery engine built in. Any mail
+marked as <code>relaying</code> (such as via an <code>auth</code> plugin) will automatically be
+queued for outbound delivery.</p>
+
+<h3>Join the Mailing List</h3>
+
+<p>To get started with Haraka and ask questions about it, please join the
+mailing list: mailto:haraka-sub@harakamail.com</p>
+
+<h3>Screencast</h3>
+
+<p><a href="http://youtu.be/6twKXMAsPsw">Getting started with Haraka</a></p>
+
+<h3>Why Use Haraka?</h3>
+
+<p>Haraka's primary purpose is to provide you with a much easier to extend
+mail server than most available SMTP servers out there such as Postfix,
+Exim or Microsoft Exchange, yet while still running those systems for their
+excellent ability to deliver mail to users.</p>
+
+<p>The plugin system makes it trivial to code new features. A typical example
+might be to provide qmail-like extended addresses to an Exchange system,
+whereby you could receive mail as <code>user-anywordshere@domain.com</code>, and yet
+still have it correctly routed to <code>user@domain.com</code>. This is a few lines of
+code in Haraka, or maybe someone has already written this plugin.</p>
+
+<p>Plugins are already provided for running mail through SpamAssassin, checking
+for known bad HELO patterns, checking DNS Blocklists, and watching for
+violators of the SMTP protocol via the "early_talker" plugin.</p>
+
+<p>Furthermore Haraka comes with a simple plugin called "graph" which shows you
+real-time charts of which plugins rejected the most mail, allowing you to
+easily fine-tune your list of plugins to more effectively stop spam.</p>
+
+<h3>Installing Haraka</h3>
+
+<p>Haraka is written in Javascript and requires <a href="http://nodejs.org/">node.js</a> to run.</p>
+
+<p>Installation is very simple via <a href="http://youtu.be/6twKXMAsPsw">npm</a>:</p>
+
+<pre><code>$ npm install -g Haraka
+</code></pre>
+
+<p>That will provide you with a <code>haraka</code> binary which allows you to setup the
+service.</p>
+
+<h3>Running Haraka</h3>
+
+<p>Setting up Haraka is simple. Firstly we need to create the service:</p>
+
+<pre><code>$ haraka -i /path/to/haraka_test
+</code></pre>
+
+<p>That creates the directory <code>haraka_test</code> and creates <code>config</code> and <code>plugin</code>
+directories in there, and automatically sets the host name used by Haraka
+to the output of the <code>hostname</code> command.</p>
+
+<p>This assumes that <code>hostname</code> gives you the correct host you want to receive
+mail for. If not, edit the <code>config/host_list</code> file. For example if you want
+to receive mail addressed to <code>user@domain.com</code>, add <code>domain.com</code> to the
+<code>config/host_list</code> file.</p>
+
+<p>Finally just start Haraka:</p>
+
+<pre><code>$ haraka -c /path/to/haraka_test
+</code></pre>
+
+<p>And it will run.</p>
+
+<p>However the big thing you want to do next is to edit the <code>config/plugins</code>
+file. This determines what plugins run in Haraka, and controls the overall
+behaviour of the server. By default the server is setup to receive mails for
+domains in <code>host_list</code> and deliver them via <code>qmail-queue</code>. Queueing to
+qmail is likely not what you need unless you have qmail installed, so this is
+likely the first thing you want to change.</p>
+
+<p>Each plugin has documentation available via <code>haraka -h plugins/&lt;name&gt;</code>.
+Look there for information about how each plugin is configured, edit your
+<code>config/plugins</code> file, restart Haraka and enjoy!</p>
+
+<p>Feel free to write to the mailing list with any questions. Or use github
+"Issues".</p>
+
+<h3>Running from git</h3>
+
+<p>If you are unable to use npm to install Haraka, you can run from git by
+following these steps:</p>
+
+<p>First clone the repository:</p>
+
+<pre><code>$ git clone https://github.com/baudehlo/Haraka.git
+$ cd Haraka
+</code></pre>
+
+<p>Edit <code>config/plugins</code> and <code>config/smtp.ini</code> to specify the plugins and
+config you want.</p>
+
+<p>Finally run Haraka:</p>
+
+<pre><code>$ node haraka.js
+</code></pre>
+
+<h3>Performance</h3>
+
+<p>Haraka is fast, due to the nature of using the v8 Javascript engine, and
+it is scalable due to using async I/O everywhere. On my local system I have
+managed to scale it up to 5000 emails per second (with minimal plugins).</p>
+
+<p>I welcome other performance evaluations.</p>
+
+<h3>License and Author</h3>
+
+<p>Haraka is MIT licensed - see the LICENSE file for details.</p>
+
+<p>Haraka is a project started by Matt Sergeant, a 10 year veteran of the email
+and anti-spam world. Previous projects have been the project leader for
+SpamAssassin and a hacker on Qpsmtpd, a perl based mail server which is 
+quite similar to Haraka (but not as fast due to perl being slower than
+Javascript).</p>
+
         </div>
     </body>
 </html>

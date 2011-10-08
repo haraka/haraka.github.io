@@ -30,6 +30,85 @@
         <div id="content">
             <h1>Config Files</h1>
 
+<p>Haraka contains a flexible config loader which can load a few different types
+of configuration files.</p>
+
+<p>The API is fairly simple:</p>
+
+<pre><code>// From within a plugin:
+var config_item = this.config.get(name, [type='value']);
+</code></pre>
+
+<p>Where type can be one of:</p>
+
+<ul>
+<li>'ini' - load an "ini" style file</li>
+<li>'value' - load a flat file containing a single value (default)</li>
+<li>'list' - load a flat file containing a list of values</li>
+</ul>
+
+<p>The name is not a filename, but a name in the config/ directory. For example:</p>
+
+<pre><code>var config_item = this.config.get('rambling.paths', 'list');
+</code></pre>
+
+<p>This will look up and load the file config/rambling.paths in the Haraka
+directory.</p>
+
+<h1>File Formats</h1>
+
+<h2>Ini Files</h2>
+
+<p>INI files had their heritage in early versions of Microsoft Windows products.</p>
+
+<p>They are a simple format of key=value pairs, with an optional [section].</p>
+
+<p>Here is a typical example:</p>
+
+<pre><code>first_name=Matt
+last_name=Sergeant
+
+[job]
+title=Senior Principal Software Engineer
+role=Architect
+</code></pre>
+
+<p>That produces the following Javascript object:</p>
+
+<pre><code>{
+    main: {
+        first_name: 'Matt',
+        last_name: 'Sergeant'
+    },
+    job: {
+        title: 'Senior Principal Software Engineer',
+        role: 'Architect'
+    }
+}
+</code></pre>
+
+<p>The key point there is that items before any [section] marker go in the "main"
+section.</p>
+
+<h2>Flat Files</h2>
+
+<p>Flat files are simply either lists of values separated by \n or a single
+value in a file on its own. Those who have used qmail or qpsmtpd will be
+familiar with this format.</p>
+
+<p>Lines starting with '#' and blank lines will be ignored.</p>
+
+<p>See plugins/dnsbl.js for an example.</p>
+
+<h1>Reloading/Caching</h1>
+
+<p>Haraka automatically reloads configuration files, but this will only help if
+whatever is looking at that config re-calls config.get() to re-access the 
+configuration file after it has changed. Configuration files are watched for
+changes so this process is not a heavyweight "poll" process, and files are
+not re-read every time config.get() is called so this can be considered a
+lightweight process.</p>
+
         </div>
     </body>
 </html>

@@ -30,6 +30,38 @@
         <div id="content">
             <h1>auth/flat_file</h1>
 
+<p>The <code>auth/flat_file</code> plugin allows you to create a file containing username
+and password combinations, and have relaying users authenticate from that
+file.</p>
+
+<p>Note that passwords are stored in clear-text, so this may not be a great idea
+for large scale systems. However the plugin would be a good start for someone
+looking to implement authentication using some other form of auth.</p>
+
+<h2>Configuration</h2>
+
+<p>Configuration is stored in <code>config/auth_flat_file.ini</code> and uses the INI
+style formatting. </p>
+
+<p>Authentification methods are listed in the <code>[core]</code> section under <code>methods</code>
+parameter. You can list few authentification methods comma separated. Currently
+are only two methods supported : <code>CRAM-MD5</code> and <code>LOGIN</code>. Be aware, the LOGIN
+method is highly unsecure and can be used normaly only for local communication.
+We stronly recommend only <code>CRAM-MD5</code> to be used.</p>
+
+<p>Example:
+    [core]
+    methods=LOGIN,CRAM-MD5</p>
+
+<p>Users are stored in the <code>[users]</code> section.</p>
+
+<p>Example:</p>
+
+<pre><code>[users]
+user1=password1
+user@domain.com=password2
+</code></pre>
+
         </div>
     </body>
 </html>

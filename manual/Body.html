@@ -30,6 +30,31 @@
         <div id="content">
             <h1>Body Object</h1>
 
+<p>The Body object gives you access to the textual body parts of an email.</p>
+
+<h2>API</h2>
+
+<ul>
+<li>body.bodytext</li>
+</ul>
+
+<p>A String containing the body text. Note that HTML parts will have tags in-tact.</p>
+
+<ul>
+<li>body.header</li>
+</ul>
+
+<p>The header of this MIME part. See the <code>Header Object</code> for details of the API.</p>
+
+<ul>
+<li>body.children</li>
+</ul>
+
+<p>Any child MIME parts. For example a multipart/alternative mail will have a
+main body part with just the MIME preamble in (which is usually either empty,
+or reads something like "This is a multipart MIME message"), and two
+children, one text/plain and one text/html.</p>
+
         </div>
     </body>
 </html>

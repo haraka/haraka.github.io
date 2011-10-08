@@ -30,6 +30,25 @@
         <div id="content">
             <h1>rcpt<em>to.in</em>host_list</h1>
 
+<p>This plugin is the mainstay of an inbound Haraka server. It should list the
+domains that are local to the host. Mails that have RCPT TO not matching
+a host in the given list will be passed onto other rcpt hooks and possibly
+rejected.</p>
+
+<h2>Configuration</h2>
+
+<ul>
+<li><p>host_list</p>
+
+<p>Specifies the list of hosts that are local to this server.</p></li>
+<li><p>host<em>list</em>regex</p>
+
+<p>Specifies the list of regexes that are local to this server.  Note
+all these regexes are anchored with ^regex$. One can not choose not to
+anchor with .* and that there is a good potential for bad regexes being
+over permissive if we don\'t do this.</p></li>
+</ul>
+
         </div>
     </body>
 </html>

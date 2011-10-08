@@ -30,6 +30,25 @@
         <div id="content">
             <h1>graph</h1>
 
+<p>This plugin logs accepted and rejected emails into a database and provides
+a web server which you can browse to and view graphs over time of the
+plugins which rejected connections.</p>
+
+<p>In order for this to work you need to install the <code>sqlite</code> module via
+<code>npm install sqlite</code> in your Haraka directory.</p>
+
+<h2>Configuration</h2>
+
+<ul>
+<li><p>grapher.http_port</p>
+
+<p>The port to listen on for http. Default: <code>8080</code>.</p></li>
+<li><p>grapher.ignore_re</p>
+
+<p>Regular expression to match plugins to ignore for logging.
+Default: <code>queue|graph|relay</code></p></li>
+</ul>
+
         </div>
     </body>
 </html>

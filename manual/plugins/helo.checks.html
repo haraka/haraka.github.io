@@ -30,6 +30,45 @@
         <div id="content">
             <h1>helo.checks</h1>
 
+<p>This plugin performs a number of checks on the HELO string.</p>
+
+<p>HELO strings are very often forged or dubious in spam and so this can be a
+highly effective and false-positive free anti-spam measure.</p>
+
+<h2>Configuration</h2>
+
+<ul>
+<li><p>helo.checks.regexps</p>
+
+<p>List of regular expressions to match against the HELO string. The regular
+expressions are automatically wrapped in <code>^</code> and <code>$</code> so they always match
+the entire string.</p></li>
+<li><p>helo.checks.ini</p>
+
+<p>INI file which controls enabling of certain checks:</p>
+
+<ul>
+<li><p>check<em>no</em>dot=1</p>
+
+<p>Checks that the HELO has at least one '.' in it.</p></li>
+<li><p>check<em>raw</em>ip=1</p>
+
+<p>Checks for HELO <IP> where the IP is not surrounded by square brackets.
+This is an RFC violation so should always be enabled.</p></li>
+<li><p>[bigco]</p>
+
+<p>A list of <helo>=<rdns>[,<rdns>...] to match against. If the HELO matches
+what's on the left hand side, the reverse-DNS must match one of the
+entries on the right hand side or the mail is blocked.</p>
+
+<p>Example:</p>
+
+<pre><code>yahoo.com=yahoo.com,yahoo.co.jp
+aol.com=aol.com
+</code></pre></li>
+</ul></li>
+</ul>
+
         </div>
     </body>
 </html>

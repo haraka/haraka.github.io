@@ -30,6 +30,85 @@
         <div id="content">
             <h1>Core Configuration Files</h1>
 
+<p>The Haraka core reads some configuration files to determine a few actions:</p>
+
+<ul>
+<li><p>loglevel</p>
+
+<p>Can contain either a number or a string. See the top of logger.js for the
+different levels available.</p></li>
+<li><p>databytes</p>
+
+<p>Contains the maximum SIZE of an email that Haraka will receive.</p></li>
+<li><p>plugins</p>
+
+<p>The list of plugins to load</p></li>
+<li><p>smtp.ini</p>
+
+<p>Keys:</p>
+
+<ul>
+<li>port - the port to use (default: 25)</li>
+<li>listen_address - default: 0.0.0.0 (i.e. all addresses)</li>
+<li>inactivity_time - how long to let clients idle in seconds (default: 300)</li>
+<li>nodes - if <a href="http://learnboost.github.com/cluster/">cluster</a> is available, specifies how
+many processes to fork off. Can be the string "cpus" to fork off as many
+children as there are CPUs (default: 0, which disables cluster mode)</li>
+<li>user - optionally a user to drop privileges to. Can be a string or UID.</li>
+<li>ignore<em>bad</em>plugins - If a plugin fails to compile by default Haraka will stop at load time.
+If, however, you wish to continue on without that plugin's facilities, then
+set this config option</li>
+</ul></li>
+<li><p>me</p>
+
+<p>A name to use for this server. Used in received lines and elsewhere. Setup
+by default to be your hostname.</p></li>
+<li><p>deny<em>includes</em>uuid</p>
+
+<p>Each connection and mail in Haraka includes a UUID which is also in most log
+messages. If you put a <code>1</code> in this file then every denied mail (either via
+DENY/5xx or DENYSOFT/4xx return codes) will include a note containing the
+uuid, making it easy to track problems back to the logs.</p></li>
+<li><p>early_talker_delay</p>
+
+<p>If clients talk early we <em>punish</em> them with a delay of this many milliseconds
+default: 1000.</p></li>
+<li><p>plugin_timeout</p>
+
+<p>Seconds to allow a plugin to run before the next hook is called automatically
+default: 30</p>
+
+<p>Note also that each plugin can have a <code>config/&amp;lt;plugin_name&amp;gt;.timeout</code>
+file specifying a per-plugin timeout. In this file you can set a timeout
+of 0 to mean that this plugin's hooks never time out. Use this with care.</p></li>
+<li><p>cluster_modules</p>
+
+<p>A list of cluster modules to load. Use colons to separate parameters to be
+passed to the module/plugin. Typical example:</p>
+
+<p>repl:8888
+stats</p>
+
+<p>The above allows you to get stats on your setup via the repl on port 8888.</p></li>
+<li><p>smtpgreeting</p>
+
+<p>The greeting line used when a client connects. This can be multiple lines
+if required (this may cause some connecting machines to fail - though
+usually only spam-bots).</p></li>
+<li><p>outbound.concurrency_max</p>
+
+<p>Maximum concurrency to use when delivering mails outbound. Defaults to 100.</p></li>
+<li><p>outbound.disabled</p>
+
+<p>Put a <code>1</code> in this file to temporarily disable outbound delivery. Useful to
+do while you're figuring out network issues, or just testing things.</p></li>
+<li><p>outbound.bounce_message</p>
+
+<p>The bounce message should delivery of the mail fail. See the source of. The
+default is normally fine. Bounce messages contain a number of template
+replacement values which are best discovered by looking at the source code.</p></li>
+</ul>
+
         </div>
     </body>
 </html>
