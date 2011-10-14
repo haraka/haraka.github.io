@@ -1,0 +1,63 @@
+<!DOCTYPE html>
+
+<html>
+    <head>
+        <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+        <title>Haraka Manual &raquo; discard plugin</title>
+        <link rel="stylesheet" type="text/css" href="/reset.css">
+        <link rel="stylesheet" type="text/css" href="/chapter.css">
+        <link rel="stylesheet" type="text/css" href="/sh_emacs.css">
+        <script type="text/javascript" src="/sh_main.min.js"></script>
+        <script type="text/javascript" src="/sh_javascript.min.js"></script>
+        <script type="text/javascript">
+        window.onload = function () {
+            var pres = document.getElementsByTagName("pre"),
+                text;
+
+            for (var i = 0; i < pres.length; ++i) {
+                text = pres[i].innerText || "";
+
+                if (!(/^\s*\$/).test(text)) {
+                    pres[i].className = "sh_javascript";
+                }
+            }
+
+            sh_highlightDocument();
+        }
+        </script>
+    </head>
+    <body>
+        <div id="content">
+            <h1>discard</h1>
+
+<p>This plugin will discard a message by pretending that the message was queued.</p>
+
+<p>It is designed to be used by other plugins which request the message be 
+discard by setting a connection or transaction note that this plugin
+checks.</p>
+
+<p>It uses the 'queue' hook, so that it runs after all the 'data_post' plugins
+and should be listed in 'config/plugins' to run before your queue hooks that
+perform actual deliveries.</p>
+
+<p>If you use the 'quarantine' plug-in then this plugin should run <em>after</em> it.</p>
+
+<p>USE THIS PLUGIN WITH CARE!</p>
+
+<h2>Usage</h2>
+
+<p>Set</p>
+
+<p><code>javascript
+connection.notes.discard = [ 1 | true ];
+</code></p>
+
+<p>or</p>
+
+<p><code>javascript
+connection.transaction.notes.discard = [ 1 | true ];
+</code></p>
+
+        </div>
+    </body>
+</html>

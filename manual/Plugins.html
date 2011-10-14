@@ -141,8 +141,19 @@ default if no parameters are given.</p></li>
 <li><p>OK</p>
 
 <p>Required by rcpt and queue plugins if we are to allow the email to be
-accepted, or the queue was successful, respectively. Once a plugin calls
-next(OK) no further plugins will run after it.</p></li>
+accepted, or the queue was successful, respectively. </p>
+
+<p>This also has a special meaning when used on deny hook.  Returning OK
+on the deny hook will override the result to CONT.</p>
+
+<p>Once a plugin calls next(OK) no further plugins on the same hook will 
+run after it.</p></li>
+<li><p>HOOK_NEXT</p>
+
+<p>This is a special return value that is currently only available on the
+unrecognized_command hook.  It instructs Haraka to run a different plugin
+hook instead of responding normally.  The <code>msg</code> argument is required and
+must be set to the name of the hook that is to be run.</p></li>
 </ul>
 
 <h2>Available Hooks</h2>
@@ -162,6 +173,7 @@ next(OK) no further plugins will run after it.</p></li>
 <li>quit</li>
 <li>vrfy</li>
 <li>noop</li>
+<li>rset</li>
 <li>mail ([from, esmtp_params])</li>
 <li>rcpt ([to,   esmtp_params])</li>
 <li>rcpt_ok (to)</li>

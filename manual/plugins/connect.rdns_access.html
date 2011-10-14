@@ -1,0 +1,84 @@
+<!DOCTYPE html>
+
+<html>
+    <head>
+        <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+        <title>Haraka Manual &raquo; connect.rdns_access plugin</title>
+        <link rel="stylesheet" type="text/css" href="/reset.css">
+        <link rel="stylesheet" type="text/css" href="/chapter.css">
+        <link rel="stylesheet" type="text/css" href="/sh_emacs.css">
+        <script type="text/javascript" src="/sh_main.min.js"></script>
+        <script type="text/javascript" src="/sh_javascript.min.js"></script>
+        <script type="text/javascript">
+        window.onload = function () {
+            var pres = document.getElementsByTagName("pre"),
+                text;
+
+            for (var i = 0; i < pres.length; ++i) {
+                text = pres[i].innerText || "";
+
+                if (!(/^\s*\$/).test(text)) {
+                    pres[i].className = "sh_javascript";
+                }
+            }
+
+            sh_highlightDocument();
+        }
+        </script>
+    </head>
+    <body>
+        <div id="content">
+            <h1>connect.rdns_access</h1>
+
+<p>This plugin will evaluate the remote IP address and the remote rDNS hostname
+against a set of white and black lists.  The lists are applied in the following
+way:</p>
+
+<p>connect.rdns<em>access.whitelist         (pass)
+connect.rdns</em>access.whitelist<em>regex   (pass)
+connect.rdns</em>access.blacklist         (block)
+connect.rdns<em>access.blacklist</em>regex   (block)</p>
+
+<h2>Configuration connect.rdns_access.ini</h2>
+
+<p>General configuration file for this plugin.</p>
+
+<ul>
+<li><p>connect.rdns<em>access.general.deny</em>msg</p>
+
+<p>Text to send the user on reject (text).</p></li>
+</ul>
+
+<h2>Configuration connect.rdns_access.whitelist</h2>
+
+<p>The whitelist is mostly to counter blacklist entries that match more than
+what one would want.  This file should be used for a specific IP address
+or rDNS hostnames, one per line, that should bypass blacklist checks.
+NOTE: We heavily suggest tailoring blacklist entries to be as accurate as
+possible and never using whitelists.  Nevertheless, if you need whitelists,
+here they are.</p>
+
+<h2>Configuration connect.rdns<em>access.whitelist</em>regex</h2>
+
+<p>Does the same thing as the whitelist file, but each line is a regex.
+Each line is also anchored for you, meaning '^' + regex + '$' is added for
+you.  If you need to get around this restriction, you may use a '.*' at
+either the start or the end of your regex.  This should help prevent people
+from writing overly permissive rules on accident.</p>
+
+<h2>Configuration connect.rdns_access.blacklist</h2>
+
+<p>This file should be used for a specific IP address or rDNS hostnames, one
+per line, that should fail on connect.</p>
+
+<h2>Configuration connect.rdns<em>access.blacklist</em>regex</h2>
+
+<p>Does the same thing as the blacklist file, but each line is a regex.
+Each line is also anchored for you, meaning '^' + regex + '$' is added for
+you.  If you need to get around this restriction, you may use a '.*' at
+either the start or the end of your regex.  This should help prevent people
+from writing overly permissive rules on accident.</p>
+
+        </div>
+    </body>
+</html>

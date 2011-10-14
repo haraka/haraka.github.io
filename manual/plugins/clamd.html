@@ -1,0 +1,70 @@
+<!DOCTYPE html>
+
+<html>
+    <head>
+        <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+        <title>Haraka Manual &raquo; clamd plugin</title>
+        <link rel="stylesheet" type="text/css" href="/reset.css">
+        <link rel="stylesheet" type="text/css" href="/chapter.css">
+        <link rel="stylesheet" type="text/css" href="/sh_emacs.css">
+        <script type="text/javascript" src="/sh_main.min.js"></script>
+        <script type="text/javascript" src="/sh_javascript.min.js"></script>
+        <script type="text/javascript">
+        window.onload = function () {
+            var pres = document.getElementsByTagName("pre"),
+                text;
+
+            for (var i = 0; i < pres.length; ++i) {
+                text = pres[i].innerText || "";
+
+                if (!(/^\s*\$/).test(text)) {
+                    pres[i].className = "sh_javascript";
+                }
+            }
+
+            sh_highlightDocument();
+        }
+        </script>
+    </head>
+    <body>
+        <div id="content">
+            <h1>clamd</h1>
+
+<p>This plug-in implements Anti-Virus scanning with ClamAV using the <em>clamd</em>
+daemon.</p>
+
+<p>The plug-in will reject any message that ClamAV considers to be a virus.
+If an error occurs (e.g. clamd not running or a timeout occurs) then the 
+message will be rejected with a temporary failure.  </p>
+
+<h2>Configuration</h2>
+
+<ul>
+<li><p>clamd_socket                                  (default: localhost:3310)</p>
+
+<p>host:port or /path/to/socket of the clamd daemon to send the message to
+for scanning.  If :port is omitted it defaults to 3310.
+On connection error or timeout the message will be rejected with a
+temporary failure.</p></li>
+<li><p>only<em>with</em>attachment                          (default: 0)</p>
+
+<p>Set this option to only scan messages that contain non-textual 
+attachments.  This is a performance optimization, however it will
+prevent ClamAV from detecting threats such as Phishing in plain-text
+or HTML messages.</p></li>
+<li><p>timeout                                       (default: 60)</p>
+
+<p>Timeout the plug-in after this many seconds.  A timeout will cause
+the message to be rejected with a temporary failure.</p></li>
+<li><p>max_size                                      (default: 26214400)</p>
+
+<p>The maximum size of message that should be sent to clamd in bytes.
+This option should not be larger than the StreamMaxLength value in
+clamd.conf as clamd will stop scanning once this limit is reached.
+If the clamd limit is reached the plug-in will log a notice that
+this has happened and will allow the message though.</p></li>
+</ul>
+
+        </div>
+    </body>
+</html>

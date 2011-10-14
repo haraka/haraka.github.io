@@ -42,9 +42,12 @@ var config_item = this.config.get(name, [type='value']);
 <p>Where type can be one of:</p>
 
 <ul>
-<li>'ini' - load an "ini" style file</li>
 <li>'value' - load a flat file containing a single value (default)</li>
+<li>'ini' - load an "ini" style file</li>
+<li>'json' - load a json file</li>
 <li>'list' - load a flat file containing a list of values</li>
+<li>'data' - load a flat file containing a list of values, keeping comments and
+whitespace.</li>
 </ul>
 
 <p>The name is not a filename, but a name in the config/ directory. For example:</p>
@@ -54,6 +57,9 @@ var config_item = this.config.get(name, [type='value']);
 
 <p>This will look up and load the file config/rambling.paths in the Haraka
 directory.</p>
+
+<p>However if you name your ini and json files ending in <code>.ini</code> and <code>.json</code>
+respectively then the <code>type</code> parameter can be left off.</p>
 
 <h1>File Formats</h1>
 
@@ -96,9 +102,14 @@ section.</p>
 value in a file on its own. Those who have used qmail or qpsmtpd will be
 familiar with this format.</p>
 
-<p>Lines starting with '#' and blank lines will be ignored.</p>
+<p>Lines starting with '#' and blank lines will be ignored unless the type is
+specified as 'data', however even then line endings will be stripped.</p>
 
 <p>See plugins/dnsbl.js for an example.</p>
+
+<h2>JSON Files</h2>
+
+<p>These are as you would expect, and returns an object as given in the file.</p>
 
 <h1>Reloading/Caching</h1>
 

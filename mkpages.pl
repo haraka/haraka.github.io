@@ -28,6 +28,7 @@ sub convert {
 my $wrapper = `cat template.html`;
 
 my $chapter_out = '';
+my $plugins_sent = 0;
 
 for my $file (sort { dirname($a) cmp dirname($b) } @files) {
     my $out = output($file);
@@ -48,6 +49,10 @@ for my $file (sort { dirname($a) cmp dirname($b) } @files) {
     print $outfh $template;
     close($outfh);
 
+    if (!$plugins_sent && $out =~ /plugin/) {
+        $plugins_sent++;
+        $chapter_out .= "<hr>\n";
+    }
     $chapter_out .= "<li><a href='/$out' target=\"content\">$title</a></li>\n";
 }
 

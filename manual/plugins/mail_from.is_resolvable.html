@@ -33,6 +33,27 @@
 <p>This plugin checks that the domain used in MAIL FROM is resolvable to an MX
 record.</p>
 
+<h2>Configuration mail<em>from.is</em>resolvable.ini</h2>
+
+<p>This is the general configuration file for the plugin.</p>
+
+<ul>
+<li><p>mail<em>from.is</em>resolvable.general.timeout</p>
+
+<p>How long we should give this plugin before we time it out (seconds).</p></li>
+<li><p>mail<em>from.is</em>resolvable.general.timeout_msg</p>
+
+<p>Text to send when plugin reaches timeout (text).</p></li>
+</ul>
+
+<h2>Configuration mail<em>from.is</em>resolvable.timeout</h2>
+
+<p>This is how we specify to Haraka that our plugin should have a certain timeout.
+If you specify 0 here, then the plugin will never timeout while the connection
+is active.  This is also required for this plugin, which needs to handle its
+own timeouts.  To actually specify the timeout for this plugin, please see
+the general config in mail<em>from.is</em>resolvable.ini.</p>
+
         </div>
     </body>
 </html>
