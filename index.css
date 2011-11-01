@@ -59,9 +59,9 @@ ul#menu li {
   line-height: 1.2;
 }
 
-ul#menu li.manual    { background-image: url("manual.png"); }
-ul#menu li.question  { background-image: url("question.png"); }
-ul#menu li.code      { background-image: url("code.png"); }
+ul#menu li.manual    { background-repeat:no-repeat; background-image: url("manual.png"); }
+ul#menu li.question  { background-repeat:no-repeat; background-image: url("question.png"); }
+ul#menu li.code      { background-repeat:no-repeat; background-image: url("code.png"); }
 
 ul#menu li h2 {
   font-size: 18px;
