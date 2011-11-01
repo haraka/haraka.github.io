@@ -67,5 +67,6 @@ ul#menu li h2 {
 
 div#content p {
   border-top: 1px solid black;
+  padding: 10px 10px 10px 10px;
 }
 
