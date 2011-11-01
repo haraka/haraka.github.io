@@ -22,6 +22,9 @@ body {
   #wrapper {
     margin: 15px auto;
   }
+  #widewrapper {
+    margin: 15px auto;
+  }
 }
 
 #title {
