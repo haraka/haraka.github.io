@@ -64,3 +64,8 @@ ul#menu li h2 {
   font-size: 18px;
   margin-bottom: 6px;
 }
+
+div#content p {
+  border-top: 1px solid black;
+}
+
