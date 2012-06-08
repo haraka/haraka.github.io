@@ -1,0 +1,110 @@
+<!DOCTYPE html>
+
+<html>
+    <head>
+        <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+        <title>Haraka Manual &raquo; Configuring Haraka For Outbound Email</title>
+        <link rel="stylesheet" type="text/css" href="/reset.css">
+        <link rel="stylesheet" type="text/css" href="/chapter.css">
+        <link rel="stylesheet" type="text/css" href="/sh_emacs.css">
+        <script type="text/javascript" src="/sh_main.min.js"></script>
+        <script type="text/javascript" src="/sh_javascript.min.js"></script>
+        <script type="text/javascript">
+        window.onload = function () {
+            var pres = document.getElementsByTagName("pre"),
+                text;
+
+            for (var i = 0; i < pres.length; ++i) {
+                text = pres[i].innerText || "";
+
+                if (!(/^\s*\$/).test(text)) {
+                    pres[i].className = "sh_javascript";
+                }
+            }
+
+            sh_highlightDocument();
+        }
+        </script>
+    </head>
+    <body>
+        <div id="content">
+            <h1>Configuring Haraka For Outbound Email</h1>
+
+<p>It is trivially easy to configure Haraka as an outbound email server. But
+first there are external things you may want to sort out:</p>
+
+<ul>
+<li>Get your DNS PTR record working - make sure it matches the A record of the
+host you are sending from.</li>
+<li>Consider implementing an SPF record. I don't personally do this, but some
+people seem to think it helps.</li>
+</ul>
+
+<p>There's lots of information elsewhere on the internet about getting these
+things working, and they are specific to your network and your DNS hosting.</p>
+
+<h2>First Some Background</h2>
+
+<p>Sending outbound mail through Haraka is called "relaying", and that is the
+term the internals use. The process is simple - if a plugin in Haraka tells
+the internals that this mail is to be relayed, then it gets queued in the
+"queue" directory for delivery. Then it will go through several delivery
+attempts until it is either successful or fails hard for some reason. A
+hard failure will result in a bounce email being sent to the "MAIL FROM"
+address used when connecting to Haraka. If that address also bounces then
+it is considered a "double bounce" and Haraka will log an error and drop it
+on the floor.</p>
+
+<h2>The Setup</h2>
+
+<p>Outbound mail servers should run on port 587 and enforce authentication. This
+is slightly different from the "old" model where there would simply be a
+check based on the connecting IP address to see if it was valid to relay.
+Note however that Haraka doesn't stop you doing it this way - we just don't
+provide a plugin to do that by default - you will have to write one. The
+reason is purely based on security and personal preference.</p>
+
+<p>Let's create a new Haraka instance:</p>
+
+<pre><code>haraka -i haraka-outbound
+cd haraka-outbound
+</code></pre>
+
+<p>Now edit config/smtp.ini - change the port to 587.</p>
+
+<p>Next we setup our plugins - all we need is the auth plugin:</p>
+
+<pre><code>echo "auth/flat_file" &gt; config/plugins
+</code></pre>
+
+<p>Now edit the flat file password file, and put in an appropriate username
+and password:</p>
+
+<pre><code>vi config/auth_flat_file.ini
+</code></pre>
+
+<p>See the documentation in docs/plugins/auth/flat_file.md for information about
+what can go in that file.</p>
+
+<p>Now you can start Haraka. That's all the configuration you need.</p>
+
+<pre><code>haraka -c .
+</code></pre>
+
+<p>Now in another window you can run swaks to test this - be sure to substitute
+an email address you can monitor in place of test@example.com, and the
+username and password you added for the -au and -ap params:</p>
+
+<pre><code>swaks -f youremail@yourdomain.com -t test@example.com -s localhost \
+  -p 587 -au testuser -ap testpassword
+</code></pre>
+
+<p>Watch the output of swaks and ensure no errors have occurred. Then watch
+the recipient email address (easiest to make this your webmail account) and
+see that the email arrived.</p>
+
+<p>You are done!</p>
+
+        </div>
+    </body>
+</html>

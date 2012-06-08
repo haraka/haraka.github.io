@@ -68,7 +68,17 @@ have as many connections to your ongoing SMTP server as you have to Haraka.</p>
 proxy pool.  This should always be less than the global plugin timeout,
 which should in turn be less than the connection timeout.</p>
 
-<p><p>Both values are required.</p></li>
+<ul>
+<li>max_connections=NUMBER</li>
+</ul>
+
+<p>Maximum number of connections to create at any given time.</p>
+
+<ul>
+<li>enable_tls=[true|yes|1]</li>
+</ul>
+
+<p><p>Enable TLS with the forward host (if supported)</p></li>
 </ul></p>
 
         </div>

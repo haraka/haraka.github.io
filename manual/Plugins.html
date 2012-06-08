@@ -199,6 +199,43 @@ lists the domains for which you wish to receive email.</p>
 is primarily used by the queue/smtp_proxy plugin which needs to run after
 all rcpt hooks.</p>
 
+<h2>Sharing State</h2>
+
+<p>There are several cases where you might need to share information between
+plugins.  This is done using <code>notes</code> - there are three types available:</p>
+
+<ul>
+<li><p>server.notes</p>
+
+<p>Available in all plugins.  This is created at PID start-up and is shared
+amongst all plugins on the same PID and listener.
+Typical uses for notes at this level would be to share database
+connections between multiple plugins or connection pools etc.</p></li>
+<li><p>connection.notes</p>
+
+<p>Available on any hook that passes 'connection' as a function parameter.
+This is shared amongst all plugins for a single connection and is
+destroyed after the client disconnects.
+Typical uses for notes at this level would be to store information
+about the connected client e.g. rDNS names, HELO/EHLO, white/black
+list status etc.</p></li>
+<li><p>connection.transaction.notes</p>
+
+<p>Available on any hook that passes 'connection' as a function parameter
+between hook<em>mail and hook</em>data_post.
+This is shared amongst all plugins for this transaction (e.g. MAIL FROM
+through until a message is received or the connection is reset).
+Typical uses for notes at this level would be to store information
+on things like greylisting which uses client, sender and recipient
+information etc.</p></li>
+</ul>
+
+<p>All of these notes are simply a Javascript object underneath - so you use
+them like a simple key/value store e.g.</p>
+
+<pre><code>connection.transaction.notes.test = 'testing';
+</code></pre>
+
 <h2>Further Reading</h2>
 
 <p>Now you want to read about the Connection object.</p>

@@ -59,13 +59,25 @@ filtering that the ongoing mail server may provide.</p>
 
 <p>The port to connect to.</p>
 
-<p>Both values are required.</p>
-
 <ul>
-<li>disable_tls=[true|1]</li>
+<li>timeout=SECONDS</li>
 </ul>
 
-<p><p>Disables the use of TLS</p></li>
+<p>The amount of seconds to let a backend connection live idle in the
+connection pool.  This should always be less than the global plugin
+timeout, which should in turn be less than the connection timeout.</p>
+
+<ul>
+<li>max_connections=NUMBER</li>
+</ul>
+
+<p>Maximum number of connections to create at any given time.</p>
+
+<ul>
+<li>enable_tls=[true|yes|1]</li>
+</ul>
+
+<p><p>Enable TLS with the forward host (if supported)</p></li>
 </ul></p>
 
         </div>

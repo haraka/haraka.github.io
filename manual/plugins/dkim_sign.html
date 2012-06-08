@@ -1,0 +1,105 @@
+<!DOCTYPE html>
+
+<html>
+    <head>
+        <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+        <title>Haraka Manual &raquo; dkim_sign plugin</title>
+        <link rel="stylesheet" type="text/css" href="/reset.css">
+        <link rel="stylesheet" type="text/css" href="/chapter.css">
+        <link rel="stylesheet" type="text/css" href="/sh_emacs.css">
+        <script type="text/javascript" src="/sh_main.min.js"></script>
+        <script type="text/javascript" src="/sh_javascript.min.js"></script>
+        <script type="text/javascript">
+        window.onload = function () {
+            var pres = document.getElementsByTagName("pre"),
+                text;
+
+            for (var i = 0; i < pres.length; ++i) {
+                text = pres[i].innerText || "";
+
+                if (!(/^\s*\$/).test(text)) {
+                    pres[i].className = "sh_javascript";
+                }
+            }
+
+            sh_highlightDocument();
+        }
+        </script>
+    </head>
+    <body>
+        <div id="content">
+            <h1>dkim_sign</h1>
+
+<p>This plugin implements the DKIM Core specification found at dkimcore.org</p>
+
+<p>DKIM Core is a simplified subset of DKIM which is easier to understand
+and deploy, yet provides all the same delivery advantages as DKIM.</p>
+
+<p>This plugin can only <em>sign</em> outbound messages.  It does not validate
+DKIM signatures.</p>
+
+<h2>Getting Started</h2>
+
+<p>First, generate an RSA key pair in your Haraka config directory by 
+running the following commands:</p>
+
+<pre><code>cd /path/to/haraka/config
+openssl genrsa -out dkim.private.key 1024
+openssl rsa -in dkim.private.key -pubout &gt; dkim.public.key
+</code></pre>
+
+<p>A selector is used to identify the keys used to attach a token to a 
+piece of email. It does appear in the header of the email sent, but 
+isn’t otherwise visible or meaningful to the final recipient. Any time 
+you generate a new key pair you need to choose a new selector.</p>
+
+<p>A selector is a string of no more than 63 lower-case alphanumeric 
+characters (a-z or 0-9) followed by a period “.”, followed by another 
+string of no more than 63 lower-case alphanumeric characters.</p>
+
+<p>Next you have to publish the public key as a DNS TXT record for your
+domain by concatenating the selector, the literal string .<em>domainkey.
+and your domain name.  e.g. mail.</em>domainkey.example.com</p>
+
+<p>The content of the TXT record can be created by concatenating the 
+literal string “v=DKIM1;t=s;n=core;p=” and the public key excluding
+the ---BEGIN and ---END lines and wrapping the key into a single line.</p>
+
+<p>See the key wizard at http://dkimtools.org/tools</p>
+
+<h2>Configuation</h2>
+
+<p>This plugin uses the configuration dkim_sign.ini in INI format.
+All configuration should appear within the 'main' block and is
+checked for updates on every run.</p>
+
+<ul>
+<li><p>disabled = [ 1 | true | yes ]             (OPTIONAL)</p>
+
+<p>Set this to disable DKIM signing</p></li>
+<li><p>selector = name                           (REQUIRED)</p>
+
+<p>Set this to the selector name published in DNS under the
+_domainkey sub-domain of the domain referenced below.</p></li>
+<li><p>domain = name                             (REQUIRED)</p>
+
+<p>Set this to the domain name that will be used to sign the
+message.  The DNS TXT entry for:</p>
+
+<pre><code>&lt;selector&gt;._domainkey.&lt;domain&gt;
+</code></pre>
+
+<p>MUST be present, otherwise remote systems will not be able
+to validate the signature applied to the message.</p></li>
+<li><p>headers<em>to</em>sign = list, of; headers      (REQUIRED)</p>
+
+<p>Set this to the list of headers that should be signed
+separated by either a comma, colon or semi-colon.
+This is to prevent any tampering of the specified headers.
+The 'From' header is required to be present by the RFC and
+will be added if it is missing.</p></li>
+</ul>
+
+        </div>
+    </body>
+</html>

@@ -30,24 +30,112 @@
         <div id="content">
             <h1>data.uribl</h1>
 
-<p>This plugin extracts URLs and feeds them to URL based DNS blocklists such
-as <a href="http://www.surbl.org/">SURBL</a> and <a href="http://www.uribl.com/">URIBL</a>.</p>
+<p>This plugin extracts URIs and feeds them to RHS based blacklists such as 
+<a href="http://www.spamhaus.org/dbl">DBL</a> and <a href="http://spameatingmonkey.com/lists.html#SEM-FRESH">SEM-FRESH</a> and body URI based DNS blacklists such as 
+<a href="http://www.surbl.org/">SURBL</a> and <a href="http://www.uribl.com/">URIBL</a>.</p>
 
-<p>URLs are reduced to their second level of domain (e.g. <code>www.example.com</code> is
-reduced to <code>example.com</code>, apart from those domains listed in
-<code>data.uribl.two_level_tlds</code>, which are reduced to their third level.</p>
+<p>This plugin will discard any domain name that does not have a valid TLD
+or any IP address within RFC1918, 127/8 or 169.254/16 (APIPA) and will
+convert any URI ending in in-addr.arpa into an IP address lookup.</p>
 
 <h2>Configuration</h2>
 
+<p>This plugin reads configuration from data.uribl.ini.</p>
+
+<p>The main section defines global settings for all lists and the blacklists
+zones are specified as INI section headings with the configuration for 
+each zone within that section.</p>
+
+<p>The main section can contain the following options:</p>
+
 <ul>
-<li><p>data.uribl.zones</p>
+<li><p>timeout</p>
 
-<p>A list of DNS zones to query.</p></li>
-<li><p>data.uribl.two<em>level</em>tlds</p>
+<p>Default: 30</p>
 
-<p>A list of top level domains to extend to two levels of stripping rather
-than one. You may wish to add sites like wordpress.com and blogger.com
-to this list.</p></li>
+<p>The total timeout in seconds for each group of lookups.  Any group of
+lookups that takes longer than this will be aborted and the session
+will continue.</p></li>
+<li><p>max<em>uris</em>per_list                                     </p>
+
+<p>Default: 20</p>
+
+<p>This option limits the maximum number of unique lookups that will be 
+submitted for each list after the input has been normalized into the 
+query format required for the list. <br />
+Any lookups greater than the limit will be discarded.</p></li>
+</ul>
+
+<p>List sections should be named as the zone of the blacklist and can 
+contain the following options:</p>
+
+<p>At least one of the following must be set for any queries to be run for
+the blacklist.</p>
+
+<ul>
+<li><p>rdns = 1 | true | yes | on | enabled</p>
+
+<p>Check any rDNS names against the list.</p></li>
+<li><p>helo = 1 | true | yes | on | enabled</p>
+
+<p>Check the EHLO/HELO argument against the list.</p></li>
+<li><p>envfrom = 1 | true | yes | on | enabled</p>
+
+<p>Check the MAIL FROM domain against the list.</p></li>
+<li><p>from = 1 | true | yes | on | enabled</p>
+
+<p>Check the domain portion of the From: header against the list.</p></li>
+<li><p>replyto = 1 | true | yes | on | enabled</p>
+
+<p>Check the domain portion of the Reply-To: header against the list.</p></li>
+<li><p>msgid = 1 | true | yes | on | enabled</p>
+
+<p>Check the RHS of the Message-Id: header against the list.</p></li>
+<li><p>body = 1 | true | yes | on | enabled</p>
+
+<p>Check any URIs found within the body of the message against the list.</p></li>
+</ul>
+
+<p>The following are optional for each list:</p>
+
+<ul>
+<li><p>custom_msg</p>
+
+<p>A custom rejection message that will be returned to the SMTP client
+if the list returns a positive result.  If found within the string 
+{uri} will be replaced by the URI value looked up and {zone} will
+be replaced by the blacklist zone name.</p></li>
+<li><p>validate</p>
+
+<p>A regular expression that will be tested against the first A record
+returned by the list.  If it does not evaluate to true then the positive
+result will be discarded.  Example: ^(?!127.0.1.255)127. would check
+that the IP address returned start with 127. and is not 127.0.1.255</p></li>
+<li><p>bitmask</p>
+
+<p>This is optionally used for lists such as <a href="http://www.surbl.org/">SURBL</a> and <a href="http://www.uribl.com/">URIBL</a> that
+return bitmask values in the last octet of the returned IP address to
+combine multiple lists into a single zone.  Using this you may specify
+which lists within the zone you want use.</p></li>
+<li><p>no<em>ip</em>lookups = 1 | true | yes | on | enabled</p>
+
+<p>Specifies that no IP addresses should ever be check against this list.
+This is required for lists list dbl.spamhaus.org.</p></li>
+<li><p>strip<em>to</em>domain= 1 | true | yes | on | enabled</p>
+
+<p>Specifies that the list requires hostnames be stripped down to the
+domain boundaries prior to querying the list.  This is required for
+the <a href="http://www.surbl.org/">SURBL</a> and <a href="http://www.uribl.com/">URIBL</a> lists.</p></li>
+</ul>
+
+<h2>Other files</h2>
+
+<ul>
+<li><p>data.uribl.excludes </p>
+
+<p>This contains a list of domains that should never be looked up in
+any blacklist as they are known good and will never be listed.
+This helps to keep useless queries to a minimum.</p></li>
 </ul>
 
         </div>
