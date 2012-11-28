@@ -87,6 +87,21 @@ you to implement a custom handler to find MX records. For most installations
 there is no reason to implement this hook - Haraka will find the correct MX
 records for you.</p>
 
+<p>The MX record is sent via next(OK, mx) and can be one of:</p>
+
+<ul>
+<li>A string of one of the following formats:
+<ul>
+<li>hostname</li>
+<li>hostname:port</li>
+<li>ipaddress</li>
+<li>ipaddress:port</li>
+</ul></li>
+<li>An MX object of the form: <code>{priority: 0, exchange: hostname}</code> and optionally
+a <code>port</code> value to specify an alternate port.</li>
+<li>A list of MX objects in an array.</li>
+</ul>
+
 <h3>The bounce hook</h3>
 
 <p>If the mail completely bounces then the <code>bounce</code> hook is called. This is <em>not</em>
@@ -99,7 +114,10 @@ can return <code>OK</code> from this hook to stop it from sending a bounce messa
 
 <p>When mails are successfully delivered to the remote end then the <code>delivered</code>
 hook is called. The return codes from this hook have no effect, so it is only
-useful for logging the fact that a successful delivery occurred.</p>
+useful for logging the fact that a successful delivery occurred.
+This hook is called with <code>(hmail, response)</code> as parameters, the <code>response</code>
+variable contains the SMTP response text returned by the host that received
+the message and will typically contain the remote queue ID.</p>
 
 <h2>Bounce Messages</h2>
 
@@ -158,6 +176,17 @@ var outnext = function (code, msg) {
 };
 
 outbound.send_email(from, to, contents, outnext);
+</code></pre>
+
+<p>The callback on <code>send_email()</code> is passed <code>OK</code> if the mail is successfully
+queued to disk, not when it is successfully delivered. To check delivery
+status you still need to hook <code>delivered</code> and <code>bounce</code> to know if it was
+successfully delivered.</p>
+
+<p>The callback parameter may be omitted if you don't need to handle errors
+should queueing to disk fail e.g:</p>
+
+<pre><code>outbound.send_email(form, to, contents);
 </code></pre>
 
         </div>

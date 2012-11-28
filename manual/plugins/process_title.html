@@ -1,0 +1,66 @@
+<!DOCTYPE html>
+
+<html>
+    <head>
+        <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+        <title>Haraka Manual &raquo; process_title plugin</title>
+        <link rel="stylesheet" type="text/css" href="/reset.css">
+        <link rel="stylesheet" type="text/css" href="/chapter.css">
+        <link rel="stylesheet" type="text/css" href="/sh_emacs.css">
+        <script type="text/javascript" src="/sh_main.min.js"></script>
+        <script type="text/javascript" src="/sh_javascript.min.js"></script>
+        <script type="text/javascript">
+        window.onload = function () {
+            var pres = document.getElementsByTagName("pre"),
+                text;
+
+            for (var i = 0; i < pres.length; ++i) {
+                text = pres[i].innerText || "";
+
+                if (!(/^\s*\$/).test(text)) {
+                    pres[i].className = "sh_javascript";
+                }
+            }
+
+            sh_highlightDocument();
+        }
+        </script>
+    </head>
+    <body>
+        <div id="content">
+            <h1>process_title</h1>
+
+<p>This plugin causes the process title seen by the UNIX 'ps' command to
+be modified from this:</p>
+
+<p><code>
+19281 ?        Sl     0:00 node haraka.js -c /etc/haraka
+</code></p>
+
+<p>to this:</p>
+
+<p><code>
+28841 ?        Ssl    0:21 Haraka (master) cn=77 cc=1 cps=0/0.09/2
+28843 ?        Sl     0:48  \_ Haraka (worker) cn=35 cc=0 cps=0/0.04/4 <br />
+28845 ?        Sl     0:48  \_ Haraka (worker) cn=42 cc=1 cps=0/0.05/6
+</code></p>
+
+<p>where:
+* cn = Total number of connections
+* cc = Total number of concurrent connections
+* cps = Number of connections in the last second / average / maximum
+* mps = Number of messages in the last second / average / maximum</p>
+
+<p>If 'cluster' is used then the master process will show the total
+across all workers.</p>
+
+<p>All of the counts shown are since the process started, so if a 
+worker has been re-started then the counts may not add up.</p>
+
+<p>Note: this plugin will only work on node >= 0.8 and should be
+added at the top of config/plugins to ensure that it functions
+correctly.</p>
+
+        </div>
+    </body>
+</html>

@@ -54,10 +54,34 @@ where N increments for each transaction on this connection.</p>
 <p>An Array of <code>Address</code> objects of recipients from the RCPT TO command.</p>
 
 <ul>
-<li>transaction.data_lines</li>
+<li>transaction.message_stream</li>
 </ul>
 
-<p>An Array of the lines of the email after DATA.</p>
+<p>A node.js Readable Stream object for the message. </p>
+
+<p>You use it like this:</p>
+
+<pre><code>transaction.message_stream.pipe(WritableStream, options)
+</code></pre>
+
+<p>Where WritableStream is a node.js Writable Stream object such as a
+net.socket, fs.writableStream, process.stdout/stderr or custom stream.</p>
+
+<p>The options argument should be an object that overrides the following
+properties:</p>
+
+<pre><code>* line_endings (default: "\r\n")
+* dot_stuffing (default: false)
+* ending_dot   (default: false)
+* end          (default: true)
+* buffer_size  (default: 65535)
+* clamd_style  (default: false)
+</code></pre>
+
+<p>e.g.</p>
+
+<pre><code>transaction.message_stream.pipe(socket, { dot_stuffing: true, ending_dot: true });
+</code></pre>
 
 <ul>
 <li>transaction.data_bytes</li>
@@ -73,10 +97,25 @@ where N increments for each transaction on this connection.</p>
 for adding banners to the email.</p>
 
 <ul>
+<li>transaction.add<em>line</em>end(cb)</li>
+</ul>
+
+<p>Notifies the message_stream that all the data has been received.
+Supply an optional callback function that will be run once any inflight data
+is finished being written.</p>
+
+<ul>
 <li>transaction.notes</li>
 </ul>
 
 <p>A safe place to store transaction specific values.</p>
+
+<ul>
+<li>transaction.add<em>leading</em>header(key, value)</li>
+</ul>
+
+<p>Adds a header to the top of the header list.  This should only be used in
+very specific cases.  Most people will want to use add_header() instead.</p>
 
 <ul>
 <li>transaction.add_header(key, value)</li>
@@ -110,25 +149,64 @@ hook_data or before.</p>
 <p>The body of the email if you set <code>parse_body</code> above. See <code>Body Object</code>.</p>
 
 <ul>
-<li>transaction.attachment_hooks(start, data, end)</li>
+<li>transaction.attachment_hooks(start)</li>
 </ul>
 
-<p>Sets event emitter hooks for attachments if you set <code>parse_body</code> above.</p>
+<p>Sets a callback for when we see an attachment if <code>parse_body</code> has been set.</p>
 
-<p>The <code>start</code> event will receive <code>(content_type, filename, body)</code> as parameters.</p>
+<p>The <code>start</code> event will receive <code>(content_type, filename, body, stream)</code> as
+parameters.</p>
 
-<p>The <code>data</code> event will receive a <code>Buffer</code> object containing some of the
-attachment data.</p>
+<p>The stream is a <code>ReadableStream</code> - see http://nodejs.org/api/stream.html for
+details on how this works.</p>
 
-<p>The <code>end</code> event will be called with no parameters when an attachment ends.</p>
+<p>If you set stream.connection then the stream will apply backpressure to the
+connection, allowing you to process attachments before the connection has
+ended. Here is an example which stores attachments in temporary files using
+the <code>tmp</code> library from npm and tells us the size of the file:</p>
 
-<p>Both the <code>data</code> and <code>end</code> params are optional.</p>
+<pre><code>exports.hook_data = function (next, connection) {
+    // enable mail body parsing
+    connection.transaction.parse_body = 1;
+    connection.transaction.attachment_hooks(
+        function (ct, fn, body, stream) {
+            start_att(connection, ct, fn, body, stream)
+        }
+    );
+    next();
+}
 
-<p>Note that in the <code>start</code> event, you can set per-attachment events via:</p>
+function start_att (connection, ct, fn, body, stream) {
+    connection.loginfo("Got attachment: " + ct + ", " + fn + " for user id: " + connection.transaction.notes.hubdoc_user.email);
+    connection.transaction.notes.attachment_count++;
 
-<pre><code>body.on('attachment_data', cb)
-body.on('attachment_end', cb)
+    stream.connection = connection; // Allow backpressure
+    stream.pause();
+
+    var tmp = require('tmp');
+
+    tmp.file(function (err, path, fd) {
+        connection.loginfo("Got tempfile: " + path + " (" + fd + ")");
+        var ws = fs.createWriteStream(path);
+        stream.pipe(ws);
+        stream.resume();
+        ws.on('close', function () {
+            connection.loginfo("End of stream reached");
+            fs.fstat(fd, function (err, stats) {
+                connection.loginfo("Got data of length: " + stats.size);
+            });
+        });
+    });
+}
 </code></pre>
+
+<ul>
+<li>transaction.set_banner(text, html)</li>
+</ul>
+
+<p>Sets a banner to be added to the end of the email. If the html part is not
+given (optional) then the text part will have each line ending replaced with
+<code>&lt;br/&gt;</code> when being inserted into HTML parts.</p>
 
         </div>
     </body>

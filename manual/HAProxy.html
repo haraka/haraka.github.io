@@ -1,0 +1,80 @@
+<!DOCTYPE html>
+
+<html>
+    <head>
+        <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+        <title>Haraka Manual &raquo; HAProxy PROXY protocol extension support</title>
+        <link rel="stylesheet" type="text/css" href="/reset.css">
+        <link rel="stylesheet" type="text/css" href="/chapter.css">
+        <link rel="stylesheet" type="text/css" href="/sh_emacs.css">
+        <script type="text/javascript" src="/sh_main.min.js"></script>
+        <script type="text/javascript" src="/sh_javascript.min.js"></script>
+        <script type="text/javascript">
+        window.onload = function () {
+            var pres = document.getElementsByTagName("pre"),
+                text;
+
+            for (var i = 0; i < pres.length; ++i) {
+                text = pres[i].innerText || "";
+
+                if (!(/^\s*\$/).test(text)) {
+                    pres[i].className = "sh_javascript";
+                }
+            }
+
+            sh_highlightDocument();
+        }
+        </script>
+    </head>
+    <body>
+        <div id="content">
+            <h1>HAProxy PROXY protocol extension support</h1>
+
+<p>Haraka natively supports the PROXY protocol [1].</p>
+
+<p>This allows an upstream proxy to pass IP address and port of the client which
+Haraka will use instead of the socket IP address (which is of the proxy).
+This allows DNSBLs and access control lists to operate on the proxied address.</p>
+
+<p>Support is disabled by default and if HAProxy or other attempts to send a
+PROXY command then Haraka will return a DENYSOFTDISCONNECT error.
+DENYSOFT is used to prevent configuration errors from rejecting valid mail.</p>
+
+<p>To enable support for PROXY you must create a <code>haproxy_hosts</code> configuration
+file which should contain a list of IP addresses of the HAProxy hosts that 
+should be allowed to send the PROXY command.  </p>
+
+<p>When a host connects to Haraka that matches an IP address present in the
+<code>haproxy_hosts</code> file - a banner is not sent, instead Haraka waits for the
+PROXY command to be sent before proceeding.  The connection will timeout
+with <code>421 PROXY timed out</code> if the command is not sent within 30 seconds.</p>
+
+<p>NOTE: because Haraka does not send a banner when a listed HAProxy host 
+connects you cannot use the HAProxy <code>option smtpchk</code> to test the host, 
+you must just use the basic TCP check that HAProxy uses by default.</p>
+
+<p>[1] http://haproxy.1wt.eu/download/1.5/doc/proxy-protocol.txt</p>
+
+<p>HAProxy supports the PROXY protocol in version 1.5 or later however there
+are patches available to add support for 1.4.</p>
+
+<p>Here is an example listener section for haproxy.cfg:</p>
+
+<p><code>
+listen smtp :25
+        mode tcp
+        option tcplog
+        balance roundrobin
+        server smtp1 ip.of.haraka.server1:25 check inter 10s send-proxy
+        server smtp2 ip.of.haraka.server2:25 check inter 10s send-proxy
+        server smtp3 ip.of.haraka.server3:25 check inter 10s send-proxy
+        server smtp4 ip.of.haraka.server4:25 check inter 10s send-proxy
+        server smtp5 ip.of.haraka.server5:25 check inter 10s send-proxy
+</code></p>
+
+<p>The important part is <code>send-proxy</code> which causes HAProxy to send the PROXY
+extension on connection.</p>
+
+        </div>
+    </body>
+</html>

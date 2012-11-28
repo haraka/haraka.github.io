@@ -3,7 +3,7 @@
 <html>
     <head>
         <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
-        <title>Haraka Manual &raquo; dnsbl plugin</title>
+        <title>Haraka Manual &raquo; dnswl plugin</title>
         <link rel="stylesheet" type="text/css" href="/reset.css">
         <link rel="stylesheet" type="text/css" href="/chapter.css">
         <link rel="stylesheet" type="text/css" href="/sh_emacs.css">
@@ -28,24 +28,29 @@
     </head>
     <body>
         <div id="content">
-            <h1>dnsbl</h1>
+            <h1>dnswl</h1>
 
-<p>This plugin looks up the connecting IP address in an IP blocklist. Mails
-found to be in the blocklist are rejected.</p>
+<p>This plugin looks up the connecting IP address in an IP whitelist.
+If the host is listed, then the plugin will return OK for all hooks
+up to hook_data.</p>
+
+<p>IMPORTANT!  The order of plugins in config/plugins is important when
+this plugin is used.  It should be listed <em>before</em> any plugins that
+you wish to skip, but after any plugins that accept recipients.</p>
 
 <h2>Configuration</h2>
 
 <p>This plugins uses the following files:</p>
 
-<p>dnsbl.zones - Contains a list of zones to query, one per line.</p>
+<p>dnswl.zones - Contains a list of zones to query, one per line.</p>
 
-<p>dnsbl.ini - INI format with options described below:</p>
+<p>dnswl.ini - INI format with options described below:</p>
 
 <ul>
 <li><p>zones       </p>
 
 <p>A comma or semi-colon list of zones to query.  It will be merged with
-any lists in dnsbl.zones.</p></li>
+any lists in dnswl.zones.</p></li>
 <li><p>periodic_checks  </p>
 
 <p>If enabled, this will check all the zones every n minutes.

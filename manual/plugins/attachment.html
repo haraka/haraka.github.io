@@ -1,0 +1,62 @@
+<!DOCTYPE html>
+
+<html>
+    <head>
+        <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+        <title>Haraka Manual &raquo; attachment plugin</title>
+        <link rel="stylesheet" type="text/css" href="/reset.css">
+        <link rel="stylesheet" type="text/css" href="/chapter.css">
+        <link rel="stylesheet" type="text/css" href="/sh_emacs.css">
+        <script type="text/javascript" src="/sh_main.min.js"></script>
+        <script type="text/javascript" src="/sh_javascript.min.js"></script>
+        <script type="text/javascript">
+        window.onload = function () {
+            var pres = document.getElementsByTagName("pre"),
+                text;
+
+            for (var i = 0; i < pres.length; ++i) {
+                text = pres[i].innerText || "";
+
+                if (!(/^\s*\$/).test(text)) {
+                    pres[i].className = "sh_javascript";
+                }
+            }
+
+            sh_highlightDocument();
+        }
+        </script>
+    </head>
+    <body>
+        <div id="content">
+            <h1>attachment</h1>
+
+<p>This plugin allows you to reject messages based on Content-Type within 
+the message or any MIME parts or on the filename of any attachments.</p>
+
+<h2>Limitations</h2>
+
+<p>This plugin cannot detect forged MIME types where the sender is lying
+about the type.  The type is not confirmed in any way currently.</p>
+
+<p>It also cannot read the filenames within tar/zip/rar archives.</p>
+
+<h2>Configuration</h2>
+
+<ul>
+<li><p>attachment.filename.regex</p>
+
+<p>This file contains a list of regular expressions, one per line that 
+wil be tested against each filename found within a message.
+The first regexp to match will cause the message to be rejected. <br />
+Any invalid regexps will be detected, reported and skipped.</p></li>
+<li><p>attachment.ctype.regex</p>
+
+<p>This file contains a list of regular expressions, one per line that
+will be tested against each MIME Content-Type header in the message.
+The first regexp to match will cause the message to be rejected.
+Any invalid regexps will be detected, reported and skipped.</p></li>
+</ul>
+
+        </div>
+    </body>
+</html>

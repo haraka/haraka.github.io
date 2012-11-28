@@ -3,7 +3,7 @@
 <html>
     <head>
         <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
-        <title>Haraka Manual &raquo; mail_from.blocklist plugin</title>
+        <title>Haraka Manual &raquo; reseed_rng plugin</title>
         <link rel="stylesheet" type="text/css" href="/reset.css">
         <link rel="stylesheet" type="text/css" href="/chapter.css">
         <link rel="stylesheet" type="text/css" href="/sh_emacs.css">
@@ -28,21 +28,24 @@
     </head>
     <body>
         <div id="content">
-            <h1>mail_from.blocklist</h1>
+            <h1>reseed_rng</h1>
 
-<p>This plugin blocks MAIL_FROM addresses in a list.</p>
+<p>The V8 that ships with node 0.4.x uses an unsophisticated method of
+seeding its random number generator- it simply uses the current time
+in ms.  Worse, that version of V8 (at least) doesn't provide a way
+to explicitly reseed the RNG.</p>
 
-<p>NOTE: If all you need is to deny mail based on the exact address, this plugin
-will work just fine. If you want to customize the deny message, add blocks
-based on a regex, or add whitelists, please use the mail_from.access plugin.</p>
+<p>In situations where multiple processes can spawn in the same
+ms, processes can be seeded with the same value, leading to bad 
+problems like UUID collisions. When using the 'cluster' module, it's
+quite easy to observe this behavior. </p>
 
-<h2>Configuration</h2>
+<p>This plugin uses David Bao's reseed.js (see http://davidbau.com/archives/2010/01/30/random<em>seeds</em>coded<em>hints</em>and<em>quintillions.html)
+to provide a reseedable Math.random(), and hooks the init</em>child event
+to reseed the RNG with a sligtly better seed at spawned-process startup
+time. </p>
 
-<ul>
-<li><p>mail_from.blocklist</p>
-
-<p>Contains a list of email addresses to block.</p></li>
-</ul>
+<p>All users of the 'cluster' module should consider using this plugin.</p>
 
         </div>
     </body>

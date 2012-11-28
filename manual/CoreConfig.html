@@ -51,14 +51,26 @@ different levels available.</p></li>
 <li>port - the port to use (default: 25)</li>
 <li>listen_address - default: 0.0.0.0 (i.e. all addresses)</li>
 <li>inactivity_time - how long to let clients idle in seconds (default: 300)</li>
-<li>nodes - if <a href="http://learnboost.github.com/cluster/">cluster</a> is available, specifies how
+<li>nodes - if [cluster][1] is available, specifies how
 many processes to fork off. Can be the string "cpus" to fork off as many
 children as there are CPUs (default: 0, which disables cluster mode)</li>
 <li>user - optionally a user to drop privileges to. Can be a string or UID.</li>
+<li>group - optionally a group to drop privileges to. Can be a string or GID.</li>
 <li>ignore<em>bad</em>plugins - If a plugin fails to compile by default Haraka will stop at load time.
 If, however, you wish to continue on without that plugin's facilities, then
 set this config option</li>
+<li>daemonize - enable this to cause Haraka to fork into the background on start-up (default: 0)</li>
+<li>daemon<em>log</em>file - (default: /var/log/haraka.log) where to redirect stdout/stderr when daemonized</li>
+<li>daemon<em>pid</em>file - (default: /var/run/haraka.pid) where to write a PID file to</li>
+<li>spool_dir - (default: none) directory to create temporary spool files in</li>
+<li>spool_after - (default: -1) if message exceeds this size in bytes, then spool the message to disk
+specify -1 to disable spooling completely or 0 to force all messages to be spooled to disk.</li>
 </ul></li>
+</ul>
+
+<p>[1]: http://learnboost.github.com/cluster/ or node version >= 0.8</p>
+
+<ul>
 <li><p>me</p>
 
 <p>A name to use for this server. Used in received lines and elsewhere. Setup
@@ -67,8 +79,16 @@ by default to be your hostname.</p></li>
 
 <p>Each connection and mail in Haraka includes a UUID which is also in most log
 messages. If you put a <code>1</code> in this file then every denied mail (either via
-DENY/5xx or DENYSOFT/4xx return codes) will include a note containing the
-uuid, making it easy to track problems back to the logs.</p></li>
+DENY/5xx or DENYSOFT/4xx return codes) will include the uuid at the start
+of each line of the deny message in brackets, making it easy to track
+problems back to the logs.</p>
+
+<p>Because UUIDs are long, if you put a number greater than 1 in the config
+file, it will be truncated to that length. We recommend a 6 as a good
+balance of finding in the logs and not making lines too long.</p></li>
+<li><p>banner<em>include</em>uuid</p>
+
+<p>This will add the full UUID to the first line of the SMTP greeting banner.</p></li>
 <li><p>early_talker_delay</p>
 
 <p>If clients talk early we <em>punish</em> them with a delay of this many milliseconds
@@ -83,11 +103,14 @@ file specifying a per-plugin timeout. In this file you can set a timeout
 of 0 to mean that this plugin's hooks never time out. Use this with care.</p></li>
 <li><p>cluster_modules</p>
 
-<p>A list of cluster modules to load. Use colons to separate parameters to be
+<p>NOTE: this is only valid on node.js 0.4 using the LearnBoost cluster module
+it is not used on node.js 0.6 or later.</p>
+
+<p>A list of cluster modules to load. Use a colon to separate parameters to be
 passed to the module/plugin. Typical example:</p>
 
 <p>repl:8888
-stats</p>
+stats: {"connections": true}</p>
 
 <p>The above allows you to get stats on your setup via the repl on port 8888.</p></li>
 <li><p>smtpgreeting</p>
@@ -95,6 +118,10 @@ stats</p>
 <p>The greeting line used when a client connects. This can be multiple lines
 if required (this may cause some connecting machines to fail - though
 usually only spam-bots).</p></li>
+<li><p>max<em>received</em>count</p>
+
+<p>The maximum number of "Received" headers allowed in an email. This is a
+simple protection against mail loops. Defaults to 100.</p></li>
 <li><p>outbound.concurrency_max</p>
 
 <p>Maximum concurrency to use when delivering mails outbound. Defaults to 100.</p></li>
@@ -107,6 +134,10 @@ do while you're figuring out network issues, or just testing things.</p></li>
 <p>The bounce message should delivery of the mail fail. See the source of. The
 default is normally fine. Bounce messages contain a number of template
 replacement values which are best discovered by looking at the source code.</p></li>
+<li><p>haproxy_hosts</p>
+
+<p>A list of HAProxy hosts that Haraka should enable the PROXY protocol from.
+See HAProxy.md</p></li>
 </ul>
 
         </div>

@@ -3,7 +3,7 @@
 <html>
     <head>
         <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
-        <title>Haraka Manual &raquo; mail_from.blocklist plugin</title>
+        <title>Haraka Manual &raquo; tarpit plugin</title>
         <link rel="stylesheet" type="text/css" href="/reset.css">
         <link rel="stylesheet" type="text/css" href="/chapter.css">
         <link rel="stylesheet" type="text/css" href="/sh_emacs.css">
@@ -28,21 +28,28 @@
     </head>
     <body>
         <div id="content">
-            <h1>mail_from.blocklist</h1>
+            <h1>tarpit</h1>
 
-<p>This plugin blocks MAIL_FROM addresses in a list.</p>
+<p>This plugin is designed to introduce deliberate delays on the response 
+of every hook in order to slow down a connection.  It has no 
+configuration and is designed to be used only by other plugins.</p>
 
-<p>NOTE: If all you need is to deny mail based on the exact address, this plugin
-will work just fine. If you want to customize the deny message, add blocks
-based on a regex, or add whitelists, please use the mail_from.access plugin.</p>
+<p>It must be loaded early in config/plugins (e.g. before any plugins 
+that accept recipients or that return OK) but must be loaded <em>after</em> 
+any plugins that wish to use it.</p>
 
-<h2>Configuration</h2>
+<p>To use this plugin in another plugin set:</p>
 
-<ul>
-<li><p>mail_from.blocklist</p>
+<pre><code>connection.notes.tarpit = &lt;seconds to delay&gt;;
+</code></pre>
 
-<p>Contains a list of email addresses to block.</p></li>
-</ul>
+<p>or</p>
+
+<pre><code>connection.transaction.notes.tarpit = &lt;seconds to delay&gt;;
+</code></pre>
+
+<p>When tarpitting a command it will log 'tarpitting response for Ns' to 
+the INFO facility where N is the number of seconds.</p>
 
         </div>
     </body>

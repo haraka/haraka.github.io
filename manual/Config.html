@@ -36,7 +36,7 @@ of configuration files.</p>
 <p>The API is fairly simple:</p>
 
 <pre><code>// From within a plugin:
-var config_item = this.config.get(name, [type='value']);
+var config_item = this.config.get(name, [type='value'], [callback]);
 </code></pre>
 
 <p>Where type can be one of:</p>
@@ -60,6 +60,9 @@ directory.</p>
 
 <p>However if you name your ini and json files ending in <code>.ini</code> and <code>.json</code>
 respectively then the <code>type</code> parameter can be left off.</p>
+
+<p>You can optionally pass in a callback function which will be called whenever
+an update is detected on the file.</p>
 
 <h1>File Formats</h1>
 
@@ -119,6 +122,33 @@ configuration file after it has changed. Configuration files are watched for
 changes so this process is not a heavyweight "poll" process, and files are
 not re-read every time config.get() is called so this can be considered a
 lightweight process.</p>
+
+<p>Note that Haraka reads a number of configuration files and any configuration
+read in a plugins register() function <em>before</em> it drops privileges, so you
+should make sure that the user/group that runs Haraka has permission to
+read these files otherwise Haraka will not be able to reload them if they
+are changed in which case it will continue to use the cached values.</p>
+
+<h1>Advanced</h1>
+
+<p>If you need to read files outside of the config directory:</p>
+
+<p><code>javascript
+var configfile = require('./configfile');
+var cfg = configfile.read_config('/path/to/file', type);
+</code></p>
+
+<p>read_config() handles the caching for you and will return cached values
+if there have been no updates since the file was read.</p>
+
+<p>You can also optionally pass in a callback that is run if the file is 
+updated:</p>
+
+<p><code>javascript
+var cfg = configfile.read_config('/path/to/file', type, function() {
+    // Code to run if file is updated
+});
+</code></p>
 
         </div>
     </body>

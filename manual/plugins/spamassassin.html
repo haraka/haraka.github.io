@@ -30,7 +30,81 @@
         <div id="content">
             <h1>spamassassin</h1>
 
-<p>This plugin runs the mail through SpamAssassin.</p>
+<p>This plugin implements the spamd protocol and will send messages to
+spamd for scoring.</p>
+
+<h2>Configuration</h2>
+
+<p>spamassassin.ini</p>
+
+<ul>
+<li><p>spamd_socket = [host:port | /path/to/socket]  <em>optional</em></p>
+
+<p>Default: localhost:783</p>
+
+<p>Host or path to socket where spamd is running.</p></li>
+<li><p>spamd_user = [user]   <em>optional</em></p>
+
+<p>Default: default</p>
+
+<p>Username to pass to spamd.  This is useful when you are running
+spamd with virtual users.</p>
+
+<p>You can also pass this value in dynamically by setting:</p>
+
+<p><code>connection.transaction.notes.spamd_user</code></p></li>
+<li><p>max_size = N  <em>optional</em></p>
+
+<p>Default: 500000</p>
+
+<p>Maximum size of messages (in bytes) to send to spamd.
+Messages over this size will be skipped.</p></li>
+<li><p>reject_thresold = N   <em>optional</em></p>
+
+<p>Default: none (do not reject any mail)</p>
+
+<p>SpamAssassin score at which the mail should be rejected.</p></li>
+<li><p>relay<em>reject</em>threshold = N  <em>optional</em></p>
+
+<p>Default: none</p>
+
+<p>As above, except this threshold only applies to connections 
+that are relays (e.g. AUTH) where connection.relaying = true.
+This is used to set a <em>lower</em> thresold at which to reject mail
+from these hosts to prevent sending outbound spam.</p>
+
+<p>If this is not set, then the <code>reject_thresold</code> value is used.</p></li>
+<li><p>munge<em>subject</em>threshold = N  <em>optional</em></p>
+
+<p>Default: none (do not munge the subject)</p>
+
+<p>Score at which the subject should be munged (prefixed).</p></li>
+<li><p>subject_prefix = [prefix]   <em>optional</em></p>
+
+<p>Default: <strong>* SPAM *</strong></p>
+
+<p>Prefix to use when munging the subject.</p></li>
+<li><p>old<em>headers</em>action = [rename | drop | keep]   <em>optional</em></p>
+
+<p>Default: rename</p>
+
+<p>If old X-Spam-* headers are in the email, what do we do with them? </p>
+
+<p><code>rename</code> them to X-Old-Spam-*. </p>
+
+<p><code>drop</code> will delete them. </p>
+
+<p><code>keep</code> will keep them (new X-Spam-* headers appear lower down in 
+the headers then).</p></li>
+</ul>
+
+<h1>Extras</h1>
+
+<p>A SpamAssassin plugin can be found in the <code>contrib</code> directory. 
+The <code>Haraka.\[pm|cf\]</code> files should be placed in the SpamAssassin local 
+site rules directory (/etc/mail/spamassassin on Linux), spamd should be 
+restarted and the plugin will make spamd output the Haraka UUID as part 
+of it's log output to aid debugging when searching the mail logs.</p>
 
         </div>
     </body>
