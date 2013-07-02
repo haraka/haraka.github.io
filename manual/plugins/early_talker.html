@@ -3,7 +3,7 @@
 <html>
     <head>
         <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
-        <title>Haraka Manual &raquo; early_talker plugin</title>
+        <title>Haraka Manual &raquo; early_talker</title>
         <link rel="stylesheet" type="text/css" href="/reset.css">
         <link rel="stylesheet" type="text/css" href="/chapter.css">
         <link rel="stylesheet" type="text/css" href="/sh_emacs.css">
@@ -30,18 +30,22 @@
         <div id="content">
             <h1>early_talker</h1>
 
-<p>This plugin checks for early talkers. These are violators of the SMTP
-specification, which demands that clients must wait for responses before
-sending the next command.</p>
+<p>Early talkers are violators of the SMTP specification, which demands that
+clients must wait for responses before sending the next command.</p>
 
-<p>This plugin checks for early talkers at the DATA command.</p>
+<p>Early talker detection is handled internally by Haraka (in connection.js).</p>
+
+<p>At the DATA command, this plugin checks to see if an early talker was
+detected.</p>
+
+<p>Any plugin can detect early talkers by checking connection.early_talker.</p>
 
 <h2>Configuration</h2>
 
 <ul>
 <li><p>early_talker.pause</p>
 
-<p>Specifies a delay in milliseconds to delay at the DATA command before
+<p>Specifies a delay in milliseconds to delay before each SMTP command before
 sending the response, while waiting for early talkers. Default is no pause.</p></li>
 </ul>
 

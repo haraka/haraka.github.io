@@ -3,7 +3,7 @@
 <html>
     <head>
         <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
-        <title>Haraka Manual &raquo; data.signatures</title>
+        <title>Haraka Manual &raquo; relay_acl</title>
         <link rel="stylesheet" type="text/css" href="/reset.css">
         <link rel="stylesheet" type="text/css" href="/chapter.css">
         <link rel="stylesheet" type="text/css" href="/sh_emacs.css">
@@ -28,18 +28,32 @@
     </head>
     <body>
         <div id="content">
-            <h1>data.signatures</h1>
+            <h1>relay_acl</h1>
 
-<p>This plugin allows you to add string signatures to a configuration file and
-have this plugin scan the body text of an email for those strings. Mails
-matching these signatures will be blocked.</p>
+<p>This plugin makes it possible to relay outbound mails using IP based ACLs
+and relay inbound mails using destination domains.</p>
 
 <h2>Configuration</h2>
 
 <ul>
-<li><p>data.signatures</p>
+<li><p><code>config/relay_acl_allow</code>
+Allowed IP ranges in CIDR notation, one per line.
+IPs listed in here will be allowed to send mails without any furthur
+checks.</p></li>
+<li><p><code>config/relay_dest_domains.ini</code>
+Allowed destination domains. The format is in ini file, the domain
+is the key and the value is in JSON, all under the [domains] section.
+Currently supported field is "action": where the value can be
+"accept" (accept the mail without further checks), "continue" (mails
+are still subjected to further checks) or "deny" (reject the mails).</p>
 
-<p>This file contains a list of strings (one per line) that will be matched.</p></li>
+<p>An example:</p>
+
+<p>[domains]
+test.com = { "action": "continue" }</p>
+
+<p>Please note that this config/relay<em>dest</em>domains.ini is shared with
+plugins/relay<em>force</em>routing.js, which uses additional fields.</p></li>
 </ul>
 
         </div>

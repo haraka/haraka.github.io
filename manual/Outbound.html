@@ -40,6 +40,12 @@ flag to <code>true</code> via a plugin. The simplest way of doing that is to use
 AUTH, and have the client authenticate. For example using the <code>auth/flat_file</code>
 plugin. However it is very simple to write a custom plugin to do this.</p>
 
+<p>For statistics on outbound mail use the <code>process_title</code> plugin. See the
+documentation for that plugin for details.</p>
+
+<p>To flush the outbound queue (for temporary failed mails) hit the Haraka master
+process with the SIGHUP signal (via the <code>kill</code> command line tool).</p>
+
 <h2>Outbound Configuration Files</h2>
 
 <h3>outbound.concurrency_max</h3>
@@ -98,8 +104,9 @@ records for you.</p>
 <li>ipaddress:port</li>
 </ul></li>
 <li>An MX object of the form: <code>{priority: 0, exchange: hostname}</code> and optionally
-a <code>port</code> value to specify an alternate port.</li>
-<li>A list of MX objects in an array.</li>
+a <code>port</code> value to specify an alternate port, and a <code>bind</code> value to specify an
+outbound IP address to bind to.</li>
+<li>A list of MX objects in an array, each in the same format as above.</li>
 </ul>
 
 <h3>The bounce hook</h3>

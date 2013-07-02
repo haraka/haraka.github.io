@@ -3,7 +3,7 @@
 <html>
     <head>
         <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
-        <title>Haraka Manual &raquo; clamd plugin</title>
+        <title>Haraka Manual &raquo; clamd</title>
         <link rel="stylesheet" type="text/css" href="/reset.css">
         <link rel="stylesheet" type="text/css" href="/chapter.css">
         <link rel="stylesheet" type="text/css" href="/sh_emacs.css">
@@ -39,23 +39,41 @@ message will be rejected with a temporary failure.  </p>
 
 <h2>Configuration</h2>
 
+<h3>clamd.ini</h3>
+
 <ul>
 <li><p>clamd_socket                                  (default: localhost:3310)</p>
 
-<p>host:port or /path/to/socket of the clamd daemon to send the message to
-for scanning.  If :port is omitted it defaults to 3310.
-On connection error or timeout the message will be rejected with a
-temporary failure.</p></li>
+<p>ip.ip.ip.ip:port, [ipv6::literal]:port, host:port or /path/to/socket of
+the clamd daemon to send the message to for scanning.</p>
+
+<p>Multiple hosts can be listed separated by comma, semi-colon or spaces.</p>
+
+<p>If :port is omitted it defaults to 3310.</p>
+
+<p>On connection error or timeout the next host in the list will be tried
+and when the host list is exhausted, the message will be rejected with 
+a temporary failure.</p></li>
+<li><p>randomize<em>host</em>order                          (default: false)</p>
+
+<p>If this is set then the list of hosts with be randomized before a 
+connection is attempted.</p></li>
 <li><p>only<em>with</em>attachment                          (default: 0)</p>
 
 <p>Set this option to only scan messages that contain non-textual 
 attachments.  This is a performance optimization, however it will
 prevent ClamAV from detecting threats such as Phishing in plain-text
 or HTML messages.</p></li>
+<li><p>connect_timout                                (default: 10)</p>
+
+<p>Timeout connection to host after this many seconds.  A timeout will
+cause the next host in the list to be tried.  Once all hosts have 
+been tried then a temporary failure will be returned.</p></li>
 <li><p>timeout                                       (default: 60)</p>
 
-<p>Timeout the plug-in after this many seconds.  A timeout will cause
-the message to be rejected with a temporary failure.</p></li>
+<p>Post-connection timeout if there is no activity on the socket after
+this many seconds.  A timeout will cause the message to be rejected
+with a tempoary failure.</p></li>
 <li><p>max_size                                      (default: 26214400)</p>
 
 <p>The maximum size of message that should be sent to clamd in bytes.
@@ -64,6 +82,41 @@ clamd.conf as clamd will stop scanning once this limit is reached.
 If the clamd limit is reached the plug-in will log a notice that
 this has happened and will allow the message though.</p></li>
 </ul>
+
+<h3>clamd.excludes</h3>
+
+<p>This file can optionally contain a list of virus name patterns
+  that if matches, cause the plugin not to reject the message but
+  instead to insert a X-Haraka-Virus: header containing the virus
+  name.  This header can then be used for scoring in another plugin.</p>
+
+<p>The format of the file is simple - one pattern per line and 
+  comments can be used by prefixing the line with #.  Matches are
+  always case-insensitive.</p>
+
+<p>Patterns may be expressed using wildcards (e.g. * and ?) or 
+  via regexp by enclosing the regexp in //.</p>
+
+<p>If you want to negate a match (e.g. reject if it matches) then
+  prefix the match with !.  Negative matches are always tested 
+  fist.</p>
+
+<p>Example:</p>
+
+<p>`````</p>
+
+<h1>Always reject test signatures</h1>
+
+<p>!<em>.TestSig_</em></p>
+
+<h1>Skip all unofficial signatures</h1>
+
+<p>*.UNOFFICIAL</p>
+
+<h1>Phishing</h1>
+
+<p>Heuristics.Phishing.*
+  `````</p>
 
         </div>
     </body>

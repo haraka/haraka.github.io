@@ -3,7 +3,7 @@
 <html>
     <head>
         <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
-        <title>Haraka Manual &raquo; data.nomsgid</title>
+        <title>Haraka Manual &raquo; relay</title>
         <link rel="stylesheet" type="text/css" href="/reset.css">
         <link rel="stylesheet" type="text/css" href="/chapter.css">
         <link rel="stylesheet" type="text/css" href="/sh_emacs.css">
@@ -28,11 +28,27 @@
     </head>
     <body>
         <div id="content">
-            <h1>data.nomsgid</h1>
+            <h1>relay<em>force</em>routing.js</h1>
 
-<p>Quite simply enabling this plugin blocks all mails lacking a Message-Id
-header. This is an aggressive anti-spam measure, but since most mail systems
-will add a Message-Id header, it tends to block a good chunk of abusive mail.</p>
+<p>This plugin allows you to force the next hop for the configured doamins.
+It works a lot like t he transport map of Postfix.</p>
+
+<h2>Configuration</h2>
+
+<ul>
+<li><p><code>config/relay_dest_domains.ini</code>
+This config file is shared with relay<em>acl.js, for the basics see the
+documentation provided by relay</em>acl.js.</p>
+
+<p>relay<em>force</em>routing.js adds the field "nexthop": in  the JSON value
+of the domain. The value of "nexthop": can be hostname or IP optionally
+follow by :<port>.</p>
+
+<p>Example:</p>
+
+<p>[domains]
+test.com = { "action": "continue", "nexthop": "127.0.0.1:2525" }</p></li>
+</ul>
 
         </div>
     </body>

@@ -3,7 +3,7 @@
 <html>
     <head>
         <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
-        <title>Haraka Manual &raquo; data.nomsgid</title>
+        <title>Haraka Manual &raquo; toobusy</title>
         <link rel="stylesheet" type="text/css" href="/reset.css">
         <link rel="stylesheet" type="text/css" href="/chapter.css">
         <link rel="stylesheet" type="text/css" href="/sh_emacs.css">
@@ -28,11 +28,27 @@
     </head>
     <body>
         <div id="content">
-            <h1>data.nomsgid</h1>
+            <h1>toobusy</h1>
 
-<p>Quite simply enabling this plugin blocks all mails lacking a Message-Id
-header. This is an aggressive anti-spam measure, but since most mail systems
-will add a Message-Id header, it tends to block a good chunk of abusive mail.</p>
+<p>This plugin will stop Haraka accepting new connections when the event loop 
+latency is too high.</p>
+
+<p>See https://github.com/lloyd/node-toobusy for details.</p>
+
+<p>To use this plugin you have to install the 'toobusy' module by running
+'npm install toobusy' in your Haraka configuration directory.</p>
+
+<p>This plugin should be listed at the top of your config/plugins file so that 
+it runs before any other plugin that hooks lookup_rdns.</p>
+
+<h2>Configuration</h2>
+
+<p>If you wish to override the default maxLag value of 70ms then add the desired
+value to config/toobusy.maxlag.  This can be set and changed at runtime and
+no restart is required.</p>
+
+<p>Note that if you set the maxLag value to &lt;10 then this will cause the toobusy
+module to raise an exception which will cause Haraka to stop.</p>
 
         </div>
     </body>
