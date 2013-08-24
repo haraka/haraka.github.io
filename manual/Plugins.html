@@ -179,11 +179,17 @@ must be set to the name of the hook that is to be run.</p></li>
 <li>rcpt_ok (to)</li>
 <li>data - called at the DATA command</li>
 <li>data_post - called at the end-of-data marker</li>
+<li>max<em>data</em>exceeded - called if the message is bigger than connection.max_bytes</li>
 <li>queue - called to queue the mail</li>
+<li>queue_outbound - called to queue the mail when connection.relaying is set</li>
 <li>queue_ok - called when a mail has been queued successfully</li>
+<li>reset_transaction - called before the transaction is reset (via RSET, or MAIL)</li>
 <li>deny - called if a plugin returns one of DENY, DENYSOFT or DENYDISCONNECT</li>
-<li>get_mx - called when sending outbound mail to lookup the MX record</li>
-<li>bounce - called when sending outbound mail if the mail would bounce</li>
+<li>get_mx (hmail, domain) - called when sending outbound mail to lookup the MX record</li>
+<li>bounce (hmail, err) - called when sending outbound mail if the mail would bounce</li>
+<li>delivered (hmail, [host, ip, response, delay]) - callen when outbound mail is 
+delivered to the destination</li>
+<li>send_email (hmail) - called when outbound is about to be sent</li>
 </ul>
 
 <p>The <code>rcpt</code> hook is slightly special. If we have a plugin (prior to rcpt) that

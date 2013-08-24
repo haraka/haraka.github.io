@@ -1,0 +1,187 @@
+<!DOCTYPE html>
+
+<html>
+    <head>
+        <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+        <title>Haraka Manual &raquo; messagesniffer</title>
+        <link rel="stylesheet" type="text/css" href="/reset.css">
+        <link rel="stylesheet" type="text/css" href="/chapter.css">
+        <link rel="stylesheet" type="text/css" href="/sh_emacs.css">
+        <script type="text/javascript" src="/sh_main.min.js"></script>
+        <script type="text/javascript" src="/sh_javascript.min.js"></script>
+        <script type="text/javascript">
+        window.onload = function () {
+            var pres = document.getElementsByTagName("pre"),
+                text;
+
+            for (var i = 0; i < pres.length; ++i) {
+                text = pres[i].innerText || "";
+
+                if (!(/^\s*\$/).test(text)) {
+                    pres[i].className = "sh_javascript";
+                }
+            }
+
+            sh_highlightDocument();
+        }
+        </script>
+    </head>
+    <body>
+        <div id="content">
+            <h1>messagesniffer</h1>
+
+<p>This plugin provides integration with the commerical Anti-Spam product <a href="http://armresearch.com/products/sniffer.jsp">MessageSniffer</a> by Arm Research Labs using its XML Client interface <a href="http://armresearch.com/support/articles/software/snfServer/xci/">XCI</a> over TCP.</p>
+
+<h2>Installation</h2>
+
+<p>Install the SNF Client/Server package for your platform as per the instructions on the MessageSniffer website.</p>
+
+<p>Modify your SNFServer.xml file and under the 'xheaders' section set:</p>
+
+<ul>
+<li>output mode='api'</li>
+</ul>
+
+<p>This prevents MessageSniffer from adding additional headers to the temporary file used to send it the message data which is 
+unnecessary as Haraka reads the headers from the XCI response.</p>
+
+<ul>
+<li>rulebase on-off='on'</li>
+<li>result on-off='on'</li>
+<li>black on-off='on'</li>
+<li>while on-off='on'</li>
+<li>clean on-off='on'</li>
+<li>all symbol on-off='on'</li>
+</ul>
+
+<p>These cause SNFServer to send Haraka additional headers that are inserted into all messages scanned by MessageSniffer and 
+will aid debugging and troubleshooting.</p>
+
+<p>Once this is done start/restart the SNF server.</p>
+
+<h2>Configuration</h2>
+
+<p>This plugin uses <code>messagesniffer.ini</code> for configuration.  The <code>[main]</code> section is for global configuration, the <code>[gbudb]</code> 
+section is used to specify the action that should be taken based on the GBUdb result which is checked at the start of the 
+connection and the <code>[message]</code> section is used to specify the action to be taken based on the main scan result.</p>
+
+<p><code>[main]</code></p>
+
+<ul>
+<li><p>port</p>
+
+<p>Default: 9001
+TCP port to use when communicating to the SNFServer daemon.
+This needs to match the <code>&lt;xci on-off='on' port='9001'/&gt;</code> value in the SNFServer.xml file.</p></li>
+<li><p>tmpdir</p>
+
+<p>Default: /tmp
+Temporary directory used to write temporary message files to that are read by the SNFServer daemon.
+This directory and the files within need to be readable by the user that SNFServer is running as.</p></li>
+<li><p>gbudb<em>report</em>deny = [ true | false | 0 | 1 ]</p>
+
+<p>Default: false
+This is an experimental option that will record a GBUdb 'bad' encounter for a connected IP address when a client 
+disconnects with no message having been sent or seen by MessageSniffer but Haraka has recorded a hard rejection at 
+some point during the session.  The idea behind this option is that it allows other Haraka plugins rejections influence 
+GBUdb IP reputation where MessageSniffer isn't seeing the actual message because it is being rejected pre-DATA.</p></li>
+<li><p>tag_string</p>
+
+<p>Default: [SPAM]
+String to prepend to the Subject line if the 'tag' action is applied.</p></li>
+</ul>
+
+<p><code>[gbudb]</code></p>
+
+<ul>
+<li><p>white = [ accept | allow | continue | retry | tempfail | reject | quarantine | tag ]</p>
+
+<p>Default: accept
+Action to take when GBUdb reports a 'white' result.</p></li>
+<li><p>caution = [ accept | allow | continue | retry | tempfail | reject | quarantine | tag ]</p>
+
+<p>Default: continue
+Action to take when GBUdb reports a 'caution' result.</p></li>
+<li><p>black = [ accept | allow | continue | retry | tempfail | reject | quarantine | tag ]</p>
+
+<p>Default: continue
+Action to take when GBUdb reports a 'black' result.</p></li>
+<li><p>truncate = [ accept | allow | continue | retry | tempfail | reject | quarantine | tag ]</p>
+
+<p>Default: reject
+Action to take when GBUdb reports a 'truncate' result.</p></li>
+</ul>
+
+<p><code>[message]</code></p>
+
+<ul>
+<li><p>white = [ accept | allow | continue | retry | tempfail | reject | quarantine | tag ]</p>
+
+<p>Default: continue
+Action to take when MessageSniffer reports a 'white' result (result code: 0).</p></li>
+<li><p>local_white = [ accept | allow | continue | retry | tempfail | reject | quarantine | tag ]</p>
+
+<p>Default: accept
+Action to take when MessageSniffer reports a local whitelist result (result code: 1).
+NOTE: You will not see this result unless you Arm support have customized your rulebase and added white rules for you.</p></li>
+<li><p>truncate = [ accept | allow | continue | retry | tempfail | reject | quarantine | tag ]</p>
+
+<p>Default: reject
+Action to take when MessageSniffer reports a GBUdb result of 'truncate' (result code: 20).
+NOTE: GBUdb IP lookups during the data phase can be different than the connecting IP address if you have configured 
+Source and DrillDown options in the Training section of SNFServer.xml.</p></li>
+<li><p>caution = [ accept | allow | continue | retry | tempfail | reject | quarantine | tag ]</p>
+
+<p>Default: continue
+Action to take when MessageSniffer reports a GBUdb result of 'caution' (result code: 40).
+NOTE: GBUdb IP lookups during the data phase can be different than the connecting IP address if you have configured 
+Source and DrillDown options in the Training section of SNFServer.xml.</p></li>
+<li><p>black = [ accept | allow | continue | retry | tempfail | reject | quarantine | tag ]</p>
+
+<p>Default: continue
+Action to take when MessageSniffer reports a GBUdb result of 'black' (result code: 63).
+NOTE: GBUdb IP lookups during the data phase can be different than the connecting IP address if you have configured 
+Source and DrillDown options in the Training section of SNFServer.xml.</p></li>
+<li><p>code_NN = [ accept | allow | continue | retry | tempfail | reject | quarantine | tag ]</p>
+
+<p>NOTE: replace NN with the numeric MessageSniffer <a href="http://armresearch.com/support/articles/software/snfServer/core.jsp">result code</a>
+Action to take when MessageSniffer reports a result code other than those explicitly defined above.</p></li>
+<li><p>nonzero = [ accept | allow | continue | retry | tempfail | reject | quarantine | tag ]</p>
+
+<p>Defalt: reject
+Action to take for any non-zero result code other than those explicity defined above.  This is a catch-all result that 
+is checked last after all other settings have been checked so you can define a code_NN value to prevent this action from 
+being taken.</p></li>
+</ul>
+
+<h2>Actions</h2>
+
+<ul>
+<li><p>accept</p>
+
+<p>Accept the message and skip further plugins (whitelist).</p></li>
+<li><p>allow | continute</p>
+
+<p>Continue to the next plugin.</p></li>
+<li><p>retry | tempfail</p>
+
+<p>Reject the message with a temporary failure message (DENYSOFT).</p></li>
+<li><p>reject</p>
+
+<p>Reject the message with a permanent failure message (DENY).</p></li>
+<li><p>quarantine</p>
+
+<p>Continue to the next plugin.  If the message isn't rejected by another plugin - it will cause the message to be quarantined
+and the message will not be delivered to the recipient(s).</p>
+
+<p>NOTE: this option requires the queue/quarantine plugin in your config/plugins files and it must be listed before any 
+other queue plugins.</p></li>
+<li><p>tag</p>
+
+<p>Tag the subject with the default 'tag_string' defined in the <code>main</code> section above, this will also set X-Spam-Flag: YES in 
+the message headers.   Once tagged, processing will continue to the next plugin.</p></li>
+</ul>
+
+        </div>
+    </body>
+</html>

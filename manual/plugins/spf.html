@@ -1,0 +1,122 @@
+<!DOCTYPE html>
+
+<html>
+    <head>
+        <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+        <title>Haraka Manual &raquo; spf</title>
+        <link rel="stylesheet" type="text/css" href="/reset.css">
+        <link rel="stylesheet" type="text/css" href="/chapter.css">
+        <link rel="stylesheet" type="text/css" href="/sh_emacs.css">
+        <script type="text/javascript" src="/sh_main.min.js"></script>
+        <script type="text/javascript" src="/sh_javascript.min.js"></script>
+        <script type="text/javascript">
+        window.onload = function () {
+            var pres = document.getElementsByTagName("pre"),
+                text;
+
+            for (var i = 0; i < pres.length; ++i) {
+                text = pres[i].innerText || "";
+
+                if (!(/^\s*\$/).test(text)) {
+                    pres[i].className = "sh_javascript";
+                }
+            }
+
+            sh_highlightDocument();
+        }
+        </script>
+    </head>
+    <body>
+        <div id="content">
+            <h1>spf</h1>
+
+<p>This plugin implements RFC 4408 Sender Policy Framework (SPF)
+See the <a href="http://en.wikipedia.org/wiki/Sender_Policy_Framework">Wikipedia article on SPF</a> for details.</p>
+
+<p>NOTE: as Node.js does not support the SPF DNS record type, only TXT records are checked.</p>
+
+<p>By default this plugin with only add trace Received-SPF headers to a message.
+To make it reject mail then you will need to enable the relevant options below.
+<code>helo_fail_reject</code> and <code>mail_fail_reject</code> are the closest match for the intent of SPF but you will need
+to whitelist any hosts forwarding mail from another domain whilst preserving the original return-path.</p>
+
+<h2>Configuration</h2>
+
+<p>This plugin uses spf.ini for configuration and each option is documented below:</p>
+
+<ul>
+<li><p>helo<em>softfail</em>reject</p>
+
+<p>Default: false</p>
+
+<p>Return DENY if the SPF HELO check returns SoftFail.
+This option should only be enabled in exceptional circumstances.</p></li>
+<li><p>helo<em>fail</em>reject</p>
+
+<p>Default: false</p>
+
+<p>Return DENYSOFT if the SPF HELO check returns Fail.</p></li>
+<li><p>helo<em>temperror</em>defer</p>
+
+<p>Default: false</p>
+
+<p>Return DENYSOFT if the SPF HELO check returns TempError.
+This can cause excessive delays if a domain has a broken SPF record or any issues with their DNS configuration.</p></li>
+<li><p>helo<em>permerror</em>reject</p>
+
+<p>Default: false</p>
+
+<p>Return DENY if the SPF HELO check returns Fail.
+This can cause false-positives if a domain has any syntax errors in their SPF record.</p></li>
+<li><p>mail<em>softfail</em>reject</p>
+
+<p>Default: false</p>
+
+<p>Return DENYSOFT if the SPF MAIL check returns SoftFail.
+This option should only be used in exceptional circumstances.</p></li>
+<li><p>mail<em>fail</em>reject</p>
+
+<p>Default: false</p>
+
+<p>Return DENY if the SPF MAIL check returns Fail.</p></li>
+<li><p>mail<em>temperror</em>defer</p>
+
+<p>Default: false</p>
+
+<p>Return DENYSOFT if the SPF MAIL check returns TempError.
+This can cause excessive delays if a domain has a broken SPF record or any issues with their DNS configuration.</p></li>
+<li><p>mail<em>permerror</em>reject</p>
+
+<p>Default: false</p>
+
+<p>Return DENY if the SPF MAIL check returns Fail.
+This can cause false-positives if a domain has any syntax errors in their SPF record.</p></li>
+</ul>
+
+<h2>Testing</h2>
+
+<p>This plugin also provides a command-line test tool that can be used to debug SPF issues or to check results.</p>
+
+<p>To check the SPF record for a domain:</p>
+
+<p>````</p>
+
+<h1>spf --ip 1.2.3.4 --domain fsl.com</h1>
+
+<p>ip=1.2.3.4 helo="" domain="fsl.com" result=Fail
+````</p>
+
+<p>To check the SPF record for a HELO/EHLO name:</p>
+
+<p>````</p>
+
+<h1>spf --ip 1.2.3.4 --helo foo.bar.com</h1>
+
+<p>ip=1.2.3.4 helo="foo.bar.com" domain="" result=None
+````</p>
+
+<p>You can add <code>--debug</code> to the option arguments to see a full trace of the SPF processing.</p>
+
+        </div>
+    </body>
+</html>

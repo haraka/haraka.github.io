@@ -1,0 +1,78 @@
+<!DOCTYPE html>
+
+<html>
+    <head>
+        <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+        <title>Haraka Manual &raquo; auth/auth_ldap</title>
+        <link rel="stylesheet" type="text/css" href="/reset.css">
+        <link rel="stylesheet" type="text/css" href="/chapter.css">
+        <link rel="stylesheet" type="text/css" href="/sh_emacs.css">
+        <script type="text/javascript" src="/sh_main.min.js"></script>
+        <script type="text/javascript" src="/sh_javascript.min.js"></script>
+        <script type="text/javascript">
+        window.onload = function () {
+            var pres = document.getElementsByTagName("pre"),
+                text;
+
+            for (var i = 0; i < pres.length; ++i) {
+                text = pres[i].innerText || "";
+
+                if (!(/^\s*\$/).test(text)) {
+                    pres[i].className = "sh_javascript";
+                }
+            }
+
+            sh_highlightDocument();
+        }
+        </script>
+    </head>
+    <body>
+        <div id="content">
+            <h1>auth/auth_ldap</h1>
+
+<p>The <code>auth/auth_ldap</code> plugin uses an LDAP bind to authenticate a user. Currently
+only one server and multiple DNs can be configured. If any of the DN binds succeed, 
+the user is authenticated. </p>
+
+<h2>Configuration</h2>
+
+<p>Configuration is stored in <code>config/auth_ldap.ini</code> and uses the INI
+style formatting. </p>
+
+<p>Only the <code>LOGIN</code> authentication method is supported assuming that passwords in the
+LDAP database are not stored in cleartext (which would allow for CRAM-MD5). Note
+that this means passwords will be sent in the clear to the LDAP server unless
+an <code>ldaps://</code> conection is used. </p>
+
+<p>Current configuration options in <code>[core]</code> are:</p>
+
+<pre><code>server - the url of the LDAP server (ldap:// or ldaps://)
+timeout - time in miliseconds to wait for the server resonse before giving up
+rejectUnauthorized - boolean (true or false) as to whether to reject connections
+    not verified against a CA. Meaning, a "false" allows non-verified.
+</code></pre>
+
+<p>Example:</p>
+
+<pre><code>[core]
+server=ldaps://ldap.opoet.com
+timeout=5000
+rejectUnauthorized=false
+</code></pre>
+
+<p>The <code>[dns]</code> section (that is plural DN and not domain name system), is a list of DNs to use
+to bind. The <code>%u</code> in the strings is substituted with the user name used in the SMTP 
+authentication. Note that the keys have no meaning and the DNs are tried in series until
+the first successful bind. The LDAP RFC does not allow for parallel binds on a connection,
+so it is suggested that the most commonly used DN be placed earlier in the list. </p>
+
+<p>Example:</p>
+
+<pre><code>[dns]
+dn1=uid=%u,ou=Users,dc=opoet,dc=com
+dn2=uid=%u,ou=people,dc=opoet,dc=com
+</code></pre>
+
+        </div>
+    </body>
+</html>

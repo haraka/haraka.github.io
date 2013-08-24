@@ -122,9 +122,13 @@ can return <code>OK</code> from this hook to stop it from sending a bounce messa
 <p>When mails are successfully delivered to the remote end then the <code>delivered</code>
 hook is called. The return codes from this hook have no effect, so it is only
 useful for logging the fact that a successful delivery occurred.
-This hook is called with <code>(hmail, response)</code> as parameters, the <code>response</code>
-variable contains the SMTP response text returned by the host that received
-the message and will typically contain the remote queue ID.</p>
+This hook is called with <code>(hmail, [host, ip, response, delay)</code> as parameters, 
+<code>host</code> is the hostname of the MX that the message was delivered to,
+<code>ip</code> is the IP address of the host that the message was delivered to,
+<code>response</code> variable contains the SMTP response text returned by the host 
+that received the message and will typically contain the remote queue ID and
+<code>delay</code> is the time taken between the queue file being created and the 
+message being delivered.</p>
 
 <h2>Bounce Messages</h2>
 

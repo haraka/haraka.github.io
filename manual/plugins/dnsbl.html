@@ -59,7 +59,7 @@ subsequently starts working correctly then it will be re-enabled.</p></li>
 <li><p>enable_stats</p>
 
 <p>To use this feature you must have installed the 'redis' module and
-have a redis server running locally on the machine.</p>
+have a redis server running.</p>
 
 <p>When enabled, this will record several list statistics to redis.</p>
 
@@ -91,6 +91,10 @@ redis 127.0.0.1:6379> hgetall dns-list-overlap:zen.spamhaus.org
 5) "TOTAL"
 6) "1"
 </code></pre></li>
+<li><p>stats<em>redis</em>host</p>
+
+<p>In the form of <code>host:port</code> this option allows you to specify a different
+host on which redis runs.</p></li>
 </ul>
 
         </div>

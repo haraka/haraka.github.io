@@ -1,0 +1,69 @@
+<!DOCTYPE html>
+
+<html>
+    <head>
+        <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+        <title>Haraka Manual &raquo; avg</title>
+        <link rel="stylesheet" type="text/css" href="/reset.css">
+        <link rel="stylesheet" type="text/css" href="/chapter.css">
+        <link rel="stylesheet" type="text/css" href="/sh_emacs.css">
+        <script type="text/javascript" src="/sh_main.min.js"></script>
+        <script type="text/javascript" src="/sh_javascript.min.js"></script>
+        <script type="text/javascript">
+        window.onload = function () {
+            var pres = document.getElementsByTagName("pre"),
+                text;
+
+            for (var i = 0; i < pres.length; ++i) {
+                text = pres[i].innerText || "";
+
+                if (!(/^\s*\$/).test(text)) {
+                    pres[i].className = "sh_javascript";
+                }
+            }
+
+            sh_highlightDocument();
+        }
+        </script>
+    </head>
+    <body>
+        <div id="content">
+            <h1>avg</h1>
+
+<p>This plug-in implements Anti-Virus scanning with AVG using the TCPD daemon which is available for Linux/FreeBSD and 
+is <a href="http://www.avg.com/gb-en/faq.pnuid-faq_v3_linux">free for personal or commercial use</a>. <br />
+It can be downloaded from <a href="http://free.avg.com/gb-en/download.prd-alf">here</a>. </p>
+
+<p>Any message that AVG considers to be infected will be rejected.  Any errors encountered will cause the plugin to return a temporary failure.</p>
+
+<h2>Configuration</h2>
+
+<p>This plugin uses avg.ini for configuration.  The available options are listed below with their default values.</p>
+
+<ul>
+<li><p>port</p>
+
+<p>Default: 54322</p>
+
+<p>TCP port to communicate with the AVG TCPD on.</p></li>
+<li><p>tmpdir</p>
+
+<p>Default: /tmp</p>
+
+<p>AVG TCPD requires that the message be written to disk and scanned.  This setting configures where any temporary files
+are written to.   Once the scan is complete the temporary files are automatically removed.</p></li>
+<li><p>connect_timeout</p>
+
+<p>Default: 10</p>
+
+<p>Maximum number of seconds to wait for the socket to become connected before failing.   Any connections taking longer than
+this will cause a temporary failure to be sent to the connected client.</p></li>
+<li><p>session_timeout</p>
+
+<p>Maximum number of seconds to wait for a reply to a command before failing.  Any timeout will cause a temporary failure to
+be sent to the connected client.</p></li>
+</ul>
+
+        </div>
+    </body>
+</html>
