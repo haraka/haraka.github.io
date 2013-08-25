@@ -1,7 +1,11 @@
 #!/usr/bin/perl -w
 
-my @files = `find ../Haraka-publish -type f -name \*.md`;
+my @files = `find ../Haraka-publish -type f -name \\*.md`;
 chomp(@files);
+
+for (@files) {
+    print "Found: $_\n";
+}
 
 sub sort_order {
     my ($filea, $fileb) = @_;
@@ -44,16 +48,17 @@ sub convert {
 
 my $wrapper = `cat template.html`;
 
-my $chapter_out = '';
+my $chapter_out = '<ul class="nav bs-sidenav">';
 my $plugins_sent = 0;
 my $tutorials_sent = 0;
 my $core_sent = 0;
+
+my %outputs;
 
 for my $file (sort { sort_order($a, $b) } @files) {
     my $out = output($file);
     print "Processing $file => $out\n";
     system("mkdir", "-p", dirname($out)) unless $file =~ /README/;
-    open(my $outfh, ">", $out);
 
     my $output = convert($file);
 
@@ -61,29 +66,25 @@ for my $file (sort { sort_order($a, $b) } @files) {
     $title ||= "Haraka";
     # $title .= " plugin" if $out =~ /plugin/;
 
-    my $template = $wrapper;
-    $template =~ s/<\%=\s*title\s*\%>/$title/g;
-    $template =~ s/<\%=\s*content\s*\%>/$output/g;
-
-    print $outfh $template;
-    close($outfh);
+    $outputs{$out} = { content => $output, title => $title };
 
     if (!$plugins_sent && $out =~ /plugin/) {
         $plugins_sent++;
-        $chapter_out .= "<hr>\n";
-        $chapter_out .= "<h2>Plugins</h2>\n";
+        $chapter_out .= "</ul></li>\n<li><a class=\"submenu\" data-toggle=\"collapse\" data-target=\"#plugins\">Plugins</a>\n<ul id='plugins' class='nav'>\n";
     }
     elsif (!$tutorials_sent && $out =~ /tutorial/i) {
         $tutorials_sent++;
-        $chapter_out .= "<hr>\n<h2>Tutorials</h2>\n";
+        $chapter_out .= "</ul></li>\n<li><a class=\"submenu\" data-toggle=\"collapse\" data-target=\"#tutorials\">Tutorials</a>\n<ul id='tutorials' class='nav'>\n";
     }
     elsif ($out !~ /(tutorial|plugin)/i && !$core_sent) {
         $core_sent++;
-        $chapter_out .= "<hr>\n<h2>Core</h2>\n";
+        $chapter_out .= "<li><a class=\"submenu\" data-toggle=\"collapse\" data-target=\"#core\">Core</a>\n<ul id='core' class='nav'>\n";
     }
 
     $chapter_out .= "<li><a href='/$out' target=\"content\">$title</a></li>\n";
 }
+
+$chapter_out .= "</ul></li></ul>\n";
 
 my $chapter_template = `cat chapter-index-template.html`;
 
@@ -93,3 +94,21 @@ $chapter_template =~ s/<\%=\s*content\s*\%>/$chapter_out/g;
 
 print $outfh $chapter_template;
 close($outfh);
+
+for my $out (keys %outputs) {
+    print "Writing: $out\n";
+    
+    open(my $outfh, ">", $out);
+    
+    my $template = $wrapper;
+    my $chap = $chapter_out;
+    $chap =~ s/<li><a href='\/$out'/<li class="active"><a href='\/$out'/;
+    $template =~ s/<\%=\s*title\s*\%>/$outputs{$out}{title}/g;
+    $template =~ s/<\%=\s*content\s*\%>/$outputs{$out}{content}/g;
+    $template =~ s/<\%=\s*navbar\s*\%>/$chap/g;
+    
+    print $outfh $template;
+    close($outfh);
+}
+
+system("cp README.html manual.html");
