@@ -171,14 +171,17 @@ be modified from this:</p>
 28845 ?        Sl     0:48  \_ Haraka (worker) cn=42 cc=1 cps=0/0.05/6 out=9/0/193
 </code></p>
 
-<p>where:
-* cn = Total number of connections
-* cc = Total number of concurrent connections
-* cps = Number of connections in the last second / average / maximum
-* msgs = Total number of messages
-* mps = Number of messages in the last second / average / maximum
-* out = Mails being processed / Mails waiting to be processed / Mails in temp fail state
-* respawn = Number of worker processes respawned (only under cluster)</p>
+<p>where:</p>
+
+<ul>
+<li>cn = Total number of connections</li>
+<li>cc = Total number of concurrent connections</li>
+<li>cps = Number of connections in the last second / average / maximum</li>
+<li>msgs = Total number of messages</li>
+<li>mps = Number of messages in the last second / average / maximum</li>
+<li>out = Mails being processed / Mails waiting to be processed / Mails in temp fail state</li>
+<li>respawn = Number of worker processes respawned (only under cluster)</li>
+</ul>
 
 <p>If 'cluster' is used then the master process will show the total
 across all workers, with the exception of outbound stats.</p>
