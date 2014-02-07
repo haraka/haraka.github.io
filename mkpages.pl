@@ -81,7 +81,7 @@ for my $file (sort { sort_order($a, $b) } @files) {
         $chapter_out .= "<li><a class=\"submenu\" data-toggle=\"collapse\" data-target=\"#core\">Core</a>\n<ul id='core' class='nav'>\n";
     }
 
-    $chapter_out .= "<li><a href='/$out' target=\"content\">$title</a></li>\n";
+    $chapter_out .= "<li><a href='/$out'>$title</a></li>\n";
 }
 
 $chapter_out .= "</ul></li></ul>\n";

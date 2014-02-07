@@ -7,7 +7,7 @@
     <meta name="description" content="">
     <meta name="author" content="">
 
-    <title>Haraka Manual &raquo; rate_limit</title>
+    <title>Haraka Manual &raquo; data.headers</title>
     
     <!-- Bootstrap core CSS -->
     <link href="/css/bootstrap.css" rel="stylesheet">
@@ -63,7 +63,7 @@
         <!-- Docs page layout -->
         <div class="bs-header" id="content">
           <div class="container">
-            <h1>rate_limit</h1>
+            <h1>data.headers</h1>
           </div>
         </div>
         
@@ -111,7 +111,7 @@
 <li><a href='/manual/plugins/rcpt_to.in_host_list.html'>rcpt_to.in_host_list</a></li>
 <li><a href='/manual/plugins/rcpt_to.blocklist.html'>rcpt_to.blocklist</a></li>
 <li><a href='/manual/plugins/rcpt_to.access.html'>rcpt_to.access</a></li>
-<li class="active"><a href='/manual/plugins/rate_limit.html'>rate_limit</a></li>
+<li><a href='/manual/plugins/rate_limit.html'>rate_limit</a></li>
 <li><a href='/manual/plugins/queue/smtp_proxy.html'>queue/smtp_proxy</a></li>
 <li><a href='/manual/plugins/queue/smtp_forward.html'>queue/smtp_forward</a></li>
 <li><a href='/manual/plugins/queue/quarantine.html'>quarantine</a></li>
@@ -140,7 +140,7 @@
 <li><a href='/manual/plugins/data.rfc5322_header_checks.html'>data.rfc5322_header_checks</a></li>
 <li><a href='/manual/plugins/data.noreceived.html'>data.noreceived</a></li>
 <li><a href='/manual/plugins/data.nomsgid.html'>data.nomsgid</a></li>
-<li><a href='/manual/plugins/data.headers.html'>data.headers</a></li>
+<li class="active"><a href='/manual/plugins/data.headers.html'>data.headers</a></li>
 <li><a href='/manual/plugins/daemonize.html'>daemonize</a></li>
 <li><a href='/manual/plugins/connect.rdns_access.html'>connect.rdns_access</a></li>
 <li><a href='/manual/plugins/connect.p0f.html'>connect.p0f - A TCP Fingerprinting Plugin</a></li>
@@ -162,163 +162,26 @@
             
             <div class="col-md-9" role="main">
               <div class="bs-docs-section">
-                <h1>rate_limit</h1>
+                <h1>data.headers</h1>
 
-<p>This pluign enforces limits on connection concurrency, connection rate and 
-recipient rate.</p>
+<p>This plugin performs sanity checks on mail headers.</p>
 
-<p>By default DENYSOFT will be returned when the limits are exceeded, but for 
-concurrency, connection rate and recipient rate by host you can optionally 
-tarpit the connection by adding a delay before every response sent back to the 
-client instead of sending a DENYSOFT.  To do this requires the 'tarpit' plugin 
-to run immediately after this plugin.</p>
+<h2>RFC 5322 Section 3.6:</h2>
 
-<p>To use this plugin you will need a Redis server and will need the redis, 
-hiredis and ipaddr.js packages installed via:</p>
+<p>All messages MUST have a 'Date' and 'From' header and a message may not contain
+more than one 'Date', 'From', 'Sender', 'Reply-To', 'To', 'Cc', 'Bcc',
+'Message-Id', 'In-Reply-To', 'References' or 'Subject' header.</p>
 
-<pre><code>cd /path/to/haraka/home
-npm install redis hiredis ipaddr.js
-</code></pre>
+<p>The default list of required and singular headers can be customized in
+config/data.headers.ini.</p>
 
-<h2>Configuration</h2>
+<p>Any message that does not meet the configured requirements will be rejected.</p>
 
-This plugin uses the configuration file rate\_limit.ini which is checked for 
-updates before each hook, so changes to this file will never require a restart 
-and will take effect immediately after the changes are saved.
+<h2>Date Validity</h2>
 
-The configuration options for each heading are detailed below:
-
-<h3>[main]</h3>
-
-<ul>
-<li><p>redis_server = \<ip | host\>[:port] <em>(optional)</em></p>
-
-<p>If port is missing then it defaults to 6379. <br />
-If this setting is missing entirely then it defaults to 127.0.0.1:6379.</p>
-
-<p>Note that Redis does not currently support IPv6.</p></li>
-<li><p>tarpit_delay = seconds <em>(optional)</em></p>
-
-<p>Set this to the length in seconds that you want to delay every SMTP 
-response to a remote client that has exceeded the rate limits.  For this 
-to work the 'tarpit' plugin must be loaded <strong>after</strong> this plugin in 
-config/plugins. </p>
-
-<p>If 'tarpit' is not loaded or is loaded before this plugin, then no
-rate throttling will occur.</p></li>
-</ul>
-<hr />
-
-
-All of the following sections are optional.  Any missing section disables 
-that particular test.
-
-They all use a common configuration format:
-
-<ul>
-<li><p>\<lookup\> = \<limit\>[/time[unit]]  <em>(optional)</em></p>
-
-<p>'lookup' is based upon the limit being enforced and is either an IP 
-address, rDNS name, sender address or recipient address either in full 
-or part. <br />
-The lookup order is as follows and the first match in this order is 
-returned and is used as the record key in Redis (except for 'default' 
-which always uses the full lookup for that test as the record key):</p>
-
-<p><strong>IPv4/IPv6 address or rDNS hostname:</strong></p>
-
-<pre>
-fe80:0:0:0:202:b3ff:fe1e:8329
-fe80:0:0:0:202:b3ff:fe1e
-fe80:0:0:0:202:b3ff
-fe80:0:0:0:202
-fe80:0:0:0
-fe80:0:0
-fe80:0
-fe80
-1.2.3.4
-1.2.3
-1.2
-1
-host.part.domain.com
-part.domain.com
-domain.com
-com
-default
-</pre>
-
-<p><strong>Sender or Recipient address:</strong></p>
-
-<pre>
-user@host.sub.part.domain.com
-host.sub.part.domain.com
-sub.part.domain.com
-part.domain.com
-domain.com
-com
-default
-</pre>
-
-<p>In all tests 'default' is used to specify a default limit if nothing else has 
-matched.</p>
-
-<p>'limit' specifies the limit for this lookup.  Specify 0 (zero) to disable 
-limits on a matching lookup.</p>
-
-<p>'time' is optional and if missing defaults to 60 seconds.  You can optionally 
-specify the following time units (case-insensitive):</p>
-
-<ul>
-<li>s (seconds)</li>
-<li>m (minutes)</li>
-<li>h (hours)</li>
-<li>d (days)</li>
-</ul></li>
-</ul>
-
-<h3>[concurrency]</h3>
-
-<p><strong>IMPORTANT NOTE:</strong> connection concurrency is recorded in-memory (in 
-connection.server.notes) and not in Redis, so the limits are per-server and 
-per-child if you use the cluster module.</p>
-
-<p>IP and rDNS names are looked up by this test.  This section does <em>not</em> accept an 
-interval.  It's a hard limit on the number of connections and not based on time.</p>
-
-<h3>[rate_conn]</h3>
-
-<p>This section limits the number of connections per interval from a given host 
-or set of hosts.</p>
-
-<p>IP and rDNS names are looked up by this test.</p>
-
-<h3>[rate_rcpt_host]</h3>
-
-<p>This section limits the number of recipients per interval from a given host or 
-set of hosts. </p>
-
-<p>IP and rDNS names are looked up by this test.</p>
-
-<h3>[rate_rcpt_sender]</h3>
-
-<p>This section limits the number of recipients per interval from a sender or 
-sender domain.</p>
-
-<p>The sender is looked up by this test.</p>
-
-<h3>[rate_rcpt]</h3>
-
-<p>This section limits the rate which a recipient or recipient domain can 
-receive messages over an interval.</p>
-
-<p>Each recipient is looked up by this test.</p>
-
-<h3>[rate_rcpt_null]</h3>
-
-<p>This section limits the rate at which a recipient can receive messages from 
-a null sender (e.g. DSN, MDN etc.) over an interval.</p>
-
-<p>Each recipient is looked up by this test.</p>
+<p>This plugin also tests the contents of the Date field, assuring that the
+timestamps in the Date field are neither too old (default: 15 days), nor
+too far in the future (default: 2 days).</p>
 
               </div>
             </div>
