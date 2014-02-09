@@ -3,26 +3,35 @@
 my @files = `find ../Haraka-publish -type f -name \\*.md`;
 chomp(@files);
 
+my @plugins;
+my @tutorials;
+my @core;
+
 for (@files) {
-    print "Found: $_\n";
+    push @plugins, $_ and next if /\/plugins\//;
+    push @tutorials, $_ and next if /\/tutorials\//;
+    push @core, $_;
 }
+
+unshift(@core, pop(@core));
+
+print "Tutorials: @tutorials\n";
+print "Core: @core\n";
+
+@plugins = sort  { sort_order($a, $b) } @plugins;
 
 sub sort_order {
     my ($filea, $fileb) = @_;
-    if ($filea =~ /README/) {
-        return -1;
-    }
-    if ($fileb =~ /README/) {
-        return +1;
-    }
-    if ($filea =~ /\/tutorial/i) {
-        return -1;
-    }
-    if ($filea =~ /\/plugins\//) {
-        return +1;
-    }
-    return 0;
+    my ($namea)   = $filea =~ /\/([^\/]*)$/;
+    my ($nameb)   = $fileb =~ /\/([^\/]*)$/;
+    my ($foldera) = $filea =~ /\/plugins\/(.*?)\//;
+    my ($folderb) = $fileb =~ /\/plugins\/(.*?)\//;
+    $foldera ||= 'zzzz';
+    $folderb ||= 'zzzz';
+    return "$foldera/$namea" cmp "$folderb/$nameb";
 }
+
+print "Plugins: " . join("\n", @plugins) . "\n";
 
 sub output {
     my $in = shift;
@@ -55,7 +64,20 @@ my $core_sent = 0;
 
 my %outputs;
 
-for my $file (sort { sort_order($a, $b) } @files) {
+for my $file (@core) {
+    process($file);
+}
+
+for my $file (@tutorials) {
+    process($file);
+}
+
+for my $file (@plugins) {
+    process($file);
+}
+
+sub process {
+    my $file = shift;
     my $out = output($file);
     print "Processing $file => $out\n";
     system("mkdir", "-p", dirname($out)) unless $file =~ /README/;
