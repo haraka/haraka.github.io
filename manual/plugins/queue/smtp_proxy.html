@@ -248,14 +248,11 @@ which should in turn be less than the connection timeout.</p>
         <!-- <script src="/js/application.js"></script> -->
         <script>
         $('.bs-sidebar ul ul').each(function (i, el) {
-            if ($(el).find('li.active').length) {
-                console.log("Doing nothing");
-            }
-            else {
-                console.log("Collapsing");
+            if (!$(el).find('li.active').length) {
                 $(el).collapse('toggle');
             }
-        })
+        });
+        $('a.submenu').on('touchstart', function(e) { e.stopPropagation(); });
         </script>
 
     </body>

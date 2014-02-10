@@ -204,14 +204,11 @@ based on a regex, or add whitelists, please use the mail_from.access plugin.</p>
         <!-- <script src="/js/application.js"></script> -->
         <script>
         $('.bs-sidebar ul ul').each(function (i, el) {
-            if ($(el).find('li.active').length) {
-                console.log("Doing nothing");
-            }
-            else {
-                console.log("Collapsing");
+            if (!$(el).find('li.active').length) {
                 $(el).collapse('toggle');
             }
-        })
+        });
+        $('a.submenu').on('touchstart', function(e) { e.stopPropagation(); });
         </script>
 
     </body>
