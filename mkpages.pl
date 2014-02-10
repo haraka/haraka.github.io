@@ -92,15 +92,15 @@ sub process {
 
     if (!$plugins_sent && $out =~ /plugin/) {
         $plugins_sent++;
-        $chapter_out .= "</ul></li>\n<li><a class=\"submenu\" data-toggle=\"collapse\" data-target=\"#plugins\" data-parent=\"#chapternav\" href=\"#plugins\">Plugins</a>\n<ul id='plugins' class='nav'>\n";
+        $chapter_out .= "</ul></li>\n<li><a class=\"submenu\" data-toggle=\"collapse\" data-target=\"#plugins\" data-parent=\"#chapternav\" href=\"#\">Plugins</a>\n<ul id='plugins' class='nav'>\n";
     }
     elsif (!$tutorials_sent && $out =~ /tutorial/i) {
         $tutorials_sent++;
-        $chapter_out .= "</ul></li>\n<li><a class=\"submenu\" data-toggle=\"collapse\" data-target=\"#tutorials\" data-parent=\"#chapternav\" href=\"#tutorials\">Tutorials</a>\n<ul id='tutorials' class='nav'>\n";
+        $chapter_out .= "</ul></li>\n<li><a class=\"submenu\" data-toggle=\"collapse\" data-target=\"#tutorials\" data-parent=\"#chapternav\" href=\"#\">Tutorials</a>\n<ul id='tutorials' class='nav'>\n";
     }
     elsif ($out !~ /(tutorial|plugin)/i && !$core_sent) {
         $core_sent++;
-        $chapter_out .= "<li><a class=\"submenu\" data-toggle=\"collapse\" data-target=\"#core\" data-parent=\"#chapternav\" href=\"#core\">Core</a>\n<ul id='core' class='nav'>\n";
+        $chapter_out .= "<li><a class=\"submenu\" data-toggle=\"collapse\" data-target=\"#core\" data-parent=\"#chapternav\" href=\"#\">Core</a>\n<ul id='core' class='nav'>\n";
     }
 
     $chapter_out .= "<li><a href='/$out'>$title</a></li>\n";
