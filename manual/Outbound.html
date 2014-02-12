@@ -101,6 +101,7 @@
 <li><a href='/manual/plugins/auth/flat_file.html'>auth/flat_file</a></li>
 <li><a href='/manual/plugins/queue/deliver.html'>queue/deliver</a></li>
 <li><a href='/manual/plugins/queue/discard.html'>discard</a></li>
+<li><a href='/manual/plugins/queue/lmtp.html'>queue/lmtp</a></li>
 <li><a href='/manual/plugins/queue/qmail-queue.html'>queue/qmail-queue</a></li>
 <li><a href='/manual/plugins/queue/quarantine.html'>quarantine</a></li>
 <li><a href='/manual/plugins/queue/smtp_forward.html'>queue/smtp_forward</a></li>
@@ -239,7 +240,8 @@ records for you.</p>
 </ul></li>
 <li>An MX object of the form: <code>{priority: 0, exchange: hostname}</code> and optionally
 a <code>port</code> value to specify an alternate port, and a <code>bind</code> value to specify an
-outbound IP address to bind to.</li>
+outbound IP address to bind to and a <code>using_lmtp</code> boolean to specify that
+delivery should be attempted using LMTP instead of SMTP.</li>
 <li>A list of MX objects in an array, each in the same format as above.</li>
 </ul>
 
@@ -251,22 +253,26 @@ parameter is the error message received from the remote end. If you do not wish
 to have a bounce message sent to the originating sender of the email then you
 can return <code>OK</code> from this hook to stop it from sending a bounce message.</p>
 
-<p>The variable <code>hmail.bounce_extra</code> can be accessed from this hook.  This is an 
-Object which contains each recipient as the key and the value is the code 
-and response received from the upstream server for that recipient.</p>
-
 <h3>The delivered hook</h3>
 
 <p>When mails are successfully delivered to the remote end then the <code>delivered</code>
 hook is called. The return codes from this hook have no effect, so it is only
 useful for logging the fact that a successful delivery occurred.
-This hook is called with <code>(hmail, [host, ip, response, delay)</code> as parameters, 
-<code>host</code> is the hostname of the MX that the message was delivered to,
-<code>ip</code> is the IP address of the host that the message was delivered to,
-<code>response</code> variable contains the SMTP response text returned by the host 
-that received the message and will typically contain the remote queue ID and
-<code>delay</code> is the time taken between the queue file being created and the 
-message being delivered.</p>
+This hook is called with <code>(hmail, [host, ip, response, delay, port, mode, recipients])</code> 
+as parameters:</p>
+
+<ul>
+<li><code>host</code> - Hostname of the MX that the message was delivered to,</li>
+<li><code>ip</code> - IP address of the host that the message was delivered to,</li>
+<li><code>response</code> - Variable contains the SMTP response text returned by the host 
+that received the message and will typically contain the remote queue ID and</li>
+<li><code>delay</code> - Time taken between the queue file being created and the 
+message being delivered.</li>
+<li><code>port</code> - Port number that the message was delivered to.</li>
+<li><code>mode</code> - Shows whether SMTP or LMTP was used to deliver the mail.</li>
+<li><code>recipients</code> - an Address array containing all of the recipients that were
+successfully delivered to.</li>
+</ul>
 
 <h2>Bounce Messages</h2>
 

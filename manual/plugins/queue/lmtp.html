@@ -7,7 +7,7 @@
     <meta name="description" content="">
     <meta name="author" content="">
 
-    <title>Haraka Manual &raquo; attachment</title>
+    <title>Haraka Manual &raquo; queue/lmtp</title>
     
     <!-- Bootstrap core CSS -->
     <link href="/css/bootstrap.css" rel="stylesheet">
@@ -63,7 +63,7 @@
         <!-- Docs page layout -->
         <div class="bs-header" id="content">
           <div class="container">
-            <h1>attachment</h1>
+            <h1>queue/lmtp</h1>
           </div>
         </div>
         
@@ -101,13 +101,13 @@
 <li><a href='/manual/plugins/auth/flat_file.html'>auth/flat_file</a></li>
 <li><a href='/manual/plugins/queue/deliver.html'>queue/deliver</a></li>
 <li><a href='/manual/plugins/queue/discard.html'>discard</a></li>
-<li><a href='/manual/plugins/queue/lmtp.html'>queue/lmtp</a></li>
+<li class="active"><a href='/manual/plugins/queue/lmtp.html'>queue/lmtp</a></li>
 <li><a href='/manual/plugins/queue/qmail-queue.html'>queue/qmail-queue</a></li>
 <li><a href='/manual/plugins/queue/quarantine.html'>quarantine</a></li>
 <li><a href='/manual/plugins/queue/smtp_forward.html'>queue/smtp_forward</a></li>
 <li><a href='/manual/plugins/queue/smtp_proxy.html'>queue/smtp_proxy</a></li>
 <li><a href='/manual/plugins/aliases.html'>aliases</a></li>
-<li class="active"><a href='/manual/plugins/attachment.html'>attachment</a></li>
+<li><a href='/manual/plugins/attachment.html'>attachment</a></li>
 <li><a href='/manual/plugins/avg.html'>avg</a></li>
 <li><a href='/manual/plugins/block_me.html'>block_me</a></li>
 <li><a href='/manual/plugins/bounces.html'>bounce</a></li>
@@ -163,33 +163,27 @@
             
             <div class="col-md-9" role="main">
               <div class="bs-docs-section">
-                <h1>attachment</h1>
+                <h1>queue/lmtp</h1>
 
-<p>This plugin allows you to reject messages based on Content-Type within 
-the message or any MIME parts or on the filename of any attachments.</p>
-
-<h2>Limitations</h2>
-
-<p>This plugin cannot detect forged MIME types where the sender is lying
-about the type.  The type is not confirmed in any way currently.</p>
-
-<p>It also cannot read the filenames within tar/zip/rar archives.</p>
+<p>This plugin delivers mails to inbound domains via LMTP.</p>
 
 <h2>Configuration</h2>
 
 <ul>
-<li><p>attachment.filename.regex</p>
+<li><p><code>config/lmtp.ini</code>
+This config file provides server address and port of LMTP server to deliver for different inbound domains.
+Syntax is equal to that used in the config of the queue/smtp_forward plugin.</p>
 
-<p>This file contains a list of regular expressions, one per line that 
-wil be tested against each filename found within a message.
-The first regexp to match will cause the message to be rejected. <br />
-Any invalid regexps will be detected, reported and skipped.</p></li>
-<li><p>attachment.ctype.regex</p>
+<p>Example:</p>
 
-<p>This file contains a list of regular expressions, one per line that
-will be tested against each MIME Content-Type header in the message.
-The first regexp to match will cause the message to be rejected.
-Any invalid regexps will be detected, reported and skipped.</p></li>
+<p>; defaults
+host=localhost
+port=24</p>
+
+<p>[example.com]
+; Goes elsewhere
+host=10.1.1.1
+port=2400</p></li>
 </ul>
 
               </div>

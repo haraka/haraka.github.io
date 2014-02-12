@@ -101,6 +101,7 @@
 <li><a href='/manual/plugins/auth/flat_file.html'>auth/flat_file</a></li>
 <li><a href='/manual/plugins/queue/deliver.html'>queue/deliver</a></li>
 <li><a href='/manual/plugins/queue/discard.html'>discard</a></li>
+<li><a href='/manual/plugins/queue/lmtp.html'>queue/lmtp</a></li>
 <li><a href='/manual/plugins/queue/qmail-queue.html'>queue/qmail-queue</a></li>
 <li><a href='/manual/plugins/queue/quarantine.html'>quarantine</a></li>
 <li><a href='/manual/plugins/queue/smtp_forward.html'>queue/smtp_forward</a></li>
@@ -321,8 +322,8 @@ must be set to the name of the hook that is to be run.</p></li>
 <li>deny - called if a plugin returns one of DENY, DENYSOFT or DENYDISCONNECT</li>
 <li>get_mx (hmail, domain) - called when sending outbound mail to lookup the MX record</li>
 <li>bounce (hmail, err) - called when sending outbound mail if the mail would bounce</li>
-<li>delivered (hmail, [host, ip, response, delay]) - callen when outbound mail is 
-delivered to the destination</li>
+<li>delivered (hmail, [host, ip, response, delay, port, mode, recipients]) - called
+when outbound mail is delivered to the destination</li>
 <li>send_email (hmail) - called when outbound is about to be sent</li>
 </ul>
 
