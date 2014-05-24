@@ -86,6 +86,7 @@
 <li><a href='/manual/Net_Utils.html'>Net_Utils</a></li>
 <li class="active"><a href='/manual/Outbound.html'>Outbound Mail with Haraka</a></li>
 <li><a href='/manual/Plugins.html'>Writing Haraka Plugins</a></li>
+<li><a href='/manual/Results.html'>Results</a></li>
 <li><a href='/manual/Transaction.html'>Transaction Object</a></li>
 </ul></li>
 <li><a class="submenu" data-toggle="collapse" data-target="#tutorials" data-parent="#chapternav" href="javascript:void(null);">Tutorials</a>
@@ -98,6 +99,7 @@
 <ul id='plugins' class='nav'>
 <li><a href='/manual/plugins/auth/auth_ldap.html'>auth/auth_ldap</a></li>
 <li><a href='/manual/plugins/auth/auth_proxy.html'>auth/auth_proxy</a></li>
+<li><a href='/manual/plugins/auth/auth_vpopmaild.html'>Haraka</a></li>
 <li><a href='/manual/plugins/auth/flat_file.html'>auth/flat_file</a></li>
 <li><a href='/manual/plugins/queue/deliver.html'>queue/deliver</a></li>
 <li><a href='/manual/plugins/queue/discard.html'>discard</a></li>
@@ -106,12 +108,15 @@
 <li><a href='/manual/plugins/queue/quarantine.html'>quarantine</a></li>
 <li><a href='/manual/plugins/queue/smtp_forward.html'>queue/smtp_forward</a></li>
 <li><a href='/manual/plugins/queue/smtp_proxy.html'>queue/smtp_proxy</a></li>
+<li><a href='/manual/plugins/access.html'>access</a></li>
 <li><a href='/manual/plugins/aliases.html'>aliases</a></li>
 <li><a href='/manual/plugins/attachment.html'>attachment</a></li>
 <li><a href='/manual/plugins/avg.html'>avg</a></li>
 <li><a href='/manual/plugins/block_me.html'>block_me</a></li>
 <li><a href='/manual/plugins/bounces.html'>bounce</a></li>
 <li><a href='/manual/plugins/clamd.html'>clamd</a></li>
+<li><a href='/manual/plugins/connect.asn.html'>connect.asn</a></li>
+<li><a href='/manual/plugins/connect.fcrdns.html'>Forward Confirmed Reverse DNS</a></li>
 <li><a href='/manual/plugins/connect.geoip.html'>geoip</a></li>
 <li><a href='/manual/plugins/connect.p0f.html'>connect.p0f - A TCP Fingerprinting Plugin</a></li>
 <li><a href='/manual/plugins/connect.rdns_access.html'>connect.rdns_access</a></li>
@@ -129,7 +134,7 @@
 <li><a href='/manual/plugins/early_talker.html'>early_talker</a></li>
 <li><a href='/manual/plugins/graph.html'>graph</a></li>
 <li><a href='/manual/plugins/helo.checks.html'>helo.checks</a></li>
-<li><a href='/manual/plugins/karma.html'>karma - reward good and penalize bad mail senders</a></li>
+<li><a href='/manual/plugins/karma.html'>Haraka</a></li>
 <li><a href='/manual/plugins/log.syslog.html'>log.syslog</a></li>
 <li><a href='/manual/plugins/lookup_rdns.strict.html'>lookup_rdns.strict</a></li>
 <li><a href='/manual/plugins/mail_from.access.html'>mail_from.access</a></li>
@@ -142,10 +147,11 @@
 <li><a href='/manual/plugins/rate_limit.html'>rate_limit</a></li>
 <li><a href='/manual/plugins/rcpt_to.access.html'>rcpt_to.access</a></li>
 <li><a href='/manual/plugins/rcpt_to.blocklist.html'>rcpt_to.blocklist</a></li>
-<li><a href='/manual/plugins/rcpt_to.in_host_list.html'>rcpt_to.in_host_list</a></li>
+<li><a href='/manual/plugins/rcpt_to.in_host_list.html'>Haraka</a></li>
 <li><a href='/manual/plugins/rcpt_to.max_count.html'>rcpt_to.max_count</a></li>
-<li><a href='/manual/plugins/rcpt_to.qmail_deliverable.html'>qmail_deliverable</a></li>
+<li><a href='/manual/plugins/rcpt_to.qmail_deliverable.html'>Haraka</a></li>
 <li><a href='/manual/plugins/rdns.regexp.html'>rdns.regexp</a></li>
+<li><a href='/manual/plugins/relay.html'>relay</a></li>
 <li><a href='/manual/plugins/relay_acl.html'>relay_acl</a></li>
 <li><a href='/manual/plugins/relay_all.html'>relay_all</a></li>
 <li><a href='/manual/plugins/relay_force_routing.html'>relay_force_routing.js</a></li>
@@ -208,6 +214,11 @@ files.</p>
 receive and queue emails. This can be done while Haraka is running due to
 how Haraka watches for config file changes.</p>
 
+<h3>outbound.ipv6_enabled</h3>
+
+<p>When this has a "true" value inside (usually a <code>1</code>), it defaults to an 'AAAA'
+lookup first for each MX record, and uses those hosts to send email via.</p>
+
 <h2>Outbound Mail Hooks</h2>
 
 <h3>The queue_outbound hook</h3>
@@ -219,7 +230,17 @@ indicate that the mail has been queued in some custom manner for outbound
 delivery. Any of the <code>DENY</code> return codes will cause the message to be
 appropriately rejected.</p>
 
+<h3>The send_email hook</h3>
+
+<p>Parameters: <code>next, hmail</code></p>
+
+<p>Called just as the email is about to be sent.</p>
+
+<p>Respond with <code>next(DELAY, delay_seconds)</code> to defer sending the email at this time.</p>
+
 <h3>The get_mx hook</h3>
+
+<p>Parameters: <code>next, hmail, domain</code></p>
 
 <p>Upon starting delivery the <code>get_mx</code> hook is called, with the parameter set to
 the domain in question (for example a mail to <code>user@example.com</code> will call the
@@ -245,15 +266,44 @@ delivery should be attempted using LMTP instead of SMTP.</li>
 <li>A list of MX objects in an array, each in the same format as above.</li>
 </ul>
 
+<h3>The deferred hook</h3>
+
+<p>Parameters: <code>next, hmail, {delay: ..., err: ...}</code></p>
+
+<p>If the mail is temporarily deferred, the <code>deferred</code> hook is called. The hook
+parameter is an object with keys: <code>delay</code> and <code>err</code>, which explain the delay
+(in seconds) and error message.</p>
+
+<p>If you want to stop at this point, and drop the mail completely, then you
+can call <code>next(OK)</code>.</p>
+
+<p>If you want to change the delay, then call <code>next(DENYSOFT, delay_in_seconds)</code>.
+Using this you can define a custom delay algorithm indexed by
+<code>hmail.num_failures</code>.</p>
+
 <h3>The bounce hook</h3>
+
+<p>Parameters: <code>next, hmail, error</code></p>
 
 <p>If the mail completely bounces then the <code>bounce</code> hook is called. This is <em>not</em>
 called if the mail is issued a temporary failure (a 4xx error code). The hook
-parameter is the error message received from the remote end. If you do not wish
-to have a bounce message sent to the originating sender of the email then you
-can return <code>OK</code> from this hook to stop it from sending a bounce message.</p>
+parameter is the error message received from the remote end as an <code>Error</code> object.
+The object may also have the following properties:</p>
+
+<ul>
+<li>mx - the MX object that caused the bounce</li>
+<li>deferred_rcpt - the deferred recipients that eventually bounced</li>
+<li>bounced_rcpt - the bounced recipients</li>
+</ul>
+
+<p>If you do not wish to have a bounce message sent to the originating sender of the
+email then you can return <code>OK</code> from this hook to stop it from sending a bounce message.</p>
 
 <h3>The delivered hook</h3>
+
+<p>Parameters: <code>next, hmail, params</code></p>
+
+<p>Params is a list of: <code>[host, ip, response, delay, port, mode, ok_recips]</code></p>
 
 <p>When mails are successfully delivered to the remote end then the <code>delivered</code>
 hook is called. The return codes from this hook have no effect, so it is only

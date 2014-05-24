@@ -7,7 +7,7 @@
     <meta name="description" content="">
     <meta name="author" content="">
 
-    <title>Haraka Manual &raquo; dkim_sign</title>
+    <title>Haraka Manual &raquo; Forward Confirmed Reverse DNS</title>
     
     <!-- Bootstrap core CSS -->
     <link href="/css/bootstrap.css" rel="stylesheet">
@@ -63,7 +63,7 @@
         <!-- Docs page layout -->
         <div class="bs-header" id="content">
           <div class="container">
-            <h1>dkim_sign</h1>
+            <h1>Forward Confirmed Reverse DNS</h1>
           </div>
         </div>
         
@@ -116,7 +116,7 @@
 <li><a href='/manual/plugins/bounces.html'>bounce</a></li>
 <li><a href='/manual/plugins/clamd.html'>clamd</a></li>
 <li><a href='/manual/plugins/connect.asn.html'>connect.asn</a></li>
-<li><a href='/manual/plugins/connect.fcrdns.html'>Forward Confirmed Reverse DNS</a></li>
+<li class="active"><a href='/manual/plugins/connect.fcrdns.html'>Forward Confirmed Reverse DNS</a></li>
 <li><a href='/manual/plugins/connect.geoip.html'>geoip</a></li>
 <li><a href='/manual/plugins/connect.p0f.html'>connect.p0f - A TCP Fingerprinting Plugin</a></li>
 <li><a href='/manual/plugins/connect.rdns_access.html'>connect.rdns_access</a></li>
@@ -128,7 +128,7 @@
 <li><a href='/manual/plugins/data.signatures.html'>data.signatures</a></li>
 <li><a href='/manual/plugins/data.uribl.html'>data.uribl</a></li>
 <li><a href='/manual/plugins/delay_deny.html'>delay_deny</a></li>
-<li class="active"><a href='/manual/plugins/dkim_sign.html'>dkim_sign</a></li>
+<li><a href='/manual/plugins/dkim_sign.html'>dkim_sign</a></li>
 <li><a href='/manual/plugins/dnsbl.html'>dnsbl</a></li>
 <li><a href='/manual/plugins/dnswl.html'>dnswl</a></li>
 <li><a href='/manual/plugins/early_talker.html'>early_talker</a></li>
@@ -169,100 +169,115 @@
             
             <div class="col-md-9" role="main">
               <div class="bs-docs-section">
-                <h1>dkim_sign</h1>
+                <h1>Forward Confirmed Reverse DNS</h1>
 
-<p>This plugin implements the DKIM Core specification found at dkimcore.org</p>
+<h2>DESCRIPTION</h2>
 
-<p>DKIM Core is a simplified subset of DKIM which is easier to understand
-and deploy, yet provides all the same delivery advantages as DKIM.</p>
+<p>Determine if the SMTP sender has matching forward and reverse DNS.</p>
 
-<p>This plugin can only <em>sign</em> outbound messages.  It does not validate
-DKIM signatures.</p>
+<p>See <a href="http://en.wikipedia.org/wiki/FCrDNS">FCrDNS at wikipedia</a></p>
 
-<h2>Getting Started</h2>
+<h2>USAGE</h2>
 
-<p>Generate DKIM selector and keys:</p>
+<p>Other plugins can use FCrDNS results like this:</p>
 
-<pre><code>cd /path/to/haraka/config/dkim
-./dkim_key_gen.sh example.org
+<pre><code>var fcrdns = connection.results.get('connect.fcrdns');
+if (fcrdns) {
+    if (fcrdns.fcrdns) {
+        // they passed, reward them
+    }
+
+    var fails = fcrdns.fail;
+    if (connection.results.has('connect.fcrdns', 'fail', /^is_generic/) {
+        // their IP is in their hostname, unlikely to be MX, penalize
+    }
+}
 </code></pre>
 
-<p>Peek into the dkim_key_gen.sh shell script to see the commands used to
-create and format the DKIM public key. Within the config/dkim/example.org
- directory will be 4 files:</p>
+<h2>CONFIGURATION</h2>
 
-<pre><code>% ls config/dkim/example.org/
-dns private public selector
-</code></pre>
+<p>Edit config/connect.fcrdns.ini</p>
 
-<p>The<code>private</code> and <code>public</code> files contain the DKIM keys, the selector is
-in the <code>selector</code> file and the <code>dns</code> file contains a formatted record of
-the public key, as well as suggestions for DKIM, SPF, and DMARC policy
-records. The records in <code>dns</code> are ready to be copy/pasted into the DNS
-zone for example.org.</p>
-
-<p>The DKIM DNS record will look like this:</p>
-
-<pre><code>may2013._domainkey TXT "v=DKIM1;p=[public key stripped of whitespace];"
-</code></pre>
-
-<p>And the values in the address have the following meaning:</p>
-
-<pre><code>hash: h=[ sha1 | sha256 ]
-test; t=[ s | s:y ]
-granularity: g=[ ]
-notes: n=[ ]
-services: s=[email]
-keytypes: [ rsa ]
-</code></pre>
-
-<h2>What to sign</h2>
-
-<p>The DKIM signing key for messages from example.org <em>should</em> be signed with
- a DKIM key for example.org. Failing to do so will result in messages not
-having an <em>aligned</em> DKIM signature. For DMARC enabled domains, this will
-likely result in deliverability problems.</p>
-
-<p>For correct alignment, Haraka signs each message with that domains DKIM key.
-For an alternative, see the legacy Single Domain Configuration below.</p>
-
-<h2>Configuration</h2>
-
-<p>This plugin uses the configuration dkim_sign.ini in INI format.
-All configuration should appear within the 'main' block and is
-checked for updates on every run.</p>
+<p>This plugin honors the whitelisting of IPs as set by the rdns_access plugin.
+For that to work, rdns_access needs to be listed <em>before</em> this plugin in
+config/plugins.</p>
 
 <ul>
-<li><p>disabled = [ 1 | true | yes ]             (OPTIONAL)</p>
-
-<p>Set this to disable DKIM signing</p></li>
-<li><p>headers_to_sign = list, of; headers       (REQUIRED)</p>
-
-<p>Set this to the list of headers that should be signed
-separated by either a comma, colon or semi-colon.
-This is to prevent any tampering of the specified headers.
-The 'From' header is required to be present by the RFC and
-will be added if it is missing.</p></li>
+<li>timeout=30</li>
 </ul>
 
-<h2>Single Domain Configuration</h2>
+<p>When performing DNS lookups, time out after this many seconds.</p>
 
-<p>To sign all messages with a single DKIM key, these two config settings
-are required.</p>
+<p>The following settings permit control of which test will block connections. To
+mimic the lookup_rdns.strict plugin, set no_rdns=true.</p>
 
-<ul>
-<li><p>selector = name</p>
+<pre><code>[reject]
+; reject if the IP address has no PTR record
+no_rdns=false
 
-<p>Set this to the selector name published in DNS under the
-_domainkey sub-domain of the domain referenced below.</p></li>
-<li><p>domain = name</p>
+; reject if the FCrDNS test fails
+no_fcrdns=false
 
-<p>Set this to the domain name that will be used to sign messages
-which don't match a per-domain DKIM key.  The DNS TXT entry for:</p>
+; reject if the PTR points to a hostname without a valid TLD
+invalid_tld=false
 
-<pre><code>&lt;selector&gt;._domainkey.&lt;domain&gt;
-</code></pre></li>
-</ul>
+; reject if the rDNS is generic, examples:
+; 1.2.3.4.in.addr.arpa
+; c-67-171-0-90.hsd1.wa.comcast.net
+generic_rdns=false
+</code></pre>
+
+<h2>ANTI-SPAM EFFECTS</h2>
+
+<p>The reverse DNS of zombie PCs in bot nets is out of the bot operators control.
+This presents a significant hurdle for a large portion of the hosts that
+attempt spam delivery.</p>
+
+<h2>HOW IT WORKS</h2>
+
+<p>From Wikipedia: <a href="http://en.wikipedia.org/wiki/FCrDNS">Forward Confirmed Reverse DNS</a></p>
+
+<ol>
+<li><p>First a reverse DNS lookup (PTR query) is performed on the IP address,
+which returns a list of zero or more PTR records.</p></li>
+<li><p>For each domain name returned in the PTR query results, a regular
+'forward' DNS lookup (type A or AAAA query) is then performed.</p></li>
+<li><p>Any A or AAAA records returned by the second query are then compared
+against the original IP address. If there is a match, FCrDNS passes.</p></li>
+</ol>
+
+<h2>iprev</h2>
+
+<p>The iprev results are added to the Authentication-Results header.</p>
+
+<p><a href="http://www.ietf.org/rfc/rfc1912.txt">RFC 1912</a>
+<a href="http://www.ietf.org/rfc/rfc5451.txt">RFC 5451</a>
+<a href="http://tools.ietf.org/html/rfc7001#section-3">RFC 7001</a></p>
+
+<p>2.6.3.  "iprev" Results</p>
+
+<p>pass:  The DNS evaluation succeeded, i.e., the "reverse" and
+      "forward" lookup results were returned and were in agreement.</p>
+
+<p>fail:  The DNS evaluation failed.  In particular, the "reverse" and
+      "forward" lookups each produced results, but they were not in
+      agreement, or the "forward" query completed but produced no
+      result, e.g., a DNS RCODE of 3, commonly known as NXDOMAIN, or an
+      RCODE of 0 (NOERROR) in a reply containing no answers, was
+      returned.</p>
+
+<p>temperror:  The DNS evaluation could not be completed due to some
+      error that is likely transient in nature, such as a temporary DNS
+      error, e.g., a DNS RCODE of 2, commonly known as SERVFAIL, or
+      other error condition resulted.  A later attempt may produce a
+      final result.</p>
+
+<p>permerror:  The DNS evaluation could not be completed because no PTR
+      data are published for the connecting IP address, e.g., a DNS
+      RCODE of 3, commonly known as NXDOMAIN, or an RCODE of 0 (NOERROR)
+      in a reply containing no answers, was returned.  This prevented
+      completion of the evaluation.  A later attempt is unlikely to
+      produce a final result.</p>
 
               </div>
             </div>

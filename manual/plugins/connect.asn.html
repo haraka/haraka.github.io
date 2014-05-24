@@ -7,7 +7,7 @@
     <meta name="description" content="">
     <meta name="author" content="">
 
-    <title>Haraka Manual &raquo; dkim_sign</title>
+    <title>Haraka Manual &raquo; connect.asn</title>
     
     <!-- Bootstrap core CSS -->
     <link href="/css/bootstrap.css" rel="stylesheet">
@@ -63,7 +63,7 @@
         <!-- Docs page layout -->
         <div class="bs-header" id="content">
           <div class="container">
-            <h1>dkim_sign</h1>
+            <h1>connect.asn</h1>
           </div>
         </div>
         
@@ -115,7 +115,7 @@
 <li><a href='/manual/plugins/block_me.html'>block_me</a></li>
 <li><a href='/manual/plugins/bounces.html'>bounce</a></li>
 <li><a href='/manual/plugins/clamd.html'>clamd</a></li>
-<li><a href='/manual/plugins/connect.asn.html'>connect.asn</a></li>
+<li class="active"><a href='/manual/plugins/connect.asn.html'>connect.asn</a></li>
 <li><a href='/manual/plugins/connect.fcrdns.html'>Forward Confirmed Reverse DNS</a></li>
 <li><a href='/manual/plugins/connect.geoip.html'>geoip</a></li>
 <li><a href='/manual/plugins/connect.p0f.html'>connect.p0f - A TCP Fingerprinting Plugin</a></li>
@@ -128,7 +128,7 @@
 <li><a href='/manual/plugins/data.signatures.html'>data.signatures</a></li>
 <li><a href='/manual/plugins/data.uribl.html'>data.uribl</a></li>
 <li><a href='/manual/plugins/delay_deny.html'>delay_deny</a></li>
-<li class="active"><a href='/manual/plugins/dkim_sign.html'>dkim_sign</a></li>
+<li><a href='/manual/plugins/dkim_sign.html'>dkim_sign</a></li>
 <li><a href='/manual/plugins/dnsbl.html'>dnsbl</a></li>
 <li><a href='/manual/plugins/dnswl.html'>dnswl</a></li>
 <li><a href='/manual/plugins/early_talker.html'>early_talker</a></li>
@@ -169,100 +169,95 @@
             
             <div class="col-md-9" role="main">
               <div class="bs-docs-section">
-                <h1>dkim_sign</h1>
+                <h1>connect.asn</h1>
 
-<p>This plugin implements the DKIM Core specification found at dkimcore.org</p>
+<p>Inserts a result object with the ASN of the connecting IP address. The ASN is
+the <a href="http://en.wikipedia.org/wiki/Autonomous_System_(Internet">Autonomous System Number</a>)
+that represents the bailiwick or sphere of control of a network operator.</p>
 
-<p>DKIM Core is a simplified subset of DKIM which is easier to understand
-and deploy, yet provides all the same delivery advantages as DKIM.</p>
+<h2>Usage</h2>
 
-<p>This plugin can only <em>sign</em> outbound messages.  It does not validate
-DKIM signatures.</p>
+<p>You can also access the ASN number for other plugins that run after this plugin like so:</p>
 
-<h2>Getting Started</h2>
-
-<p>Generate DKIM selector and keys:</p>
-
-<pre><code>cd /path/to/haraka/config/dkim
-./dkim_key_gen.sh example.org
+<pre><code>var asn = connection.results.get('connect.asn');
+if (asn &amp;&amp; asn.asn) {
+    connection.loginfo(plugin, "hey look, it's ASN: " + asn.asn);
+}
 </code></pre>
-
-<p>Peek into the dkim_key_gen.sh shell script to see the commands used to
-create and format the DKIM public key. Within the config/dkim/example.org
- directory will be 4 files:</p>
-
-<pre><code>% ls config/dkim/example.org/
-dns private public selector
-</code></pre>
-
-<p>The<code>private</code> and <code>public</code> files contain the DKIM keys, the selector is
-in the <code>selector</code> file and the <code>dns</code> file contains a formatted record of
-the public key, as well as suggestions for DKIM, SPF, and DMARC policy
-records. The records in <code>dns</code> are ready to be copy/pasted into the DNS
-zone for example.org.</p>
-
-<p>The DKIM DNS record will look like this:</p>
-
-<pre><code>may2013._domainkey TXT "v=DKIM1;p=[public key stripped of whitespace];"
-</code></pre>
-
-<p>And the values in the address have the following meaning:</p>
-
-<pre><code>hash: h=[ sha1 | sha256 ]
-test; t=[ s | s:y ]
-granularity: g=[ ]
-notes: n=[ ]
-services: s=[email]
-keytypes: [ rsa ]
-</code></pre>
-
-<h2>What to sign</h2>
-
-<p>The DKIM signing key for messages from example.org <em>should</em> be signed with
- a DKIM key for example.org. Failing to do so will result in messages not
-having an <em>aligned</em> DKIM signature. For DMARC enabled domains, this will
-likely result in deliverability problems.</p>
-
-<p>For correct alignment, Haraka signs each message with that domains DKIM key.
-For an alternative, see the legacy Single Domain Configuration below.</p>
 
 <h2>Configuration</h2>
 
-<p>This plugin uses the configuration dkim_sign.ini in INI format.
-All configuration should appear within the 'main' block and is
-checked for updates on every run.</p>
+<p>The following settings can be set in config/connect.asn.ini.</p>
 
 <ul>
-<li><p>disabled = [ 1 | true | yes ]             (OPTIONAL)</p>
-
-<p>Set this to disable DKIM signing</p></li>
-<li><p>headers_to_sign = list, of; headers       (REQUIRED)</p>
-
-<p>Set this to the list of headers that should be signed
-separated by either a comma, colon or semi-colon.
-This is to prevent any tampering of the specified headers.
-The 'From' header is required to be present by the RFC and
-will be added if it is missing.</p></li>
+<li>providers: comma separated list of DNS zones that provide IP to ASN lookups</li>
 </ul>
 
-<h2>Single Domain Configuration</h2>
-
-<p>To sign all messages with a single DKIM key, these two config settings
-are required.</p>
+<p>Supported providers: origin.asn.cymru.com, origin.asn.spameatingmonkey.net
+and asn.routeviews.org</p>
 
 <ul>
-<li><p>selector = name</p>
-
-<p>Set this to the selector name published in DNS under the
-_domainkey sub-domain of the domain referenced below.</p></li>
-<li><p>domain = name</p>
-
-<p>Set this to the domain name that will be used to sign messages
-which don't match a per-domain DKIM key.  The DNS TXT entry for:</p>
-
-<pre><code>&lt;selector&gt;._domainkey.&lt;domain&gt;
-</code></pre></li>
+<li>test_ip: (Default:</li>
 </ul>
+
+<p>An IP address that maps to an ASN (any valid public IP should work)</p>
+
+<ul>
+<li>timeout (in seconds): (Default: 4)</li>
+</ul>
+
+<p>How long to wait for DNS results to return.</p>
+
+<h2>Headers</h2>
+
+<p>Optionally add headers to messages with ASN info.</p>
+
+<ul>
+<li>asn_header (Default: false)</li>
+</ul>
+
+<p>add X-Haraka-ASN header with the ASN and if available, netmask.</p>
+
+<ul>
+<li>provider_header (Default: false)</li>
+</ul>
+
+<p>Add X-Haraka-ASN-[provider] header for each provider that returned results.</p>
+
+<h2>Theory</h2>
+
+<p>An ASN is a very good approximation of the IP space under the control
+of a network operator. The theory behind ASN tracking is that good network
+operators police their networks, proactively limit abuse, and are less likely
+to be emitting abuse.</p>
+
+<p>Not-so-good network operators are likely to emit a greater number of abusive
+connections, and should be handled with increased scrutiny.</p>
+
+<h2>Research</h2>
+
+<p>http://www.cc.gatech.edu/~feamster/papers/snare-usenix09.pdf</p>
+
+<p>"Performance based on AS number only...The classifier gets a false positive
+rate of 0.76% [and] a 70% detection rate"</p>
+
+<p>"AS numbers are more persistently associated with a sender's
+identity than the IP address, for two reasons: (1) The spamming mail server
+might be set up within specific ASes without the network administrator
+shutting it down. (2) Bots tend to aggregate within ASes, since the machines
+in the same ASes are likely to have the same vulnerability. It is not easy for
+spammers to move mail servers or the bot armies to a different AS; therefore,
+AS numbers are robust to indicate malicious hosts."</p>
+
+<h2>Consumers</h2>
+
+<p>The <a href="/manual/plugins/karma.html">karma</a> plugin uses the ASN to maintain
+its network neighborhood reputation.</p>
+
+<h2>TODO</h2>
+
+<p>Keep an eye on node-geoip. If/when it adds support for ASN lookups, note
+that as an alternative data source.</p>
 
               </div>
             </div>

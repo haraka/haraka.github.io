@@ -7,7 +7,7 @@
     <meta name="description" content="">
     <meta name="author" content="">
 
-    <title>Haraka Manual &raquo; dkim_sign</title>
+    <title>Haraka Manual &raquo; Results</title>
     
     <!-- Bootstrap core CSS -->
     <link href="/css/bootstrap.css" rel="stylesheet">
@@ -63,7 +63,7 @@
         <!-- Docs page layout -->
         <div class="bs-header" id="content">
           <div class="container">
-            <h1>dkim_sign</h1>
+            <h1>Results</h1>
           </div>
         </div>
         
@@ -86,7 +86,7 @@
 <li><a href='/manual/Net_Utils.html'>Net_Utils</a></li>
 <li><a href='/manual/Outbound.html'>Outbound Mail with Haraka</a></li>
 <li><a href='/manual/Plugins.html'>Writing Haraka Plugins</a></li>
-<li><a href='/manual/Results.html'>Results</a></li>
+<li class="active"><a href='/manual/Results.html'>Results</a></li>
 <li><a href='/manual/Transaction.html'>Transaction Object</a></li>
 </ul></li>
 <li><a class="submenu" data-toggle="collapse" data-target="#tutorials" data-parent="#chapternav" href="javascript:void(null);">Tutorials</a>
@@ -128,7 +128,7 @@
 <li><a href='/manual/plugins/data.signatures.html'>data.signatures</a></li>
 <li><a href='/manual/plugins/data.uribl.html'>data.uribl</a></li>
 <li><a href='/manual/plugins/delay_deny.html'>delay_deny</a></li>
-<li class="active"><a href='/manual/plugins/dkim_sign.html'>dkim_sign</a></li>
+<li><a href='/manual/plugins/dkim_sign.html'>dkim_sign</a></li>
 <li><a href='/manual/plugins/dnsbl.html'>dnsbl</a></li>
 <li><a href='/manual/plugins/dnswl.html'>dnswl</a></li>
 <li><a href='/manual/plugins/early_talker.html'>early_talker</a></li>
@@ -169,100 +169,190 @@
             
             <div class="col-md-9" role="main">
               <div class="bs-docs-section">
-                <h1>dkim_sign</h1>
+                <h1>Results</h1>
 
-<p>This plugin implements the DKIM Core specification found at dkimcore.org</p>
+<p>Add, log, retrieve, and share the results of plugin tests.</p>
 
-<p>DKIM Core is a simplified subset of DKIM which is easier to understand
-and deploy, yet provides all the same delivery advantages as DKIM.</p>
+<h2>Synopsis</h2>
 
-<p>This plugin can only <em>sign</em> outbound messages.  It does not validate
-DKIM signatures.</p>
+<p>Results is a structured way of storing results from plugins across a
+session, allowing those results to be retrieved later or by other plugins.</p>
 
-<h2>Getting Started</h2>
+<h2>Usage</h2>
 
-<p>Generate DKIM selector and keys:</p>
+<p>Use this plugin in yours:</p>
 
-<pre><code>cd /path/to/haraka/config/dkim
-./dkim_key_gen.sh example.org
+<pre><code>exports.my_first_hook = function(next, connection) {
+    var plugin = this;
+
+    // run a test
+    ......
+
+    // store the results
+    connection.results.add(plugin, {pass: 'my great test' });
+
+    // run another test
+    .....
+
+    // store the results
+    connection.results.add(plugin, {fail: 'gotcha!', msg: 'show this'});
+}
 </code></pre>
 
-<p>Peek into the dkim_key_gen.sh shell script to see the commands used to
-create and format the DKIM public key. Within the config/dkim/example.org
- directory will be 4 files:</p>
+<p>Store the results in the transaction (vs connection):</p>
 
-<pre><code>% ls config/dkim/example.org/
-dns private public selector
+<pre><code>    connection.transaction.results.add(plugin, {...});
 </code></pre>
 
-<p>The<code>private</code> and <code>public</code> files contain the DKIM keys, the selector is
-in the <code>selector</code> file and the <code>dns</code> file contains a formatted record of
-the public key, as well as suggestions for DKIM, SPF, and DMARC policy
-records. The records in <code>dns</code> are ready to be copy/pasted into the DNS
-zone for example.org.</p>
+<h3>Config options</h3>
 
-<p>The DKIM DNS record will look like this:</p>
-
-<pre><code>may2013._domainkey TXT "v=DKIM1;p=[public key stripped of whitespace];"
-</code></pre>
-
-<p>And the values in the address have the following meaning:</p>
-
-<pre><code>hash: h=[ sha1 | sha256 ]
-test; t=[ s | s:y ]
-granularity: g=[ ]
-notes: n=[ ]
-services: s=[email]
-keytypes: [ rsa ]
-</code></pre>
-
-<h2>What to sign</h2>
-
-<p>The DKIM signing key for messages from example.org <em>should</em> be signed with
- a DKIM key for example.org. Failing to do so will result in messages not
-having an <em>aligned</em> DKIM signature. For DMARC enabled domains, this will
-likely result in deliverability problems.</p>
-
-<p>For correct alignment, Haraka signs each message with that domains DKIM key.
-For an alternative, see the legacy Single Domain Configuration below.</p>
-
-<h2>Configuration</h2>
-
-<p>This plugin uses the configuration dkim_sign.ini in INI format.
-All configuration should appear within the 'main' block and is
-checked for updates on every run.</p>
+<p>Each plugin can have custom settings in results.ini to control results logging.
+There are three options available: hide, order, and debug.</p>
 
 <ul>
-<li><p>disabled = [ 1 | true | yes ]             (OPTIONAL)</p>
+<li>hide - a comma separated list of results to hide from the output</li>
+<li>order - a comman separated list, specifing the order of items in the output</li>
+<li><p>debug - log debug messages every time results are called</p>
 
-<p>Set this to disable DKIM signing</p></li>
-<li><p>headers_to_sign = list, of; headers       (REQUIRED)</p>
-
-<p>Set this to the list of headers that should be signed
-separated by either a comma, colon or semi-colon.
-This is to prevent any tampering of the specified headers.
-The 'From' header is required to be present by the RFC and
-will be added if it is missing.</p></li>
+<p>;put this in config/results.ini
+[plugin_name]
+hide=skip
+order=msg,pass,fail
+debug=0</p></li>
 </ul>
 
-<h2>Single Domain Configuration</h2>
+<h3>Results Functions</h3>
 
-<p>To sign all messages with a single DKIM key, these two config settings
-are required.</p>
+<h4>add</h4>
+
+<p>Store information. Most calls to <code>results</code> will append data to the lists
+in the connection. The following lists are available:</p>
+
+<pre><code>pass  - names of tests that passed
+fail  - names of tests that failed
+skip  - names of tests that were skipped (with a why, if you wish)
+err   - error messages encountered during processing
+msg   - arbitratry messages
+
+human - a custom summary to return (bypass collate)
+emit  - log an INFO summary
+</code></pre>
+
+<p>When err results are received, a logerror is automatically emitted, saving the
+need to specify {emit: true} with the request.</p>
+
+<p>Examples:</p>
+
+<pre><code>var c = connection;
+c.results.add(plugin, {pass: 'null_sender'});
+c.results.add(plugin, {fail: 'single_recipient'});
+c.results.add(plugin, {skip: 'valid_bounce'};
+c.results.add(plugin, {err: 'timed out looking in couch cushions'});
+c.results.add(plugin, {msg: 'I found a nickel!', emit: true});
+</code></pre>
+
+<p>In addition to appending values to the predefined lists, arbitrary results
+can be stored in the cache:</p>
+
+<pre><code>results.add(plugin, {my_result: 'anything I want'});
+</code></pre>
+
+<p>When arbirary values are stored, they are listed first in the log output. Their
+display can be suppressed with the <strong>hide</strong> option in results.ini.</p>
+
+<h4>incr</h4>
+
+<p>Increment counters. The argument to incr is an object with counter names and
+increment values. Examples:</p>
+
+<pre><code>var c = connection;
+c.results.incr(plugin, {unrecognized_commands: 1});
+
+c.results.incr(plugin, {karma: -1});
+c.results.incr(plugin, {karma:  2});
+</code></pre>
+
+<h4>push</h4>
+
+<p>Append items onto arrays. The argument to push is an object with array names and
+the new value to be appended to the array. Examples:</p>
+
+<pre><code>var c = connection;
+c.results.push(plugin, {dns_recs: 'name1'});
+c.results.push(plugin, {dns_recs: 'name2'});
+</code></pre>
+
+<h4>collate</h4>
+
+<pre><code>var summary = connection.results.collate(plugin);
+</code></pre>
+
+<p>Formats the contents of the result cache and returns them. This function is
+called internally by <code>add()</code> after each update.</p>
+
+<h4>get</h4>
+
+<p>Retrieve the stored results as an object. The only argument is the name of the
+plugin whose results are desired.</p>
+
+<pre><code>var geoip = connection.results.get('connect.geoip');
+if (geoip &amp;&amp; geoip.distance &amp;&amp; geoip.distance &gt; 2000) {
+    ....
+}
+</code></pre>
+
+<p>Keep in mind that plugins also store results in the transaction. Example:</p>
+
+<pre><code>var sa = connection.transaction.results.get('spamassassin');
+if (sa &amp;&amp; sa.score &gt; 5) {
+    ....
+}
+</code></pre>
+
+<h4>has</h4>
+
+<p>Check result contents for string or pattern matches.</p>
+
+<p>Syntax:
+    results.has('plugin<em>name', 'result</em>name', 'search_term');</p>
 
 <ul>
-<li><p>selector = name</p>
-
-<p>Set this to the selector name published in DNS under the
-_domainkey sub-domain of the domain referenced below.</p></li>
-<li><p>domain = name</p>
-
-<p>Set this to the domain name that will be used to sign messages
-which don't match a per-domain DKIM key.  The DNS TXT entry for:</p>
-
-<pre><code>&lt;selector&gt;._domainkey.&lt;domain&gt;
-</code></pre></li>
+<li><p>result_name: the name of an array or string in the result object</p></li>
+<li><p>search_term: a string or RegExp object</p></li>
 </ul>
+
+<p>Store Results:</p>
+
+<pre><code>var r = connection.results;
+r.add(plugin, {pass: 'some_test'});
+r.add(plugin, {pass: 'some_test(with reason)'});
+</code></pre>
+
+<p>Retrieve exact match with <strong>get</strong>:</p>
+
+<pre><code>if (r.get('plugin_name').pass.indexOf('some_test') !== -1) {
+    // some_test passed (1x)
+};
+</code></pre>
+
+<p>Same thing with <strong>has</strong> (retrieve a string match):</p>
+
+<pre><code>if (r.has('plugin_name', 'pass', 'some_test')) {
+    // some_test passed (1x)
+}
+</code></pre>
+
+<p>So the syntax for using <strong>has</strong> is a little more pleasant.</p>
+
+<p>Both options require one to check for each reason which is unpleasant when
+and all we really want to know is if some_test passed or not.</p>
+
+<p>Retrieve a matching pattern:</p>
+
+<pre><code>if (r.has('plugin_name', 'pass', /^some_test/)) {
+    // some_test passed (2x)
+}
+</code></pre>
 
               </div>
             </div>

@@ -7,7 +7,7 @@
     <meta name="description" content="">
     <meta name="author" content="">
 
-    <title>Haraka Manual &raquo; dkim_sign</title>
+    <title>Haraka Manual &raquo; Haraka</title>
     
     <!-- Bootstrap core CSS -->
     <link href="/css/bootstrap.css" rel="stylesheet">
@@ -63,7 +63,7 @@
         <!-- Docs page layout -->
         <div class="bs-header" id="content">
           <div class="container">
-            <h1>dkim_sign</h1>
+            <h1>Haraka</h1>
           </div>
         </div>
         
@@ -99,7 +99,7 @@
 <ul id='plugins' class='nav'>
 <li><a href='/manual/plugins/auth/auth_ldap.html'>auth/auth_ldap</a></li>
 <li><a href='/manual/plugins/auth/auth_proxy.html'>auth/auth_proxy</a></li>
-<li><a href='/manual/plugins/auth/auth_vpopmaild.html'>Haraka</a></li>
+<li class="active"><a href='/manual/plugins/auth/auth_vpopmaild.html'>Haraka</a></li>
 <li><a href='/manual/plugins/auth/flat_file.html'>auth/flat_file</a></li>
 <li><a href='/manual/plugins/queue/deliver.html'>queue/deliver</a></li>
 <li><a href='/manual/plugins/queue/discard.html'>discard</a></li>
@@ -128,7 +128,7 @@
 <li><a href='/manual/plugins/data.signatures.html'>data.signatures</a></li>
 <li><a href='/manual/plugins/data.uribl.html'>data.uribl</a></li>
 <li><a href='/manual/plugins/delay_deny.html'>delay_deny</a></li>
-<li class="active"><a href='/manual/plugins/dkim_sign.html'>dkim_sign</a></li>
+<li><a href='/manual/plugins/dkim_sign.html'>dkim_sign</a></li>
 <li><a href='/manual/plugins/dnsbl.html'>dnsbl</a></li>
 <li><a href='/manual/plugins/dnswl.html'>dnswl</a></li>
 <li><a href='/manual/plugins/early_talker.html'>early_talker</a></li>
@@ -169,100 +169,43 @@
             
             <div class="col-md-9" role="main">
               <div class="bs-docs-section">
-                <h1>dkim_sign</h1>
+                <h1><code>auth/auth_vpopmaild</code></h1>
 
-<p>This plugin implements the DKIM Core specification found at dkimcore.org</p>
-
-<p>DKIM Core is a simplified subset of DKIM which is easier to understand
-and deploy, yet provides all the same delivery advantages as DKIM.</p>
-
-<p>This plugin can only <em>sign</em> outbound messages.  It does not validate
-DKIM signatures.</p>
-
-<h2>Getting Started</h2>
-
-<p>Generate DKIM selector and keys:</p>
-
-<pre><code>cd /path/to/haraka/config/dkim
-./dkim_key_gen.sh example.org
-</code></pre>
-
-<p>Peek into the dkim_key_gen.sh shell script to see the commands used to
-create and format the DKIM public key. Within the config/dkim/example.org
- directory will be 4 files:</p>
-
-<pre><code>% ls config/dkim/example.org/
-dns private public selector
-</code></pre>
-
-<p>The<code>private</code> and <code>public</code> files contain the DKIM keys, the selector is
-in the <code>selector</code> file and the <code>dns</code> file contains a formatted record of
-the public key, as well as suggestions for DKIM, SPF, and DMARC policy
-records. The records in <code>dns</code> are ready to be copy/pasted into the DNS
-zone for example.org.</p>
-
-<p>The DKIM DNS record will look like this:</p>
-
-<pre><code>may2013._domainkey TXT "v=DKIM1;p=[public key stripped of whitespace];"
-</code></pre>
-
-<p>And the values in the address have the following meaning:</p>
-
-<pre><code>hash: h=[ sha1 | sha256 ]
-test; t=[ s | s:y ]
-granularity: g=[ ]
-notes: n=[ ]
-services: s=[email]
-keytypes: [ rsa ]
-</code></pre>
-
-<h2>What to sign</h2>
-
-<p>The DKIM signing key for messages from example.org <em>should</em> be signed with
- a DKIM key for example.org. Failing to do so will result in messages not
-having an <em>aligned</em> DKIM signature. For DMARC enabled domains, this will
-likely result in deliverability problems.</p>
-
-<p>For correct alignment, Haraka signs each message with that domains DKIM key.
-For an alternative, see the legacy Single Domain Configuration below.</p>
+<p>The <code>auth/vpopmaild</code> plugin allows you to authenticate against a vpopmaild
+daemon.</p>
 
 <h2>Configuration</h2>
 
-<p>This plugin uses the configuration dkim_sign.ini in INI format.
-All configuration should appear within the 'main' block and is
-checked for updates on every run.</p>
+<p>Configuration is stored in <code>config/auth_vpopmaild.ini</code> and uses the INI
+style formatting.</p>
+
+<p>There are three configuration settings:</p>
 
 <ul>
-<li><p>disabled = [ 1 | true | yes ]             (OPTIONAL)</p>
-
-<p>Set this to disable DKIM signing</p></li>
-<li><p>headers_to_sign = list, of; headers       (REQUIRED)</p>
-
-<p>Set this to the list of headers that should be signed
-separated by either a comma, colon or semi-colon.
-This is to prevent any tampering of the specified headers.
-The 'From' header is required to be present by the RFC and
-will be added if it is missing.</p></li>
+<li><p>host: The host/IP that vpopmaild is listening on (default: localhost).</p></li>
+<li><p>port: The TCP port that vpopmaild is listening on (default: 89).</p></li>
+<li><p>sysadmin: A colon separated username:password of a vpopmail user with
+SYSADMIN privileges. This is only necessary to support CRAM-MD5. On new
+installs, it best not to use CRAM-MD5, as it requires storing the
+credentials on the server in clear text. However, if you have existing
+clients whose MUA is configured to authenticate with CRAM-MD5, you'll
+need to enable this.</p></li>
 </ul>
 
-<h2>Single Domain Configuration</h2>
+<h3>Per-domain Configuration</h3>
 
-<p>To sign all messages with a single DKIM key, these two config settings
-are required.</p>
+<p>Additionally, domains can each have their own configuration for connecting
+to vpopmaild. The defaults are the same, so only the differences needs to
+be declared. Example:</p>
 
-<ul>
-<li><p>selector = name</p>
+<pre><code>[example.com]
+host=192.168.0.1
+port=999
 
-<p>Set this to the selector name published in DNS under the
-_domainkey sub-domain of the domain referenced below.</p></li>
-<li><p>domain = name</p>
-
-<p>Set this to the domain name that will be used to sign messages
-which don't match a per-domain DKIM key.  The DNS TXT entry for:</p>
-
-<pre><code>&lt;selector&gt;._domainkey.&lt;domain&gt;
-</code></pre></li>
-</ul>
+[example2.com]
+host=192.168.0.2
+sysadmin=postmaster@example2.com:sekret
+</code></pre>
 
               </div>
             </div>

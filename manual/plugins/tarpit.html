@@ -86,6 +86,7 @@
 <li><a href='/manual/Net_Utils.html'>Net_Utils</a></li>
 <li><a href='/manual/Outbound.html'>Outbound Mail with Haraka</a></li>
 <li><a href='/manual/Plugins.html'>Writing Haraka Plugins</a></li>
+<li><a href='/manual/Results.html'>Results</a></li>
 <li><a href='/manual/Transaction.html'>Transaction Object</a></li>
 </ul></li>
 <li><a class="submenu" data-toggle="collapse" data-target="#tutorials" data-parent="#chapternav" href="javascript:void(null);">Tutorials</a>
@@ -98,6 +99,7 @@
 <ul id='plugins' class='nav'>
 <li><a href='/manual/plugins/auth/auth_ldap.html'>auth/auth_ldap</a></li>
 <li><a href='/manual/plugins/auth/auth_proxy.html'>auth/auth_proxy</a></li>
+<li><a href='/manual/plugins/auth/auth_vpopmaild.html'>Haraka</a></li>
 <li><a href='/manual/plugins/auth/flat_file.html'>auth/flat_file</a></li>
 <li><a href='/manual/plugins/queue/deliver.html'>queue/deliver</a></li>
 <li><a href='/manual/plugins/queue/discard.html'>discard</a></li>
@@ -106,12 +108,15 @@
 <li><a href='/manual/plugins/queue/quarantine.html'>quarantine</a></li>
 <li><a href='/manual/plugins/queue/smtp_forward.html'>queue/smtp_forward</a></li>
 <li><a href='/manual/plugins/queue/smtp_proxy.html'>queue/smtp_proxy</a></li>
+<li><a href='/manual/plugins/access.html'>access</a></li>
 <li><a href='/manual/plugins/aliases.html'>aliases</a></li>
 <li><a href='/manual/plugins/attachment.html'>attachment</a></li>
 <li><a href='/manual/plugins/avg.html'>avg</a></li>
 <li><a href='/manual/plugins/block_me.html'>block_me</a></li>
 <li><a href='/manual/plugins/bounces.html'>bounce</a></li>
 <li><a href='/manual/plugins/clamd.html'>clamd</a></li>
+<li><a href='/manual/plugins/connect.asn.html'>connect.asn</a></li>
+<li><a href='/manual/plugins/connect.fcrdns.html'>Forward Confirmed Reverse DNS</a></li>
 <li><a href='/manual/plugins/connect.geoip.html'>geoip</a></li>
 <li><a href='/manual/plugins/connect.p0f.html'>connect.p0f - A TCP Fingerprinting Plugin</a></li>
 <li><a href='/manual/plugins/connect.rdns_access.html'>connect.rdns_access</a></li>
@@ -129,7 +134,7 @@
 <li><a href='/manual/plugins/early_talker.html'>early_talker</a></li>
 <li><a href='/manual/plugins/graph.html'>graph</a></li>
 <li><a href='/manual/plugins/helo.checks.html'>helo.checks</a></li>
-<li><a href='/manual/plugins/karma.html'>karma - reward good and penalize bad mail senders</a></li>
+<li><a href='/manual/plugins/karma.html'>Haraka</a></li>
 <li><a href='/manual/plugins/log.syslog.html'>log.syslog</a></li>
 <li><a href='/manual/plugins/lookup_rdns.strict.html'>lookup_rdns.strict</a></li>
 <li><a href='/manual/plugins/mail_from.access.html'>mail_from.access</a></li>
@@ -142,10 +147,11 @@
 <li><a href='/manual/plugins/rate_limit.html'>rate_limit</a></li>
 <li><a href='/manual/plugins/rcpt_to.access.html'>rcpt_to.access</a></li>
 <li><a href='/manual/plugins/rcpt_to.blocklist.html'>rcpt_to.blocklist</a></li>
-<li><a href='/manual/plugins/rcpt_to.in_host_list.html'>rcpt_to.in_host_list</a></li>
+<li><a href='/manual/plugins/rcpt_to.in_host_list.html'>Haraka</a></li>
 <li><a href='/manual/plugins/rcpt_to.max_count.html'>rcpt_to.max_count</a></li>
-<li><a href='/manual/plugins/rcpt_to.qmail_deliverable.html'>qmail_deliverable</a></li>
+<li><a href='/manual/plugins/rcpt_to.qmail_deliverable.html'>Haraka</a></li>
 <li><a href='/manual/plugins/rdns.regexp.html'>rdns.regexp</a></li>
+<li><a href='/manual/plugins/relay.html'>relay</a></li>
 <li><a href='/manual/plugins/relay_acl.html'>relay_acl</a></li>
 <li><a href='/manual/plugins/relay_all.html'>relay_all</a></li>
 <li><a href='/manual/plugins/relay_force_routing.html'>relay_force_routing.js</a></li>
@@ -165,13 +171,15 @@
               <div class="bs-docs-section">
                 <h1>tarpit</h1>
 
-<p>This plugin is designed to introduce deliberate delays on the response 
-of every hook in order to slow down a connection.  It has no 
+<p>This plugin is designed to introduce deliberate delays on the response
+of every hook in order to slow down a connection.  It has no
 configuration and is designed to be used only by other plugins.</p>
 
-<p>It must be loaded early in config/plugins (e.g. before any plugins 
-that accept recipients or that return OK) but must be loaded <em>after</em> 
+<p>It must be loaded early in config/plugins (e.g. before any plugins
+that accept recipients or that return OK) but must be loaded <em>after</em>
 any plugins that wish to use it.</p>
+
+<h2>Usage</h2>
 
 <p>To use this plugin in another plugin set:</p>
 
@@ -183,7 +191,38 @@ any plugins that wish to use it.</p>
 <pre><code>connection.transaction.notes.tarpit = &lt;seconds to delay&gt;;
 </code></pre>
 
-<p>When tarpitting a command it will log 'tarpitting response for Ns' to 
+<h2>Configuration</h2>
+
+<p>The configuration file for tarpit is config/tarpit.ini.</p>
+
+<ul>
+<li>hooks_to_delay - a list of hooks to delay at. This setting can be used to
+override the default list in the plugin. For example, if you notice that
+malware is disconnecting after delaying rcpt_ok, you can remove just that
+hook from the list:</li>
+</ul>
+
+<p>hooks_to_delay=connect,helo,ehlo,mail,rcpt,data,data_post,queue,unrecognized_command,vrfy,noop,rset,quit</p>
+
+<h2>Plugin Timeout</h2>
+
+<p>config/tarpit.timeout (Default: 0)</p>
+
+<p>All Haraka plugins can configure a <em>name</em>.timeout file. The timeout specifies
+how long Haraka lets the plugin do nothing before it times out. When zero,
+there is no timeout. When non-zero and <em>seconds to delay</em> is longer than
+tarpit.timeout (default: 1s), you'll get errors like this in your log files:</p>
+
+<pre><code>[core] Plugin tarpit timed out on hook rcpt - make sure it calls the callback
+[core] Plugin tarpit timed out on hook quit - make sure it calls the callback
+</code></pre>
+
+<p>The solution is to set the contents of config/tarpit.timeout to zero or
+<strong>seconds to delay</strong> + 1.</p>
+
+<h2>Logging</h2>
+
+<p>When tarpitting a command it will log 'tarpitting response for Ns' to
 the INFO facility where N is the number of seconds.</p>
 
               </div>

@@ -86,6 +86,7 @@
 <li><a href='/manual/Net_Utils.html'>Net_Utils</a></li>
 <li><a href='/manual/Outbound.html'>Outbound Mail with Haraka</a></li>
 <li><a href='/manual/Plugins.html'>Writing Haraka Plugins</a></li>
+<li><a href='/manual/Results.html'>Results</a></li>
 <li><a href='/manual/Transaction.html'>Transaction Object</a></li>
 </ul></li>
 <li><a class="submenu" data-toggle="collapse" data-target="#tutorials" data-parent="#chapternav" href="javascript:void(null);">Tutorials</a>
@@ -98,6 +99,7 @@
 <ul id='plugins' class='nav'>
 <li><a href='/manual/plugins/auth/auth_ldap.html'>auth/auth_ldap</a></li>
 <li><a href='/manual/plugins/auth/auth_proxy.html'>auth/auth_proxy</a></li>
+<li><a href='/manual/plugins/auth/auth_vpopmaild.html'>Haraka</a></li>
 <li><a href='/manual/plugins/auth/flat_file.html'>auth/flat_file</a></li>
 <li><a href='/manual/plugins/queue/deliver.html'>queue/deliver</a></li>
 <li><a href='/manual/plugins/queue/discard.html'>discard</a></li>
@@ -106,12 +108,15 @@
 <li><a href='/manual/plugins/queue/quarantine.html'>quarantine</a></li>
 <li><a href='/manual/plugins/queue/smtp_forward.html'>queue/smtp_forward</a></li>
 <li><a href='/manual/plugins/queue/smtp_proxy.html'>queue/smtp_proxy</a></li>
+<li><a href='/manual/plugins/access.html'>access</a></li>
 <li><a href='/manual/plugins/aliases.html'>aliases</a></li>
 <li><a href='/manual/plugins/attachment.html'>attachment</a></li>
 <li><a href='/manual/plugins/avg.html'>avg</a></li>
 <li><a href='/manual/plugins/block_me.html'>block_me</a></li>
 <li><a href='/manual/plugins/bounces.html'>bounce</a></li>
 <li><a href='/manual/plugins/clamd.html'>clamd</a></li>
+<li><a href='/manual/plugins/connect.asn.html'>connect.asn</a></li>
+<li><a href='/manual/plugins/connect.fcrdns.html'>Forward Confirmed Reverse DNS</a></li>
 <li><a href='/manual/plugins/connect.geoip.html'>geoip</a></li>
 <li><a href='/manual/plugins/connect.p0f.html'>connect.p0f - A TCP Fingerprinting Plugin</a></li>
 <li><a href='/manual/plugins/connect.rdns_access.html'>connect.rdns_access</a></li>
@@ -129,7 +134,7 @@
 <li><a href='/manual/plugins/early_talker.html'>early_talker</a></li>
 <li><a href='/manual/plugins/graph.html'>graph</a></li>
 <li><a href='/manual/plugins/helo.checks.html'>helo.checks</a></li>
-<li><a href='/manual/plugins/karma.html'>karma - reward good and penalize bad mail senders</a></li>
+<li><a href='/manual/plugins/karma.html'>Haraka</a></li>
 <li><a href='/manual/plugins/log.syslog.html'>log.syslog</a></li>
 <li><a href='/manual/plugins/lookup_rdns.strict.html'>lookup_rdns.strict</a></li>
 <li><a href='/manual/plugins/mail_from.access.html'>mail_from.access</a></li>
@@ -142,10 +147,11 @@
 <li><a href='/manual/plugins/rate_limit.html'>rate_limit</a></li>
 <li><a href='/manual/plugins/rcpt_to.access.html'>rcpt_to.access</a></li>
 <li><a href='/manual/plugins/rcpt_to.blocklist.html'>rcpt_to.blocklist</a></li>
-<li><a href='/manual/plugins/rcpt_to.in_host_list.html'>rcpt_to.in_host_list</a></li>
+<li><a href='/manual/plugins/rcpt_to.in_host_list.html'>Haraka</a></li>
 <li><a href='/manual/plugins/rcpt_to.max_count.html'>rcpt_to.max_count</a></li>
-<li><a href='/manual/plugins/rcpt_to.qmail_deliverable.html'>qmail_deliverable</a></li>
+<li><a href='/manual/plugins/rcpt_to.qmail_deliverable.html'>Haraka</a></li>
 <li><a href='/manual/plugins/rdns.regexp.html'>rdns.regexp</a></li>
+<li><a href='/manual/plugins/relay.html'>relay</a></li>
 <li><a href='/manual/plugins/relay_acl.html'>relay_acl</a></li>
 <li><a href='/manual/plugins/relay_all.html'>relay_all</a></li>
 <li><a href='/manual/plugins/relay_force_routing.html'>relay_force_routing.js</a></li>
@@ -168,64 +174,80 @@
 <p>This plugin implements RFC 4408 Sender Policy Framework (SPF)
 See the <a href="http://en.wikipedia.org/wiki/Sender_Policy_Framework">Wikipedia article on SPF</a> for details.</p>
 
-<p>NOTE: as Node.js does not support the SPF DNS record type, only TXT records are checked.</p>
-
 <p>By default this plugin with only add trace Received-SPF headers to a message.
 To make it reject mail then you will need to enable the relevant options below.
-<code>helo_fail_reject</code> and <code>mail_fail_reject</code> are the closest match for the intent of SPF but you will need
-to whitelist any hosts forwarding mail from another domain whilst preserving the original return-path.</p>
+<code>[deny]helo_fail</code> and <code>[deny]mfrom_fail</code> are the closest match for the intent
+of SPF but you will need to whitelist any hosts forwarding mail from another
+domain whilst preserving the original return-path.</p>
 
 <h2>Configuration</h2>
 
-<p>This plugin uses spf.ini for configuration and each option is documented below:</p>
+<p>This plugin uses spf.ini for configuration and the following options are
+available:</p>
+
+<pre><code>[relay]
+context=sender   (default: sender)
+</code></pre>
+
+<p>On connections with relaying privileges (MSA or mail relay), it is often
+desirable to evaluate SPF from the context of Haraka's public IP(s), in the
+same fashion the next mail server will evaluate it when we send to them.
+In that use case, Haraka should use context=myself.</p>
+
+<pre><code>* context=sender    evaluate SPF based on the sender (connection.remote\_ip)
+* context=myself    evaluate SPF based on Haraka's public IP
+</code></pre>
+
+<p>The rest of the optional settings (disabled by default) permit deferring or
+denying mail from senders whose SPF fails the checks.</p>
+
+<h3>Things to Know</h3>
 
 <ul>
-<li><p>helo_softfail_reject</p>
+<li><p>Most senders do not publish SPF records for their mail server <em>hostname</em>,
+which means that the SPF HELO test rarely passes. During observation in 2014,
+more spam senders have valid SPF HELO than ham senders. If you expect very
+little from SPF HELO validation, you might still be disappointed.</p></li>
+<li><p>Enabling error deferrals will cause excessive delays and perhaps bounced
+mail for senders with broken DNS. Enable this only if you are willing to
+delay and sometimes lose valid mail.</p></li>
+<li><p>Broken SPF records by valid senders are common. Keep that in mind when
+considering denial of SPF error results. If you deny on error, budget
+time for instructing senders on how to correct their SPF records so they
+can email you.</p></li>
+<li><p>The only deny option most sites should consider is <code>mfrom_fail</code>. That will
+reject messages that explicitely fail SPF tests. SPF failures have a high
+correlation with spam. However, up to 10% of ham transits forwarders and/or
+email lists which frequently break SPF. SPF results are best used as inputs
+to other plugins such as DMARC, <a href="http://haraka.github.io/manual/plugins/spamassassin.html">spamassassin</a>, and <a href="http://haraka.github.io/manual/plugins/karma.html">karma</a>.</p></li>
+<li><p>Heed well the implications of SPF, as described in <a href="http://tools.ietf.org/html/rfc4408#section-9.3">RFC 4408</a></p>
 
-<p>Default: false</p>
+<p>[defer]
+helo<em>temperror
+mfrom</em>temperror</p>
 
-<p>Return DENY if the SPF HELO check returns SoftFail.
-This option should only be enabled in exceptional circumstances.</p></li>
-<li><p>helo_fail_reject</p>
+<p>[deny]
+helo<em>softfail
+helo</em>fail
+helo_permerror</p>
 
-<p>Default: false</p>
+<p>mfrom<em>softfail
+mfrom</em>fail
+mfrom_permerror</p>
 
-<p>Return DENYSOFT if the SPF HELO check returns Fail.</p></li>
-<li><p>helo_temperror_defer</p>
+<p>; SPF settings used when connection.relaying=true
+[defer<em>relay]
+helo</em>temperror
+mfrom_temperror</p>
 
-<p>Default: false</p>
+<p>[deny<em>relay]
+helo</em>softfail
+helo<em>fail
+helo</em>permerror</p>
 
-<p>Return DENYSOFT if the SPF HELO check returns TempError.
-This can cause excessive delays if a domain has a broken SPF record or any issues with their DNS configuration.</p></li>
-<li><p>helo_permerror_reject</p>
-
-<p>Default: false</p>
-
-<p>Return DENY if the SPF HELO check returns Fail.
-This can cause false-positives if a domain has any syntax errors in their SPF record.</p></li>
-<li><p>mail_softfail_reject</p>
-
-<p>Default: false</p>
-
-<p>Return DENYSOFT if the SPF MAIL check returns SoftFail.
-This option should only be used in exceptional circumstances.</p></li>
-<li><p>mail_fail_reject</p>
-
-<p>Default: false</p>
-
-<p>Return DENY if the SPF MAIL check returns Fail.</p></li>
-<li><p>mail_temperror_defer</p>
-
-<p>Default: false</p>
-
-<p>Return DENYSOFT if the SPF MAIL check returns TempError.
-This can cause excessive delays if a domain has a broken SPF record or any issues with their DNS configuration.</p></li>
-<li><p>mail_permerror_reject</p>
-
-<p>Default: false</p>
-
-<p>Return DENY if the SPF MAIL check returns Fail.
-This can cause false-positives if a domain has any syntax errors in their SPF record.</p></li>
+<p>mfrom<em>softfail
+mfrom</em>fail
+mfrom_permerror</p></li>
 </ul>
 
 <h2>Testing</h2>
@@ -251,6 +273,15 @@ This can cause false-positives if a domain has any syntax errors in their SPF re
 ````</p>
 
 <p>You can add <code>--debug</code> to the option arguments to see a full trace of the SPF processing.</p>
+
+<h3>SPF Resource Record Type</h3>
+
+<p>Node does not support the SPF DNS Resource Record type. Only TXT records are
+checked.</p>
+
+<p>This is a non-issue as &lt; 1% (as of 2014) of SPF records use the SPF RR type.
+Due to lack of adoption, the next SPF revision will like likely deprecate the
+SPF RR type.</p>
 
               </div>
             </div>

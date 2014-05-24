@@ -86,6 +86,7 @@
 <li><a href='/manual/Net_Utils.html'>Net_Utils</a></li>
 <li><a href='/manual/Outbound.html'>Outbound Mail with Haraka</a></li>
 <li><a href='/manual/Plugins.html'>Writing Haraka Plugins</a></li>
+<li><a href='/manual/Results.html'>Results</a></li>
 <li><a href='/manual/Transaction.html'>Transaction Object</a></li>
 </ul></li>
 <li><a class="submenu" data-toggle="collapse" data-target="#tutorials" data-parent="#chapternav" href="javascript:void(null);">Tutorials</a>
@@ -98,6 +99,7 @@
 <ul id='plugins' class='nav'>
 <li><a href='/manual/plugins/auth/auth_ldap.html'>auth/auth_ldap</a></li>
 <li><a href='/manual/plugins/auth/auth_proxy.html'>auth/auth_proxy</a></li>
+<li><a href='/manual/plugins/auth/auth_vpopmaild.html'>Haraka</a></li>
 <li><a href='/manual/plugins/auth/flat_file.html'>auth/flat_file</a></li>
 <li><a href='/manual/plugins/queue/deliver.html'>queue/deliver</a></li>
 <li><a href='/manual/plugins/queue/discard.html'>discard</a></li>
@@ -106,12 +108,15 @@
 <li><a href='/manual/plugins/queue/quarantine.html'>quarantine</a></li>
 <li><a href='/manual/plugins/queue/smtp_forward.html'>queue/smtp_forward</a></li>
 <li><a href='/manual/plugins/queue/smtp_proxy.html'>queue/smtp_proxy</a></li>
+<li><a href='/manual/plugins/access.html'>access</a></li>
 <li><a href='/manual/plugins/aliases.html'>aliases</a></li>
 <li><a href='/manual/plugins/attachment.html'>attachment</a></li>
 <li><a href='/manual/plugins/avg.html'>avg</a></li>
 <li><a href='/manual/plugins/block_me.html'>block_me</a></li>
 <li><a href='/manual/plugins/bounces.html'>bounce</a></li>
 <li><a href='/manual/plugins/clamd.html'>clamd</a></li>
+<li><a href='/manual/plugins/connect.asn.html'>connect.asn</a></li>
+<li><a href='/manual/plugins/connect.fcrdns.html'>Forward Confirmed Reverse DNS</a></li>
 <li><a href='/manual/plugins/connect.geoip.html'>geoip</a></li>
 <li><a href='/manual/plugins/connect.p0f.html'>connect.p0f - A TCP Fingerprinting Plugin</a></li>
 <li><a href='/manual/plugins/connect.rdns_access.html'>connect.rdns_access</a></li>
@@ -129,7 +134,7 @@
 <li><a href='/manual/plugins/early_talker.html'>early_talker</a></li>
 <li><a href='/manual/plugins/graph.html'>graph</a></li>
 <li><a href='/manual/plugins/helo.checks.html'>helo.checks</a></li>
-<li><a href='/manual/plugins/karma.html'>karma - reward good and penalize bad mail senders</a></li>
+<li><a href='/manual/plugins/karma.html'>Haraka</a></li>
 <li><a href='/manual/plugins/log.syslog.html'>log.syslog</a></li>
 <li><a href='/manual/plugins/lookup_rdns.strict.html'>lookup_rdns.strict</a></li>
 <li><a href='/manual/plugins/mail_from.access.html'>mail_from.access</a></li>
@@ -142,10 +147,11 @@
 <li><a href='/manual/plugins/rate_limit.html'>rate_limit</a></li>
 <li><a href='/manual/plugins/rcpt_to.access.html'>rcpt_to.access</a></li>
 <li><a href='/manual/plugins/rcpt_to.blocklist.html'>rcpt_to.blocklist</a></li>
-<li><a href='/manual/plugins/rcpt_to.in_host_list.html'>rcpt_to.in_host_list</a></li>
+<li><a href='/manual/plugins/rcpt_to.in_host_list.html'>Haraka</a></li>
 <li><a href='/manual/plugins/rcpt_to.max_count.html'>rcpt_to.max_count</a></li>
-<li><a href='/manual/plugins/rcpt_to.qmail_deliverable.html'>qmail_deliverable</a></li>
+<li><a href='/manual/plugins/rcpt_to.qmail_deliverable.html'>Haraka</a></li>
 <li><a href='/manual/plugins/rdns.regexp.html'>rdns.regexp</a></li>
+<li><a href='/manual/plugins/relay.html'>relay</a></li>
 <li><a href='/manual/plugins/relay_acl.html'>relay_acl</a></li>
 <li><a href='/manual/plugins/relay_all.html'>relay_all</a></li>
 <li><a href='/manual/plugins/relay_force_routing.html'>relay_force_routing.js</a></li>
@@ -165,24 +171,106 @@
               <div class="bs-docs-section">
                 <h1>data.headers</h1>
 
-<p>This plugin performs sanity checks on mail headers.</p>
+<p>This plugin performs a variety of mail header inspections.</p>
 
 <h2>RFC 5322 Section 3.6:</h2>
 
-<p>All messages MUST have a 'Date' and 'From' header and a message may not contain
+<blockquote>
+  <p>All messages MUST have a 'Date' and 'From' header and a message may not contain
 more than one 'Date', 'From', 'Sender', 'Reply-To', 'To', 'Cc', 'Bcc',
 'Message-Id', 'In-Reply-To', 'References' or 'Subject' header.</p>
+</blockquote>
 
-<p>The default list of required and singular headers can be customized in
-config/data.headers.ini.</p>
+<p>The next two tests encompass the RFC 5322 checks:</p>
 
-<p>Any message that does not meet the configured requirements will be rejected.</p>
+<h2>duplicate_singular</h2>
 
-<h2>Date Validity</h2>
+<p>Assure that all the singular headers are present only once. The list of
+headers can be adjusted in config/data.headers.ini:</p>
 
-<p>This plugin also tests the contents of the Date field, assuring that the
-timestamps in the Date field are neither too old (default: 15 days), nor
-too far in the future (default: 2 days).</p>
+<pre><code>* singular=Date,From,Sender,Reply-To,To,Cc,Bcc,Message-Id,In-Reply-To,References,Subject
+</code></pre>
+
+<h2>missing_required</h2>
+
+<p>Assuring that all the required headers are present. The list of required
+headers can be altered in config/data.headers.ini:</p>
+
+<pre><code>required=From,Date
+</code></pre>
+
+<h2>invalid_return_path</h2>
+
+<p>Messages arriving via the internet should not have a Return-Path header set.
+This checks for that header (unless connection.relaying is set).</p>
+
+<h2>invalid_date</h2>
+
+<p>Checks the date header and makes sure it's somewhat sane. By default, the date
+cannot be more than 2 days in the future nor 15 days in the past. These can be
+adjusted in config/data.headers.ini:</p>
+
+<pre><code>date_future_days=2
+date_past_days=15
+</code></pre>
+
+<h2>user_agent</h2>
+
+<p>Attempt to determine the User-Agent that generated the email. A UA is
+determinable on about 70% of hammy messages.</p>
+
+<h2>direct_to_mx</h2>
+
+<p>Counts the received headers. If there aren't at least two, then the MUA is
+attempting direct delivery to us instead of via their outbound SMTP server.
+This is typical of spam, our own users sending outbound email (which bypasses
+this test), and machine generated messages like Facebook/Twitter
+notifications.</p>
+
+<h2>from_match</h2>
+
+<p>See if the header From domain matches the envelope FROM domain. There are many
+legit reasons to not match, but matching domains are far more frequent in ham.</p>
+
+<h2>mailing_list</h2>
+
+<p>Attempt to determine if this message was sent via an email list. This is very
+rudimentary at present and only detects the most common email lists.</p>
+
+<p>Forwarders, of which email lists are a special type, constitutes the majority
+of the minority (~10%) of ham which fails SPF and DKIM tests. This MLM
+detector is a building block in the ability to detect mail from forwarders
+and assess their reputability.</p>
+
+<h1>Configuration</h1>
+
+<p>The data.headers.ini file can contain [check] and [reject] sections.</p>
+
+<h2>[check]</h2>
+
+<p>To turn on User Agent detection and turn off Mailing List detection:
+Each key is the test/check name and a boolean value that enables or disables the check.</p>
+
+<pre><code>[check]
+duplicate_singular=true
+missing_required=true
+invalid_return_path=true
+invalid_date=true
+user_agent=true
+direct_to_mx=true
+from_match=true
+mailing_list=true
+</code></pre>
+
+<h2>[reject]</h2>
+
+<p>Turning off reject for a check lets it be enabled (for data collection)
+without interrupting mail flow. To prevent a missing header from causing
+messages to be rejected:</p>
+
+<pre><code>[reject]
+missing_required=false
+</code></pre>
 
               </div>
             </div>

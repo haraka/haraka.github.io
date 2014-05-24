@@ -86,6 +86,7 @@
 <li><a href='/manual/Net_Utils.html'>Net_Utils</a></li>
 <li><a href='/manual/Outbound.html'>Outbound Mail with Haraka</a></li>
 <li><a href='/manual/Plugins.html'>Writing Haraka Plugins</a></li>
+<li><a href='/manual/Results.html'>Results</a></li>
 <li><a href='/manual/Transaction.html'>Transaction Object</a></li>
 </ul></li>
 <li><a class="submenu" data-toggle="collapse" data-target="#tutorials" data-parent="#chapternav" href="javascript:void(null);">Tutorials</a>
@@ -98,6 +99,7 @@
 <ul id='plugins' class='nav'>
 <li><a href='/manual/plugins/auth/auth_ldap.html'>auth/auth_ldap</a></li>
 <li><a href='/manual/plugins/auth/auth_proxy.html'>auth/auth_proxy</a></li>
+<li><a href='/manual/plugins/auth/auth_vpopmaild.html'>Haraka</a></li>
 <li><a href='/manual/plugins/auth/flat_file.html'>auth/flat_file</a></li>
 <li><a href='/manual/plugins/queue/deliver.html'>queue/deliver</a></li>
 <li><a href='/manual/plugins/queue/discard.html'>discard</a></li>
@@ -106,12 +108,15 @@
 <li><a href='/manual/plugins/queue/quarantine.html'>quarantine</a></li>
 <li><a href='/manual/plugins/queue/smtp_forward.html'>queue/smtp_forward</a></li>
 <li><a href='/manual/plugins/queue/smtp_proxy.html'>queue/smtp_proxy</a></li>
+<li><a href='/manual/plugins/access.html'>access</a></li>
 <li><a href='/manual/plugins/aliases.html'>aliases</a></li>
 <li><a href='/manual/plugins/attachment.html'>attachment</a></li>
 <li><a href='/manual/plugins/avg.html'>avg</a></li>
 <li><a href='/manual/plugins/block_me.html'>block_me</a></li>
 <li class="active"><a href='/manual/plugins/bounces.html'>bounce</a></li>
 <li><a href='/manual/plugins/clamd.html'>clamd</a></li>
+<li><a href='/manual/plugins/connect.asn.html'>connect.asn</a></li>
+<li><a href='/manual/plugins/connect.fcrdns.html'>Forward Confirmed Reverse DNS</a></li>
 <li><a href='/manual/plugins/connect.geoip.html'>geoip</a></li>
 <li><a href='/manual/plugins/connect.p0f.html'>connect.p0f - A TCP Fingerprinting Plugin</a></li>
 <li><a href='/manual/plugins/connect.rdns_access.html'>connect.rdns_access</a></li>
@@ -129,7 +134,7 @@
 <li><a href='/manual/plugins/early_talker.html'>early_talker</a></li>
 <li><a href='/manual/plugins/graph.html'>graph</a></li>
 <li><a href='/manual/plugins/helo.checks.html'>helo.checks</a></li>
-<li><a href='/manual/plugins/karma.html'>karma - reward good and penalize bad mail senders</a></li>
+<li><a href='/manual/plugins/karma.html'>Haraka</a></li>
 <li><a href='/manual/plugins/log.syslog.html'>log.syslog</a></li>
 <li><a href='/manual/plugins/lookup_rdns.strict.html'>lookup_rdns.strict</a></li>
 <li><a href='/manual/plugins/mail_from.access.html'>mail_from.access</a></li>
@@ -142,10 +147,11 @@
 <li><a href='/manual/plugins/rate_limit.html'>rate_limit</a></li>
 <li><a href='/manual/plugins/rcpt_to.access.html'>rcpt_to.access</a></li>
 <li><a href='/manual/plugins/rcpt_to.blocklist.html'>rcpt_to.blocklist</a></li>
-<li><a href='/manual/plugins/rcpt_to.in_host_list.html'>rcpt_to.in_host_list</a></li>
+<li><a href='/manual/plugins/rcpt_to.in_host_list.html'>Haraka</a></li>
 <li><a href='/manual/plugins/rcpt_to.max_count.html'>rcpt_to.max_count</a></li>
-<li><a href='/manual/plugins/rcpt_to.qmail_deliverable.html'>qmail_deliverable</a></li>
+<li><a href='/manual/plugins/rcpt_to.qmail_deliverable.html'>Haraka</a></li>
 <li><a href='/manual/plugins/rdns.regexp.html'>rdns.regexp</a></li>
+<li><a href='/manual/plugins/relay.html'>relay</a></li>
 <li><a href='/manual/plugins/relay_acl.html'>relay_acl</a></li>
 <li><a href='/manual/plugins/relay_all.html'>relay_all</a></li>
 <li><a href='/manual/plugins/relay_force_routing.html'>relay_force_routing.js</a></li>
@@ -165,26 +171,66 @@
               <div class="bs-docs-section">
                 <h1>bounce</h1>
 
-<p>This plugin provides options for bounce processing.</p>
-
-<h2>Configuration</h2>
+<p>Provide options for bounce processing. The following features are available:</p>
 
 <ul>
 <li>reject_all</li>
 </ul>
 
-<p>Blocks all bounce messages using the simple rule of checking
+<p>When enabled, blocks all bounce messages using the simple rule of checking
 for <code>MAIL FROM:&lt;&gt;</code>.</p>
 
 <p>This is useful to enable if you have a mail server that gets spoofed too
 much but very few legitimate users. It is potentially bad to block all
 bounce messages, but unfortunately for some hosts, sometimes necessary.</p>
 
-<h2>- reject_invalid</h2>
+<h1>Configuration</h1>
 
-<p>This option tries to assure the message really is a bounce. It makes
-sure the message has a single recipient and that the return path is
-empty.</p>
+<h2>[check]</h2>
+
+<p>Each feature can be enabled/disabled with a true/false toggle in the [check]
+section of config/bounce.ini:</p>
+
+<pre><code>[check]
+reject_all=false
+single_recipient=true
+empty_return_path=true
+bad_rcpt=true
+</code></pre>
+
+<ul>
+<li>single_recipient</li>
+</ul>
+
+<p>Valid bounces have a single recipient. Assure that the message really is a
+bounce by enforcing bounces to be addressed to a single recipient.</p>
+
+<ul>
+<li>empty_return_path</li>
+</ul>
+
+<p>Valid bounces should have an empty return path. Test for the presence of the
+Return-Path header in bounces and disallow.</p>
+
+<ul>
+<li>bad_rcpt</li>
+</ul>
+
+<p>Disallow bounces to email addresses listed in config/bounce_bad_rcpt.</p>
+
+<p>Include email addresses in that file that should <em>never</em> receive bounce
+messages. Examples of email addresses that should be listed are:
+autoresponders, do-not-reply@example.com, dmarc-feedback@example.com, and
+any other email addresses used solely for machine generated messages.</p>
+
+<h2>[reject]</h2>
+
+<p>config/bounce.ini can have a [reject] section that toggles rejections on or
+off for the following checks:</p>
+
+<pre><code>single_recipient=true
+empty_return_path=true
+</code></pre>
 
               </div>
             </div>

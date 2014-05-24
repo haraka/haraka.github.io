@@ -7,7 +7,7 @@
     <meta name="description" content="">
     <meta name="author" content="">
 
-    <title>Haraka Manual &raquo; dkim_sign</title>
+    <title>Haraka Manual &raquo; access</title>
     
     <!-- Bootstrap core CSS -->
     <link href="/css/bootstrap.css" rel="stylesheet">
@@ -63,7 +63,7 @@
         <!-- Docs page layout -->
         <div class="bs-header" id="content">
           <div class="container">
-            <h1>dkim_sign</h1>
+            <h1>access</h1>
           </div>
         </div>
         
@@ -108,7 +108,7 @@
 <li><a href='/manual/plugins/queue/quarantine.html'>quarantine</a></li>
 <li><a href='/manual/plugins/queue/smtp_forward.html'>queue/smtp_forward</a></li>
 <li><a href='/manual/plugins/queue/smtp_proxy.html'>queue/smtp_proxy</a></li>
-<li><a href='/manual/plugins/access.html'>access</a></li>
+<li class="active"><a href='/manual/plugins/access.html'>access</a></li>
 <li><a href='/manual/plugins/aliases.html'>aliases</a></li>
 <li><a href='/manual/plugins/attachment.html'>attachment</a></li>
 <li><a href='/manual/plugins/avg.html'>avg</a></li>
@@ -128,7 +128,7 @@
 <li><a href='/manual/plugins/data.signatures.html'>data.signatures</a></li>
 <li><a href='/manual/plugins/data.uribl.html'>data.uribl</a></li>
 <li><a href='/manual/plugins/delay_deny.html'>delay_deny</a></li>
-<li class="active"><a href='/manual/plugins/dkim_sign.html'>dkim_sign</a></li>
+<li><a href='/manual/plugins/dkim_sign.html'>dkim_sign</a></li>
 <li><a href='/manual/plugins/dnsbl.html'>dnsbl</a></li>
 <li><a href='/manual/plugins/dnswl.html'>dnswl</a></li>
 <li><a href='/manual/plugins/early_talker.html'>early_talker</a></li>
@@ -169,100 +169,205 @@
             
             <div class="col-md-9" role="main">
               <div class="bs-docs-section">
-                <h1>dkim_sign</h1>
+                <h1>access</h1>
 
-<p>This plugin implements the DKIM Core specification found at dkimcore.org</p>
+<p>This plugin applies Access Control Lists during the connect, helo, mail, and
+rcpt phases of the SMTP conversation. It has a split personality, supporting
+two somewhat different modes, <strong>any</strong> -vs- <strong>precise</strong>.</p>
 
-<p>DKIM Core is a simplified subset of DKIM which is easier to understand
-and deploy, yet provides all the same delivery advantages as DKIM.</p>
+<h2>ANY</h2>
 
-<p>This plugin can only <em>sign</em> outbound messages.  It does not validate
-DKIM signatures.</p>
+<p>The <strong>any</strong> check is based on the idea that I want to block an offending domain
+name no matter where in the SMTP conversation it appears. That's possible using
+several regex lists in the <strong>precise</strong> checks, but it's also much slower.</p>
 
-<h2>Getting Started</h2>
+<p>With <strong>any</strong>, just drop the offending domain name into the <em>access.domain</em> file
+and it gets blocked for the rDNS hostname, the HELO hostname, the MAIL FROM
+domain name, and the RCPT TO domain name.</p>
 
-<p>Generate DKIM selector and keys:</p>
+<p>The <strong>any</strong> blacklist matches only on the <a href="#Organizational Domain">Organizational Domain</a> name (see NOTES below). Entries placed in the <em>access.domain</em> file are automatically reduced to the OD. Examples:</p>
 
-<pre><code>cd /path/to/haraka/config/dkim
-./dkim_key_gen.sh example.org
+<pre><code>       ENTRY                  O.D.
+mail.spam-central.com  -&gt; spam-central.com
+mail151.wayn.net       -&gt; wayn.net
 </code></pre>
 
-<p>Peek into the dkim_key_gen.sh shell script to see the commands used to
-create and format the DKIM public key. Within the config/dkim/example.org
- directory will be 4 files:</p>
+<p>In case the O.D. match is too broad, whitelist entries are placed in the same
+<em>access.domain</em> file with a ! prefix. Whitelist entries can be email addresses
+(for the MAIL FROM and RCPT TO tests) or hostnames for the rDNS and HELO
+hostnames. To block anything from example.com but not special.example.com:</p>
 
-<pre><code>% ls config/dkim/example.org/
-dns private public selector
+<pre><code>example.com
+!special.example.com
 </code></pre>
 
-<p>The<code>private</code> and <code>public</code> files contain the DKIM keys, the selector is
-in the <code>selector</code> file and the <code>dns</code> file contains a formatted record of
-the public key, as well as suggestions for DKIM, SPF, and DMARC policy
-records. The records in <code>dns</code> are ready to be copy/pasted into the DNS
-zone for example.org.</p>
+<p>To block everything (supposedly) from aol.com, except messages from that one
+person you know that still uses it:</p>
 
-<p>The DKIM DNS record will look like this:</p>
-
-<pre><code>may2013._domainkey TXT "v=DKIM1;p=[public key stripped of whitespace];"
+<pre><code>aol.com
+!friend@aol.com
 </code></pre>
 
-<p>And the values in the address have the following meaning:</p>
+<h2>PRECISE</h2>
 
-<pre><code>hash: h=[ sha1 | sha256 ]
-test; t=[ s | s:y ]
-granularity: g=[ ]
-notes: n=[ ]
-services: s=[email]
-keytypes: [ rsa ]
+<p>The precise ACLs share a common file format with each phase having a set of
+4 files (whitelist, whitelist_regex, blacklist, and blacklist_regex) which
+are simple lists.</p>
+
+<p>The ACLs for each phase apply their tests in the order listed. The whitelist
+is primarily to counter blacklist entries that match too much, so the the flow
+of control is: if whitelisted, stop processing. Then apply the blacklist. </p>
+
+<p>Entries in ACL files are one per line.</p>
+
+<p>Regex entries are anchored, meaning '^' + regex + '$' are added automatically.
+To bypass that, use a '.*' at the start or the end of the regex. This should
+help avoid overly permissive rules.</p>
+
+<h1>Usage</h1>
+
+<p>To enable the <strong>access</strong> plugin, add an entry (access) to config/plugins. Then
+add entries to the config files for the addresses or patterns to block.</p>
+
+<h2>Upgrading</h2>
+
+<p>When upgrading from the rdns_access, mail_from.access, and rcpt_to.access
+plugins, be sure to remove the plugins from config/plugins, upon pain of
+wasted CPU cycles.</p>
+
+<p>There is no need to modify your black/white lists in any way.</p>
+
+<p>If you just want the new plugin to work exactly like the old trio it replaces,
+add this section to <em>config/access.ini</em>:</p>
+
+<pre><code>[check]
+any=false
+conn=true
+helo=false
+mail=true
+rcpt=true
 </code></pre>
 
-<h2>What to sign</h2>
+<h3>Checking ACL results</h3>
 
-<p>The DKIM signing key for messages from example.org <em>should</em> be signed with
- a DKIM key for example.org. Failing to do so will result in messages not
-having an <em>aligned</em> DKIM signature. For DMARC enabled domains, this will
-likely result in deliverability problems.</p>
+<p>To check access results from other plugins, use the standard <em>results</em>
+methods.</p>
 
-<p>For correct alignment, Haraka signs each message with that domains DKIM key.
-For an alternative, see the legacy Single Domain Configuration below.</p>
+<pre><code>var ar = connection.results.get('access');
+if (ar.pass.length &gt; 2) {
+    // they passed the connection and helo checks
+}
 
-<h2>Configuration</h2>
+var ar = connection.transaction.results.get('access');
+if (ar.pass.length &gt; 2) {
+    // they passed the mail and rcpt checks
+}
+</code></pre>
 
-<p>This plugin uses the configuration dkim_sign.ini in INI format.
-All configuration should appear within the 'main' block and is
-checked for updates on every run.</p>
+<p>To determine which file(s) had matching entries, inspect the contents
+of the pass/fail elements in the result object.</p>
+
+<h2>Config Files</h2>
+
+<h3>access.ini</h3>
+
+<p>Each check can be enabled or disabled in the [check] section of access.ini:</p>
+
+<pre><code>[check]
+any=true    (see below)
+conn=false
+helo=false
+mail=false
+rcpt=false
+</code></pre>
+
+<p>A custom deny message can be configured for each SMTP phase:</p>
+
+<pre><code>[deny_msg]
+conn=You are not allowed to connect
+helo=That HELO is not allowed to connect
+mail=That sender cannot send mail here
+rcpt=That recipient is not allowed
+</code></pre>
+
+<h2>PRECISE ACLs</h2>
+
+<h3>Connect</h3>
+
+<p>The connect ACLs are evaluated against the IP address <strong>and</strong> the rDNS
+hostname (if any) of the remote.</p>
 
 <ul>
-<li><p>disabled = [ 1 | true | yes ]             (OPTIONAL)</p>
-
-<p>Set this to disable DKIM signing</p></li>
-<li><p>headers_to_sign = list, of; headers       (REQUIRED)</p>
-
-<p>Set this to the list of headers that should be signed
-separated by either a comma, colon or semi-colon.
-This is to prevent any tampering of the specified headers.
-The 'From' header is required to be present by the RFC and
-will be added if it is missing.</p></li>
+<li>connect.rdns_access.whitelist          (pass)</li>
+<li>connect.rdns_access.whitelist_regex   (pass)</li>
+<li>connect.rdns_access.blacklist          (block)</li>
+<li>connect.rdns_access.blacklist_regex   (block)</li>
 </ul>
 
-<h2>Single Domain Configuration</h2>
-
-<p>To sign all messages with a single DKIM key, these two config settings
-are required.</p>
+<h3>MAIL FROM</h3>
 
 <ul>
-<li><p>selector = name</p>
-
-<p>Set this to the selector name published in DNS under the
-_domainkey sub-domain of the domain referenced below.</p></li>
-<li><p>domain = name</p>
-
-<p>Set this to the domain name that will be used to sign messages
-which don't match a per-domain DKIM key.  The DNS TXT entry for:</p>
-
-<pre><code>&lt;selector&gt;._domainkey.&lt;domain&gt;
-</code></pre></li>
+<li>connect.mail_from.whitelist          (pass)</li>
+<li>connect.mail_from.whitelist_regex   (pass)</li>
+<li>connect.mail_from.blacklist          (block)</li>
+<li>connect.mail_from.blacklist_regex   (block)</li>
 </ul>
+
+<h3>RCPT TO</h3>
+
+<ul>
+<li>connect.rcpt_to.whitelist           (pass)</li>
+<li>connect.rcpt_to.whitelist_regex    (pass)</li>
+<li>connect.rcpt_to.blacklist           (block)</li>
+<li>connect.rcpt_to.blacklist_regex    (block)</li>
+</ul>
+
+<h2>NOTES</h2>
+
+<h3>ANY performance</h3>
+
+<p>I did some performance testing of indexOf -vs- precompiled regex. In
+a list of 3 items, where the matches were at the front of the list, regex
+matches are 2x as slow. When the list grows to 30 entries, the regex
+matches are 3x times as slow. When the matches are moved to the end of the
+30 member list, the regex searches are over 100x slower than indexOf.</p>
+
+<p>Based on this observation, reducing the domain name and doing an indexOf
+search of an (even much longer) blacklist is <em>much</em> faster than adding lists
+of .*domain.com entries to the *_regex files.</p>
+
+<h3>Organizational Domain</h3>
+
+<p>The OD is a term that describes the highest level portion of domain name that
+is under the control of a private organization. I'll explain, but first, lets
+clarify a few terms:</p>
+
+<h4>TLD</h4>
+
+<p>Top Level Domains. Domain labels at the apex of a domain name.</p>
+
+<pre><code>com
+net
+org
+co
+us
+uk
+</code></pre>
+
+<h4>Public Suffix</h4>
+
+<p>The portion of a domain name that is operated by a registry. These are often
+synonymous with TLDs but frequently also include second and third level
+domains as well:</p>
+
+<pre><code>com
+co.uk
+</code></pre>
+
+<p>The Organizational Domain is the next level higher than the Public Suffix. So
+if a hostname is <em>mail.example.com</em>, and <em>com</em> is the Public Suffix, the OD is
+<em>example.com</em>. If the hostname is <em>www.bbc.co.uk</em>, the PS is <em>co.uk</em> and the
+OD is <em>bbc.co.uk</em>.</p>
 
               </div>
             </div>

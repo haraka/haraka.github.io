@@ -7,7 +7,7 @@
     <meta name="description" content="">
     <meta name="author" content="">
 
-    <title>Haraka Manual &raquo; karma - reward good and penalize bad mail senders</title>
+    <title>Haraka Manual &raquo; Haraka</title>
     
     <!-- Bootstrap core CSS -->
     <link href="/css/bootstrap.css" rel="stylesheet">
@@ -63,7 +63,7 @@
         <!-- Docs page layout -->
         <div class="bs-header" id="content">
           <div class="container">
-            <h1>karma - reward good and penalize bad mail senders</h1>
+            <h1>Haraka</h1>
           </div>
         </div>
         
@@ -86,6 +86,7 @@
 <li><a href='/manual/Net_Utils.html'>Net_Utils</a></li>
 <li><a href='/manual/Outbound.html'>Outbound Mail with Haraka</a></li>
 <li><a href='/manual/Plugins.html'>Writing Haraka Plugins</a></li>
+<li><a href='/manual/Results.html'>Results</a></li>
 <li><a href='/manual/Transaction.html'>Transaction Object</a></li>
 </ul></li>
 <li><a class="submenu" data-toggle="collapse" data-target="#tutorials" data-parent="#chapternav" href="javascript:void(null);">Tutorials</a>
@@ -98,6 +99,7 @@
 <ul id='plugins' class='nav'>
 <li><a href='/manual/plugins/auth/auth_ldap.html'>auth/auth_ldap</a></li>
 <li><a href='/manual/plugins/auth/auth_proxy.html'>auth/auth_proxy</a></li>
+<li><a href='/manual/plugins/auth/auth_vpopmaild.html'>Haraka</a></li>
 <li><a href='/manual/plugins/auth/flat_file.html'>auth/flat_file</a></li>
 <li><a href='/manual/plugins/queue/deliver.html'>queue/deliver</a></li>
 <li><a href='/manual/plugins/queue/discard.html'>discard</a></li>
@@ -106,12 +108,15 @@
 <li><a href='/manual/plugins/queue/quarantine.html'>quarantine</a></li>
 <li><a href='/manual/plugins/queue/smtp_forward.html'>queue/smtp_forward</a></li>
 <li><a href='/manual/plugins/queue/smtp_proxy.html'>queue/smtp_proxy</a></li>
+<li><a href='/manual/plugins/access.html'>access</a></li>
 <li><a href='/manual/plugins/aliases.html'>aliases</a></li>
 <li><a href='/manual/plugins/attachment.html'>attachment</a></li>
 <li><a href='/manual/plugins/avg.html'>avg</a></li>
 <li><a href='/manual/plugins/block_me.html'>block_me</a></li>
 <li><a href='/manual/plugins/bounces.html'>bounce</a></li>
 <li><a href='/manual/plugins/clamd.html'>clamd</a></li>
+<li><a href='/manual/plugins/connect.asn.html'>connect.asn</a></li>
+<li><a href='/manual/plugins/connect.fcrdns.html'>Forward Confirmed Reverse DNS</a></li>
 <li><a href='/manual/plugins/connect.geoip.html'>geoip</a></li>
 <li><a href='/manual/plugins/connect.p0f.html'>connect.p0f - A TCP Fingerprinting Plugin</a></li>
 <li><a href='/manual/plugins/connect.rdns_access.html'>connect.rdns_access</a></li>
@@ -129,7 +134,7 @@
 <li><a href='/manual/plugins/early_talker.html'>early_talker</a></li>
 <li><a href='/manual/plugins/graph.html'>graph</a></li>
 <li><a href='/manual/plugins/helo.checks.html'>helo.checks</a></li>
-<li class="active"><a href='/manual/plugins/karma.html'>karma - reward good and penalize bad mail senders</a></li>
+<li class="active"><a href='/manual/plugins/karma.html'>Haraka</a></li>
 <li><a href='/manual/plugins/log.syslog.html'>log.syslog</a></li>
 <li><a href='/manual/plugins/lookup_rdns.strict.html'>lookup_rdns.strict</a></li>
 <li><a href='/manual/plugins/mail_from.access.html'>mail_from.access</a></li>
@@ -142,10 +147,11 @@
 <li><a href='/manual/plugins/rate_limit.html'>rate_limit</a></li>
 <li><a href='/manual/plugins/rcpt_to.access.html'>rcpt_to.access</a></li>
 <li><a href='/manual/plugins/rcpt_to.blocklist.html'>rcpt_to.blocklist</a></li>
-<li><a href='/manual/plugins/rcpt_to.in_host_list.html'>rcpt_to.in_host_list</a></li>
+<li><a href='/manual/plugins/rcpt_to.in_host_list.html'>Haraka</a></li>
 <li><a href='/manual/plugins/rcpt_to.max_count.html'>rcpt_to.max_count</a></li>
-<li><a href='/manual/plugins/rcpt_to.qmail_deliverable.html'>qmail_deliverable</a></li>
+<li><a href='/manual/plugins/rcpt_to.qmail_deliverable.html'>Haraka</a></li>
 <li><a href='/manual/plugins/rdns.regexp.html'>rdns.regexp</a></li>
+<li><a href='/manual/plugins/relay.html'>relay</a></li>
 <li><a href='/manual/plugins/relay_acl.html'>relay_acl</a></li>
 <li><a href='/manual/plugins/relay_all.html'>relay_all</a></li>
 <li><a href='/manual/plugins/relay_force_routing.html'>relay_force_routing.js</a></li>
@@ -163,107 +169,223 @@
             
             <div class="col-md-9" role="main">
               <div class="bs-docs-section">
-                <h1>karma - reward good and penalize bad mail senders</h1>
+                <h1><code>karma</code></h1>
 
-<p>Karma tracks sender history and varyies QoS for based on the senders reputation.</p>
+<p>A heuristic scoring engine that uses connection metadata and the results
+of other Haraka plugins as inputs. Connections scoring in excess of specified
+thresholds are <a href="#penalties">penalized</a> in proportionate ways.</p>
 
-<h2>SYNOPSIS</h2>
+<h2>Description</h2>
 
-<p>Karma can be used to craft custom connection policies such as these examples:</p>
+<p>Haraka includes some excellent plugins that detect message or sender patterns
+that are indicative of spam. Some plugins have accuracy rates above 95%. The
+extent that such plugins can be utilized depends on a sites tolerance for
+blocking legit messages. Sites that can't tolerate blocking ham are challenged
+to benefit from imperfect plugins.</p>
 
-<ol>
-<li><p>Hi well known and well behaved sender. Help yourself to greater concurrency,
-more recipients, and no delays.</p></li>
-<li><p>Hi there, bad sender. You get a max concurrency of 1, max recipients
-of 2, and SMTP delays.</p></li>
-</ol>
+<p>Karma's contribution is to heuristically score results from every plugin. By
+scoring a few "95+" plugins, accuracy rates above 99% are attainable. With a
+half dozen such plugins, 99.99% accuracy is attainable. With karma, good
+senders can occasionally fail a test or two and still deliver their mail.
+Poor senders find themselves crawling towards rejection.</p>
 
-<h2>DESCRIPTION</h2>
+<h2>How Karma Works</h2>
 
-<p>Karma records the number of good, bad, and total connections. When a sender
-has more bad than good connections, they are penalized for <em>penalty_days</em>.
-Connections from senders in the penalty box are rejected until the penalty
-expires.</p>
+<p>Karma takes a holistic view of the <strong>connection</strong>, expecting other plugins to
+tolerate failures (deny/reject=false) and store processing <a href="http://haraka.github.io/manual/Results.html">results</a>.
+During the connection, karma progressively collects these results and applies
+the <a href="#awards">awards</a> defined in <code>karma.ini</code>.</p>
 
-<p>Karma stores a connection note (<em>connection.notes.karma</em>) that other
-plugins can use. It contains the following;</p>
+<p>The scoring mechanism is not dissimilar to
+<a href="http://haraka.github.io/manual/plugins/spamassassin.html">SpamAssassin</a>, but Karma
+has some particular advantages:</p>
 
-<pre><code>connection: 0,     &lt;- score for this connection
-history: 0,        &lt;- score for all connections
-awards: [],        &lt;- tests that added positive karma
-penalties: [ ],    &lt;- tests that added negative karma
+<pre><code>* Runs under Node, so it's very fast
+* Async. Very scalable.
+* Local sender reputation database
+* Access to connection properties (relaying, port, auth attempts, etc..)
+* Access to raw SMTP commands (data + formatting inspection)
+* Ability to reject connections before DATA
 </code></pre>
 
-<h2>HISTORY</h2>
-
-<p>Karma history is computed as the number of good - bad connections.</p>
+<p>Karma is not a replacement for content filters. Karma focuses on the quality
+of the <strong>connection</strong>, whereas content filters (bayes*) focus on the contents
+of the <strong>message</strong>. Karma works best with content filters.</p>
 
 <h1>CONFIG</h1>
 
-<p>See config/karma.ini. It has lots of options and inline documentation.</p>
+<p>See config/karma.ini for options and inline documentation.</p>
 
-<h2>BENEFITS</h2>
+<h2><a name="awards"></a>AWARDS</h2>
 
-<p>Karma reduces the resources wasted by bad mailers.</p>
+<p>Karma allows the site administrator to control how much weight to assign to
+plugin results, providing a great deal of control over what results are
+worth rejecting for.</p>
 
-<p>The biggest gains to be had are by assigning lots of negative karma by the
-heavy plugins (spamassassin, dspam, virus filters) when they encounter spam.
-Karma will notice and reward them appropriately in the future.</p>
+<p>Karma begins scoring the connection when the first packet arrives. The IP
+reputation, <a href="/manual/plugins/connect.p0f.html">sender OS</a>, <a href="/manual/plugins/connect.geoip.html">GeoIP location</a>, <a href="/manual/plugins/dnsbl.html">DNSBL</a> listing, and <a href="/manual/plugins/connect.fcrdns.html">FCrDNS</a> are
+often a sufficient basis for rejecting a connection without ever blocking a
+ham.</p>
 
-<h2>KARMA</h2>
+<p>Karma performs checks early and often, maximizing the penality it can
+exact upon bad mailers.</p>
 
-<p>When the connection ends, B<karma> records the result. Mail servers whose
-bad connections exceed good ones are sent to the penalty box. Servers in
-the penalty box are tersely disconnected for <em>penalty_days</em>. Here is
-an example connection from an IP in the penalty box:</p>
+<h2><a name="penalties"></a>Penalties</h2>
 
-<p>If only negative karma is set, desirable mailers will be penalized. For
-example, a Yahoo user sends an egregious spam to a user on our server.
-Now nobody on our server can receive email from that Yahoo server for
-<em>penalty_days</em>. This will happen approximately 0% of the time if we also
-set positive karma.</p>
+<h3>Deny / Reject</h3>
 
-<h2>KARMA BONUS</h2>
+<p>When connections become worse than [thresholds]negative, they are denied
+during the next [deny]hook.</p>
 
-<p>Karma maintains a history for each IP. When a senders history has decreased
-below -5 and they have never sent a good message, they get a karma bonus.
-The bonus tacks on an extra day of blocking for every bad message they
-send.</p>
+<h3>History</h3>
 
-<p>Example: an unknown sender delivers a spam. They get a one day penalty.
-After 5 days, 5 spams, 5 penalties, and 0 good messages, they get a six day
-penalty. The next offense gets a 7 day penalty, and so on.</p>
+<p>Karma history is computed as the number of good - bad connections.</p>
 
-<h2>USING KARMA</h2>
+<p>When each connection ends, <em>karma</em> records the result. When a sufficient
+history has been built for an IP or ASN, future connections from that
+address(es) will get a positive or negative karma award.</p>
 
-<p>Unlike RBLs, <em>karma</em> only penalizes IPs that have sent us spam, and only when
-those senders have sent us more spam than ham.</p>
+<p>The reward is purposefully small, to permit good senders in bad
+neighborhoods the ability to send.</p>
 
-<h2>EFFECTIVENESS</h2>
+<h3><a name="delay"></a>Connection Delays</h3>
 
-<p>Effectiveness results from the propensity of bad senders to be repeat
-offenders. Limiting them to a single offense per day(s) greatly reduces
-the resources they can waste.</p>
+<p>Connection delays (aka tarpitting, teergrubing, early talker) slow down a
+SMTP conversation by inserting artificial delays. Early talking is when a
+sender talks out of turn. Karma punishes early talkers and increases
+connection delays adaptively as connection quality declines.</p>
 
-<p>Of the connections that had previously passed all other checks and were caught
-only by spamassassin and/or dspam, karma rejected 31 percent. Since
-spamassassin and dspam consume far more resources than karma, this plugin
-can be a very big win.</p>
+<p>Karma's delay goals:</p>
 
-<h2>BUGS &amp; LIMITATIONS</h2>
+<pre><code>1. Don't delay valid senders
+2. Penalize senders in proportion to their karma score
+3. Dampen bruteforce AUTH attacks.
+4. Since the only *cost* we can exact from miscreants is time, and
+   connections are cheap to maintain, keep miscreants online as long
+   as possible.
+</code></pre>
 
-<p>This plugin is reactionary. Like the FBI, it doesn't do much until
-after a crime has been committed.</p>
+<p>There are three tarpit options:</p>
 
-<p>There is little to be gained by listing servers that are already on DNS
-blacklists, send to invalid users, earlytalkers, etc. Those already have
-very lightweight tests.</p>
+<pre><code>[tarpit]
+* delay=0   (seconds to delay,      default: 0)
+* max=5     (max seconds to delay,  default: 5)
+</code></pre>
 
-<h2>TODO</h2>
+<p>When set to zero, the value of the delay is adaptive, calculated proportional
+to the karma score of the connection. Connections with good karma will see no
+delay and bad ones will see long delays.</p>
+
+<p>When delay is non-zero, each SMTP response will be delayed by that many seconds.</p>
+
+<p>In practice, most naughty senders abandon the connection when forced to
+wait more than a handful of seconds. <code>max</code> sets the maximum delay between
+responses.</p>
+
+<p>When using <code>karma</code>, do not use Haraka's <code>tarpit</code> or <code>early_talker</code> plugins.</p>
+
+<h3>Penalty Box</h3>
+
+<p>When senders score worse than [thresholds]punish, they are prevented from
+connecting for <em>penalty_days</em>. Limiting SMTP abuse to just a few connections
+per day(s) greatly reduces bruteforce attacks and spam attempts.</p>
+
+<pre><code>[core] connect ip=173.234.145.190 port=9472 local_ip=127.0.0.30 local_port=25
+[connect.asn] asn: 15003, net: 173.234.144.0/21, country: US, authority: arin
+[connect.fcrdns] 173.234.145.190.rdns.ubiquity.io(Error: queryA ENOTFOUND)
+[connect.fcrdns] ip=173.234.145.190 rdns="173.234.145.190.rdns.ubiquity.io" rdns_len=1 fcrdns="" fcrdns_len=0 other_ips_len=0 invalid_tlds=0 generic_rdns=true
+[connect.p0f] os="Windows 7 or 8" link_type="Ethernet or modem" distance=12 total_conn=4 shared_ip=N
+[karma] neighbors: -88
+[core] hook=lookup_rdns plugin=karma function=hook_lookup_rdns params="" retval=DENYDISCONNECT msg="Your mother was a hampster and your father smells of elderberries!"
+[core] disconnect ip=173.234.145.190 rdns="" helo="" relay=N early=N esmtp=N tls=N pipe=N txns=0 rcpts=0/0/0 msgs=0/0/0 bytes=0 lr="554 Your mother was a hampster and your father smells of elderberries!" time=10.009
+[core] data after disconnect from 173.234.145.190
+</code></pre>
+
+<h2>Included Tests</h2>
+
+<p>Connection data that karma considers:</p>
 
 <ul>
-<li>ASN integration, for tracking the karma of 'neighborhoods'</li>
+<li><a href="#IP_Reputation">IP Reputation</a></li>
+<li><a href="#Neighbor_Reputation">Neighbor reputation</a> (the network ASN)</li>
+<li>DENY attempts by other plugins</li>
+<li>envelope sender from a spammy TLD</li>
+<li><a href="#malformed_env">malformed envelope addresses</a></li>
+<li><a href="#unrecognized">unrecognized SMTP commands</a></li>
+<li>too many recipient attempts</li>
+<li>too many concurrent connections for class (unknown, good, bad)</li>
+<li>matching <em>env from</em> and <em>env to</em> name (rare in ham, frequent in spam)</li>
 </ul>
+
+<p>The data from these tests are helpful but the real power of karma is <a href="#awards">scoring
+the results</a> of other plugins. See karma.ini for a rich set of examples.</p>
+
+<h3><a name="IP_Reputation"></a>IP Reputation</h3>
+
+<p>Karma records the number of good, bad, and total connections.  The results
+are accessible so that other plugins as well.</p>
+
+<pre><code>var karma = connection.results.get('karma');
+</code></pre>
+
+<p>The karma result object contains at least the following:</p>
+
+<pre><code>connect: 0,       &lt;- score for this connection
+history: 0,       &lt;- score for all connections
+total_connects: 0,
+pass: [],         &lt;- tests that added positive karma
+fail: [],         &lt;- tests that added negative karma
+</code></pre>
+
+<p>When a sender has more bad than good connections, and have a connection
+scoring worse than [thresholds]punish, they can be sent to the penalty box.</p>
+
+<h3><a name="Neighbor_Reputation"></a>Neighborhood Reputation (ASN)</h3>
+
+<pre><code>[asn]
+enable=true    (default: true)
+award=2        (default: 1 point)
+</code></pre>
+
+<p>When [asn]enable is true, karma records the number of good and bad
+connections from each ASN. If [asn]award is > 0, that many karma points
+(plus or minus) are applied to future connections from that ASN.</p>
+
+<p>ASNs with less than 5 karma points in either direction are ignored.</p>
+
+<h3><a name="malformed_env"></a>Malformed Envelope Addresses</h3>
+
+<p>Some malware senders don't bother complying with the RFC (5321, 2821, 821) address format. Karma checks the envelope from and to addresses for a common RFC ignorant pattern that is highly correlated with malware.</p>
+
+<h3><a name="unrecognized"></a>Unrecognized SMTP verbs/commands</h3>
+
+<p>Certain bruteforce password hacking tools have a pre-programmed SMTP path
+that ignores SMTP responses. After EHLO, they attempt AUTH,LOGIN with a valid
+username. To bruteforce a password often requires millions of attempts so each
+bot sprays a couple dozen connections at the target server. Better quality
+MTAs like Haraka have built-in auth protection that inserts timeouts
+between successive auth attempts. The bots work around that by dropping the
+connection after each failure and reconnecting. The attempts are distributed
+so IP blocking is of limited effectiveness.</p>
+
+<p>To combat these bruteforce attacks several strategies are called for:</p>
+
+<pre><code>1. Impose [connection delays](#delay)
+2. Disable SMTP-AUTH when not encrypted. The bots rarely use STARTTLS.
+   Besides preventing user passwords from transiting the internet in clear
+   text, requiring TLS encryption also means AUTH is not available to
+   poorly written bots.
+3. Having done #2, bot AUTH attempts show up as unrecognized commands.
+   Penalizing these with tarpitting and rate limiting will almost never
+   harm a legit sender but it will make it take much much longer for
+   attackers to bruteforce passwords.
+</code></pre>
+
+<h2>LIMITATIONS</h2>
+
+<p>Karma is most effective at filtering mail delivered by bots and rogue servers.
+Spam delivered by servers with good reputations flies past most of karma's
+checks. Expect to use karma <em>with</em> content filters.</p>
 
               </div>
             </div>

@@ -7,7 +7,7 @@
     <meta name="description" content="">
     <meta name="author" content="">
 
-    <title>Haraka Manual &raquo; dkim_sign</title>
+    <title>Haraka Manual &raquo; relay</title>
     
     <!-- Bootstrap core CSS -->
     <link href="/css/bootstrap.css" rel="stylesheet">
@@ -63,7 +63,7 @@
         <!-- Docs page layout -->
         <div class="bs-header" id="content">
           <div class="container">
-            <h1>dkim_sign</h1>
+            <h1>relay</h1>
           </div>
         </div>
         
@@ -128,7 +128,7 @@
 <li><a href='/manual/plugins/data.signatures.html'>data.signatures</a></li>
 <li><a href='/manual/plugins/data.uribl.html'>data.uribl</a></li>
 <li><a href='/manual/plugins/delay_deny.html'>delay_deny</a></li>
-<li class="active"><a href='/manual/plugins/dkim_sign.html'>dkim_sign</a></li>
+<li><a href='/manual/plugins/dkim_sign.html'>dkim_sign</a></li>
 <li><a href='/manual/plugins/dnsbl.html'>dnsbl</a></li>
 <li><a href='/manual/plugins/dnswl.html'>dnswl</a></li>
 <li><a href='/manual/plugins/early_talker.html'>early_talker</a></li>
@@ -151,7 +151,7 @@
 <li><a href='/manual/plugins/rcpt_to.max_count.html'>rcpt_to.max_count</a></li>
 <li><a href='/manual/plugins/rcpt_to.qmail_deliverable.html'>Haraka</a></li>
 <li><a href='/manual/plugins/rdns.regexp.html'>rdns.regexp</a></li>
-<li><a href='/manual/plugins/relay.html'>relay</a></li>
+<li class="active"><a href='/manual/plugins/relay.html'>relay</a></li>
 <li><a href='/manual/plugins/relay_acl.html'>relay_acl</a></li>
 <li><a href='/manual/plugins/relay_all.html'>relay_all</a></li>
 <li><a href='/manual/plugins/relay_force_routing.html'>relay_force_routing.js</a></li>
@@ -169,100 +169,179 @@
             
             <div class="col-md-9" role="main">
               <div class="bs-docs-section">
-                <h1>dkim_sign</h1>
+                <h1>relay</h1>
 
-<p>This plugin implements the DKIM Core specification found at dkimcore.org</p>
+<p><a href="http://en.wikipedia.org/wiki/Mail_transfer_agent">MTAs</a> generally only accept mail for <em>local</em> domains they can deliver to. In Haraka, the <code>rcpt_to.*</code> plugins usually decide which domains and/or email addresses are deliverable. By default, everything else is rejected.</p>
 
-<p>DKIM Core is a simplified subset of DKIM which is easier to understand
-and deploy, yet provides all the same delivery advantages as DKIM.</p>
+<p><strong>Relaying</strong> is when a MTA accepts mail that is destined elsewhere. Back in the day (1980s), most MTAs permitted open relaying. Soon spammers abused our open relays (1990s) and left us with soiled mail queues. Now nearly all MTAs have relaying disabled and <a href="http://en.wikipedia.org/wiki/Mail_user_agent">MUAs</a> are required to use a <a href="http://en.wikipedia.org/wiki/Message_submission_agent">MSA</a> to relay. Most MTAs (including Haraka) have MSA features and can serve both purposes.</p>
 
-<p>This plugin can only <em>sign</em> outbound messages.  It does not validate
-DKIM signatures.</p>
+<p>This <strong>relay</strong> plugin provides Haraka with options for managing relay permissions.</p>
 
-<h2>Getting Started</h2>
+<h2>Authentication</h2>
 
-<p>Generate DKIM selector and keys:</p>
+<p>One way to enable relaying is <a href="http://haraka.github.io/manual.html">authentication</a> via the auth plugins. Successful authentication enables relaying during <em>that</em> SMTP connection. To securely offer SMTP AUTH, the <a href="http://haraka.github.io/manual/plugins/tls.html">tls</a> plugin and at least one auth plugin must be enabled and properly configured. When that requirement is met, the AUTH SMTP extension will be advertised to SMTP clients.</p>
 
-<pre><code>cd /path/to/haraka/config/dkim
-./dkim_key_gen.sh example.org
+<pre><code>% nc mail.example.com 587
+220 mail.example.com ESMTP Haraka 2.4.0 ready
+ehlo client.example.com
+250-mail.example.com Hello client.example.com [192.168.0.1], Haraka is at your service.
+250-PIPELINING
+250-8BITMIME
+250-SIZE 10000000
+250 STARTTLS
+quit
+221 mail.example.com closing connection. Have a jolly good day.
 </code></pre>
 
-<p>Peek into the dkim_key_gen.sh shell script to see the commands used to
-create and format the DKIM public key. Within the config/dkim/example.org
- directory will be 4 files:</p>
+<p>Notice that there's no AUTH advertised. We only permit authentication when the
+connection is secured with TLS:</p>
 
-<pre><code>% ls config/dkim/example.org/
-dns private public selector
+<pre><code>% openssl s_client -connect mail.example.com:587 -starttls smtp
+CONNECTED(00000003)
+&lt;snip long SSL certificate details&gt;
+---
+250 STARTTLS
+ehlo client.example.com
+250-mail.example.com Hello client.example.com [192.168.1.1], Haraka is at your service.
+250-PIPELINING
+250-8BITMIME
+250-SIZE 10000000
+250 AUTH PLAIN LOGIN
+quit
+221 mail.example.com closing connection. Have a jolly good day.
+closed
 </code></pre>
 
-<p>The<code>private</code> and <code>public</code> files contain the DKIM keys, the selector is
-in the <code>selector</code> file and the <code>dns</code> file contains a formatted record of
-the public key, as well as suggestions for DKIM, SPF, and DMARC policy
-records. The records in <code>dns</code> are ready to be copy/pasted into the DNS
-zone for example.org.</p>
+<p>To avoid port 25 restrictions, in 1998 we developed <a href="http://tools.ietf.org/html/rfc2476">SMTP submission</a> on port 587. For optimal security and reliability, <a href="http://en.wikipedia.org/wiki/Mail_user_agent">MUAs</a> should be configured to send mail to port 587 with TLS/SSL and AUTH enabled.</p>
 
-<p>The DKIM DNS record will look like this:</p>
+<h2>ACL (Access Control List)</h2>
 
-<pre><code>may2013._domainkey TXT "v=DKIM1;p=[public key stripped of whitespace];"
+<p>ACL processing is enabled by setting acl=true in the [relay] section of
+relay.ini:</p>
+
+<pre><code>[relay]
+acl=true
 </code></pre>
 
-<p>And the values in the address have the following meaning:</p>
-
-<pre><code>hash: h=[ sha1 | sha256 ]
-test; t=[ s | s:y ]
-granularity: g=[ ]
-notes: n=[ ]
-services: s=[email]
-keytypes: [ rsa ]
-</code></pre>
-
-<h2>What to sign</h2>
-
-<p>The DKIM signing key for messages from example.org <em>should</em> be signed with
- a DKIM key for example.org. Failing to do so will result in messages not
-having an <em>aligned</em> DKIM signature. For DMARC enabled domains, this will
-likely result in deliverability problems.</p>
-
-<p>For correct alignment, Haraka signs each message with that domains DKIM key.
-For an alternative, see the legacy Single Domain Configuration below.</p>
-
-<h2>Configuration</h2>
-
-<p>This plugin uses the configuration dkim_sign.ini in INI format.
-All configuration should appear within the 'main' block and is
-checked for updates on every run.</p>
+<p>With the Access Control List feature, relaying can be enabled for IPv4 and
+IPv6 networks. IP ranges listed in the ACL file are allowed to send mails
+without furthur checks.</p>
 
 <ul>
-<li><p>disabled = [ 1 | true | yes ]             (OPTIONAL)</p>
+<li><p><code>config/relay_acl_allow</code></p>
 
-<p>Set this to disable DKIM signing</p></li>
-<li><p>headers_to_sign = list, of; headers       (REQUIRED)</p>
-
-<p>Set this to the list of headers that should be signed
-separated by either a comma, colon or semi-colon.
-This is to prevent any tampering of the specified headers.
-The 'From' header is required to be present by the RFC and
-will be added if it is missing.</p></li>
+<p>Allowed IP ranges in CIDR notation, one per line.</p></li>
 </ul>
 
-<h2>Single Domain Configuration</h2>
+<p>Back in the day, ISPs enabled all of their IP space to relay. That proved
+problematic for users who took their laptops and mobile phones elsewhere and
+then couldn't send mail. For end users therefore, use SMTP AUTH described
+above. If you reside somewhere technology evolves more slowly, you can still
+add IP allocations to <code>relay_acl_allow</code> like so:</p>
 
-<p>To sign all messages with a single DKIM key, these two config settings
-are required.</p>
+<pre><code>echo 'N.N.N.N/24' &gt;&gt; /path/to/haraka/config/relay_acl_allow
+</code></pre>
+
+<p>A common use case for IP based relaying is to relay messages on behalf of
+another mail server. If your organization has an Exchange server, using Haraka
+to filter inbound messages is a great choice. You might also want to relay
+outbound messages via Haraka as well, so they can be DKIM signed on their way
+to the internet. For such a use case, you would set 'acl=true' (the default)
+in the [relay] section of <code>access.ini</code> and then add the external IP address
+of the corporate firewall to <code>config/relay_acl_allow</code>:</p>
+
+<pre><code>echo 'N.N.N.N/32' &gt;&gt; /path/to/haraka/config/relay_acl_allow
+</code></pre>
+
+<h2>Force Route / Dest[ination] Domains</h2>
+
+<p>Force routes and Destination Domains are enabled by setting in the [relay]
+section of relay.ini:</p>
+
+<pre><code>[relay]
+force_routing=false  (default: false)
+dest_domains=false   (default: false)
+</code></pre>
+
+<p>These two features share another common config file:</p>
 
 <ul>
-<li><p>selector = name</p>
-
-<p>Set this to the selector name published in DNS under the
-_domainkey sub-domain of the domain referenced below.</p></li>
-<li><p>domain = name</p>
-
-<p>Set this to the domain name that will be used to sign messages
-which don't match a per-domain DKIM key.  The DNS TXT entry for:</p>
-
-<pre><code>&lt;selector&gt;._domainkey.&lt;domain&gt;
-</code></pre></li>
+<li><code>config/relay_dest_domains.ini</code></li>
 </ul>
+
+<p>The format is ini and entries are within the [domains] section. The key for each entry is the domain and the value is a JSON string. Within the JSON string, the currently supported keys are:</p>
+
+<pre><code>* action  (Dest Domains)
+* nexthop (Force Route)
+</code></pre>
+
+<h3>Force Route</h3>
+
+<p>Think of force route as the equivalent of the transport map in Postfix or the smtproutes file in Qmail. Rather than looking up the MX for a host, the <em>nexthop</em> value from the entry in the config file is used.</p>
+
+<p>The value of "nexthop": can be a hostname or an IP, optionally follow by :port.</p>
+
+<p>Example:</p>
+
+<pre><code>[domains]
+test.com = { "action": "continue", "nexthop": "127.0.0.1:2525" }
+</code></pre>
+
+<h3>Destination Domains</h3>
+
+<p>Allowed destination/recipient domains. The field within the JSON value used
+by Dest Domains is "action": and the possible values are accept, continue, or
+deny.</p>
+
+<pre><code>* accept   (accept the mail without further checks)
+</code></pre>
+
+<p>Example:</p>
+
+<pre><code>[domains]
+test.com = { "action": "accept" }
+</code></pre>
+
+<p>I think of <em>accept</em> as the equivalent of qmail's <em>rcpthosts</em>, or a misplaced Haraka <code>rcpt_to.*</code> plugin. The <em>accept</em> mechanism is another way to tell Haraka that a particular domain is one we accept mail for. The difference between this and and the <a href="http://haraka.github.io/manual/plugins/rcpt_to.in_host_list.html">rcpt<em>to.in</em>host_list</a> plugin is that this one also enables relaying.</p>
+
+<pre><code>* continue (mails are subject to further checks)
+</code></pre>
+
+<p>Example:</p>
+
+<pre><code>[domains]
+test.com = { "action": "continue" }
+</code></pre>
+
+<p>Because the default behavior of Dest Routes is to deny, the <em>continue</em> option provides an escape, permitting another Haraka plugin to validate the recipient. Like the <em>accept</em> option, it too enables relaying.</p>
+
+<pre><code>* deny    (mails are rejected)
+</code></pre>
+
+<p>This deny option baffles me. The default behavior of Haraka is to reject emails for
+which a recipient validation plugin hasn't vouched. Adding it here prevents
+any subsequent recipient validation plugin from getting a chance. It also
+necessitates the continue option.</p>
+
+<h2>all</h2>
+
+<p>Relay all is enabled by setting all=true in the [relay] section of
+relay.ini:</p>
+
+<pre><code>[relay]
+all=true     (default: false)
+</code></pre>
+
+<p>Relay all is useful for spamtraps to accept all mail.</p>
+
+<p>Do NOT use this on a real mail server, unless you really know what you are
+doing. If you use the all feature with anything that relays mail (such
+as forwarding to a real mail server, or the <code>deliver</code> plugin), your mail
+server is now an open relay.</p>
+
+<p>This is BAD. Hence the big letters. In short: DO NOT USE THIS FEATURE.</p>
+
+<p>It is useful for testing and spamtraps, hence its presence.</p>
 
               </div>
             </div>
