@@ -7,7 +7,7 @@
     <meta name="description" content="">
     <meta name="author" content="">
 
-    <title>Haraka Manual &raquo; access</title>
+    <title>Haraka Manual &raquo; access - ACLs</title>
     
     <!-- Bootstrap core CSS -->
     <link href="/css/bootstrap.css" rel="stylesheet">
@@ -63,7 +63,7 @@
         <!-- Docs page layout -->
         <div class="bs-header" id="content">
           <div class="container">
-            <h1>access</h1>
+            <h1>access - ACLs</h1>
           </div>
         </div>
         
@@ -80,6 +80,14 @@
 <li><a href='/manual/Connection.html'>Connection Object</a></li>
 <li><a href='/manual/CoreConfig.html'>Core Configuration Files</a></li>
 <li><a href='/manual/CustomReturnCodes.html'>Custom Return Codes</a></li>
+<li><a href='/manual/deprecated/data.nomsgid.html'>data.nomsgid</a></li>
+<li><a href='/manual/deprecated/data.noreceived.html'>data.noreceived</a></li>
+<li><a href='/manual/deprecated/data.rfc5322_header_checks.html'>data.rfc5322_header_checks</a></li>
+<li><a href='/manual/deprecated/lookup_rdns.strict.html'>lookup_rdns.strict</a></li>
+<li><a href='/manual/deprecated/mail_from.blocklist.html'>mail_from.blocklist</a></li>
+<li><a href='/manual/deprecated/mail_from.nobounces.html'>mail_from.nobounces</a></li>
+<li><a href='/manual/deprecated/rcpt_to.blocklist.html'>rcpt_to.blocklist</a></li>
+<li><a href='/manual/deprecated/rdns.regexp.html'>rdns.regexp</a></li>
 <li><a href='/manual/HAProxy.html'>HAProxy PROXY protocol extension support</a></li>
 <li><a href='/manual/Header.html'>Header Object</a></li>
 <li><a href='/manual/Logging_API.html'>Logging API</a></li>
@@ -99,58 +107,57 @@
 <ul id='plugins' class='nav'>
 <li><a href='/manual/plugins/auth/auth_ldap.html'>auth/auth_ldap</a></li>
 <li><a href='/manual/plugins/auth/auth_proxy.html'>auth/auth_proxy</a></li>
-<li><a href='/manual/plugins/auth/auth_vpopmaild.html'>Haraka</a></li>
+<li><a href='/manual/plugins/auth/auth_vpopmaild.html'>auth/auth_vpopmaild</a></li>
 <li><a href='/manual/plugins/auth/flat_file.html'>auth/flat_file</a></li>
 <li><a href='/manual/plugins/queue/deliver.html'>queue/deliver</a></li>
 <li><a href='/manual/plugins/queue/discard.html'>discard</a></li>
 <li><a href='/manual/plugins/queue/lmtp.html'>queue/lmtp</a></li>
 <li><a href='/manual/plugins/queue/qmail-queue.html'>queue/qmail-queue</a></li>
 <li><a href='/manual/plugins/queue/quarantine.html'>quarantine</a></li>
+<li><a href='/manual/plugins/queue/rabbitmq.html'>queue/rabbitmq</a></li>
+<li><a href='/manual/plugins/queue/rabbitmq_amqplib.html'>queue/rabbitmq_amqplib</a></li>
 <li><a href='/manual/plugins/queue/smtp_forward.html'>queue/smtp_forward</a></li>
 <li><a href='/manual/plugins/queue/smtp_proxy.html'>queue/smtp_proxy</a></li>
-<li class="active"><a href='/manual/plugins/access.html'>access</a></li>
+<li class="active"><a href='/manual/plugins/access.html'>access - ACLs</a></li>
 <li><a href='/manual/plugins/aliases.html'>aliases</a></li>
 <li><a href='/manual/plugins/attachment.html'>attachment</a></li>
-<li><a href='/manual/plugins/avg.html'>avg</a></li>
+<li><a href='/manual/plugins/avg.html'>avg - Anti-Virus scanner</a></li>
 <li><a href='/manual/plugins/block_me.html'>block_me</a></li>
 <li><a href='/manual/plugins/bounces.html'>bounce</a></li>
 <li><a href='/manual/plugins/clamd.html'>clamd</a></li>
 <li><a href='/manual/plugins/connect.asn.html'>connect.asn</a></li>
-<li><a href='/manual/plugins/connect.fcrdns.html'>Forward Confirmed Reverse DNS</a></li>
+<li><a href='/manual/plugins/connect.fcrdns.html'>connect.fcrdns - Forward Confirmed Reverse DNS</a></li>
 <li><a href='/manual/plugins/connect.geoip.html'>geoip</a></li>
-<li><a href='/manual/plugins/connect.p0f.html'>connect.p0f - A TCP Fingerprinting Plugin</a></li>
+<li><a href='/manual/plugins/connect.p0f.html'>connect.p0f - TCP Fingerprinting</a></li>
 <li><a href='/manual/plugins/connect.rdns_access.html'>connect.rdns_access</a></li>
 <li><a href='/manual/plugins/daemonize.html'>daemonize</a></li>
 <li><a href='/manual/plugins/data.headers.html'>data.headers</a></li>
-<li><a href='/manual/plugins/data.nomsgid.html'>data.nomsgid</a></li>
-<li><a href='/manual/plugins/data.noreceived.html'>data.noreceived</a></li>
-<li><a href='/manual/plugins/data.rfc5322_header_checks.html'>data.rfc5322_header_checks</a></li>
 <li><a href='/manual/plugins/data.signatures.html'>data.signatures</a></li>
 <li><a href='/manual/plugins/data.uribl.html'>data.uribl</a></li>
 <li><a href='/manual/plugins/delay_deny.html'>delay_deny</a></li>
-<li><a href='/manual/plugins/dkim_sign.html'>dkim_sign</a></li>
+<li><a href='/manual/plugins/dkim_sign.html'>Haraka</a></li>
+<li><a href='/manual/plugins/dkim_verify.html'>dkim_verify</a></li>
 <li><a href='/manual/plugins/dnsbl.html'>dnsbl</a></li>
 <li><a href='/manual/plugins/dnswl.html'>dnswl</a></li>
 <li><a href='/manual/plugins/early_talker.html'>early_talker</a></li>
 <li><a href='/manual/plugins/graph.html'>graph</a></li>
 <li><a href='/manual/plugins/helo.checks.html'>helo.checks</a></li>
-<li><a href='/manual/plugins/karma.html'>Haraka</a></li>
+<li><a href='/manual/plugins/karma.html'>karma - a scoring engine</a></li>
 <li><a href='/manual/plugins/log.syslog.html'>log.syslog</a></li>
-<li><a href='/manual/plugins/lookup_rdns.strict.html'>lookup_rdns.strict</a></li>
 <li><a href='/manual/plugins/mail_from.access.html'>mail_from.access</a></li>
-<li><a href='/manual/plugins/mail_from.blocklist.html'>mail_from.blocklist</a></li>
 <li><a href='/manual/plugins/mail_from.is_resolvable.html'>mail_from.is_resolvable</a></li>
-<li><a href='/manual/plugins/mail_from.nobounces.html'>mail_from.nobounces</a></li>
 <li><a href='/manual/plugins/max_unrecognized_commands.html'>max_unrecognized_commands</a></li>
 <li><a href='/manual/plugins/messagesniffer.html'>messagesniffer</a></li>
+<li><a href='/manual/plugins/prevent_credential_leaks.html'>prevent_credential_leaks</a></li>
 <li><a href='/manual/plugins/process_title.html'>process_title</a></li>
 <li><a href='/manual/plugins/rate_limit.html'>rate_limit</a></li>
 <li><a href='/manual/plugins/rcpt_to.access.html'>rcpt_to.access</a></li>
-<li><a href='/manual/plugins/rcpt_to.blocklist.html'>rcpt_to.blocklist</a></li>
-<li><a href='/manual/plugins/rcpt_to.in_host_list.html'>Haraka</a></li>
+<li><a href='/manual/plugins/rcpt_to.in_host_list.html'>rcpt_to.in_host_list</a></li>
+<li><a href='/manual/plugins/rcpt_to.ldap.html'>Haraka</a></li>
 <li><a href='/manual/plugins/rcpt_to.max_count.html'>rcpt_to.max_count</a></li>
-<li><a href='/manual/plugins/rcpt_to.qmail_deliverable.html'>Haraka</a></li>
-<li><a href='/manual/plugins/rdns.regexp.html'>rdns.regexp</a></li>
+<li><a href='/manual/plugins/rcpt_to.qmail_deliverable.html'>rcpt_to.qmail_deliverable</a></li>
+<li><a href='/manual/plugins/rcpt_to.routes.html'>Haraka</a></li>
+<li><a href='/manual/plugins/record_envelope_addresses.html'>record</a></li>
 <li><a href='/manual/plugins/relay.html'>relay</a></li>
 <li><a href='/manual/plugins/relay_acl.html'>relay_acl</a></li>
 <li><a href='/manual/plugins/relay_all.html'>relay_all</a></li>
@@ -161,7 +168,7 @@
 <li><a href='/manual/plugins/tarpit.html'>tarpit</a></li>
 <li><a href='/manual/plugins/tls.html'>tls</a></li>
 <li><a href='/manual/plugins/toobusy.html'>toobusy</a></li>
-<li><a href='/manual/plugins/xclient.html'>XCLIENT</a></li>
+<li><a href='/manual/plugins/xclient.html'>xclient</a></li>
 </ul></li></ul>
 
               </div>
@@ -169,7 +176,7 @@
             
             <div class="col-md-9" role="main">
               <div class="bs-docs-section">
-                <h1>access</h1>
+                <h1>access - ACLs</h1>
 
 <p>This plugin applies Access Control Lists during the connect, helo, mail, and
 rcpt phases of the SMTP conversation. It has a split personality, supporting
@@ -177,15 +184,15 @@ two somewhat different modes, <strong>any</strong> -vs- <strong>precise</strong>
 
 <h2>ANY</h2>
 
-<p>The <strong>any</strong> check is based on the idea that I want to block an offending domain
+<p>The <strong>any</strong> check is premised on blocking a domain
 name no matter where in the SMTP conversation it appears. That's possible using
 several regex lists in the <strong>precise</strong> checks, but it's also much slower.</p>
 
-<p>With <strong>any</strong>, just drop the offending domain name into the <em>access.domain</em> file
+<p>With <strong>any</strong>, just drop the offending domain name into the <em>access.domains</em> file
 and it gets blocked for the rDNS hostname, the HELO hostname, the MAIL FROM
 domain name, and the RCPT TO domain name.</p>
 
-<p>The <strong>any</strong> blacklist matches only on the <a href="#Organizational Domain">Organizational Domain</a> name (see NOTES below). Entries placed in the <em>access.domain</em> file are automatically reduced to the OD. Examples:</p>
+<p>The <strong>any</strong> blacklist matches only on the <a href="#Organizational Domain">Organizational Domain</a> name (see NOTES below). Entries placed in the <em>access.domains</em> file are automatically reduced to the OD. Examples:</p>
 
 <pre><code>       ENTRY                  O.D.
 mail.spam-central.com  -&gt; spam-central.com
@@ -193,7 +200,7 @@ mail151.wayn.net       -&gt; wayn.net
 </code></pre>
 
 <p>In case the O.D. match is too broad, whitelist entries are placed in the same
-<em>access.domain</em> file with a ! prefix. Whitelist entries can be email addresses
+<em>access.domains</em> file with a ! prefix. Whitelist entries can be email addresses
 (for the MAIL FROM and RCPT TO tests) or hostnames for the rDNS and HELO
 hostnames. To block anything from example.com but not special.example.com:</p>
 
@@ -207,6 +214,12 @@ person you know that still uses it:</p>
 <pre><code>aol.com
 !friend@aol.com
 </code></pre>
+
+<h3>ANY data</h3>
+
+<p>In addition to checking for a domain in the envelope, ANY can also check in
+the message headers as well. Settings 'data=true' in the [checks] section of
+<code>config/access.ini</code> enables this. At present this only checks the From header.</p>
 
 <h2>PRECISE</h2>
 
@@ -307,19 +320,19 @@ hostname (if any) of the remote.</p>
 <h3>MAIL FROM</h3>
 
 <ul>
-<li>connect.mail_from.whitelist          (pass)</li>
-<li>connect.mail_from.whitelist_regex   (pass)</li>
-<li>connect.mail_from.blacklist          (block)</li>
-<li>connect.mail_from.blacklist_regex   (block)</li>
+<li>mail_from.access.whitelist          (pass)</li>
+<li>mail_from.access.whitelist_regex   (pass)</li>
+<li>mail_from.access.blacklist          (block)</li>
+<li>mail_from.access.blacklist_regex   (block)</li>
 </ul>
 
 <h3>RCPT TO</h3>
 
 <ul>
-<li>connect.rcpt_to.whitelist           (pass)</li>
-<li>connect.rcpt_to.whitelist_regex    (pass)</li>
-<li>connect.rcpt_to.blacklist           (block)</li>
-<li>connect.rcpt_to.blacklist_regex    (block)</li>
+<li>rcpt_to.access.whitelist           (pass)</li>
+<li>rcpt_to.access.whitelist_regex    (pass)</li>
+<li>rcpt_to.access.blacklist           (block)</li>
+<li>rcpt_to.access.blacklist_regex    (block)</li>
 </ul>
 
 <h2>NOTES</h2>

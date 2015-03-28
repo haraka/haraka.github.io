@@ -80,6 +80,14 @@
 <li><a href='/manual/Connection.html'>Connection Object</a></li>
 <li><a href='/manual/CoreConfig.html'>Core Configuration Files</a></li>
 <li><a href='/manual/CustomReturnCodes.html'>Custom Return Codes</a></li>
+<li><a href='/manual/deprecated/data.nomsgid.html'>data.nomsgid</a></li>
+<li><a href='/manual/deprecated/data.noreceived.html'>data.noreceived</a></li>
+<li><a href='/manual/deprecated/data.rfc5322_header_checks.html'>data.rfc5322_header_checks</a></li>
+<li><a href='/manual/deprecated/lookup_rdns.strict.html'>lookup_rdns.strict</a></li>
+<li><a href='/manual/deprecated/mail_from.blocklist.html'>mail_from.blocklist</a></li>
+<li><a href='/manual/deprecated/mail_from.nobounces.html'>mail_from.nobounces</a></li>
+<li><a href='/manual/deprecated/rcpt_to.blocklist.html'>rcpt_to.blocklist</a></li>
+<li><a href='/manual/deprecated/rdns.regexp.html'>rdns.regexp</a></li>
 <li><a href='/manual/HAProxy.html'>HAProxy PROXY protocol extension support</a></li>
 <li><a href='/manual/Header.html'>Header Object</a></li>
 <li><a href='/manual/Logging_API.html'>Logging API</a></li>
@@ -99,58 +107,57 @@
 <ul id='plugins' class='nav'>
 <li><a href='/manual/plugins/auth/auth_ldap.html'>auth/auth_ldap</a></li>
 <li><a href='/manual/plugins/auth/auth_proxy.html'>auth/auth_proxy</a></li>
-<li><a href='/manual/plugins/auth/auth_vpopmaild.html'>Haraka</a></li>
+<li><a href='/manual/plugins/auth/auth_vpopmaild.html'>auth/auth_vpopmaild</a></li>
 <li><a href='/manual/plugins/auth/flat_file.html'>auth/flat_file</a></li>
 <li><a href='/manual/plugins/queue/deliver.html'>queue/deliver</a></li>
 <li><a href='/manual/plugins/queue/discard.html'>discard</a></li>
 <li><a href='/manual/plugins/queue/lmtp.html'>queue/lmtp</a></li>
 <li><a href='/manual/plugins/queue/qmail-queue.html'>queue/qmail-queue</a></li>
 <li><a href='/manual/plugins/queue/quarantine.html'>quarantine</a></li>
+<li><a href='/manual/plugins/queue/rabbitmq.html'>queue/rabbitmq</a></li>
+<li><a href='/manual/plugins/queue/rabbitmq_amqplib.html'>queue/rabbitmq_amqplib</a></li>
 <li><a href='/manual/plugins/queue/smtp_forward.html'>queue/smtp_forward</a></li>
 <li><a href='/manual/plugins/queue/smtp_proxy.html'>queue/smtp_proxy</a></li>
-<li><a href='/manual/plugins/access.html'>access</a></li>
+<li><a href='/manual/plugins/access.html'>access - ACLs</a></li>
 <li><a href='/manual/plugins/aliases.html'>aliases</a></li>
 <li><a href='/manual/plugins/attachment.html'>attachment</a></li>
-<li><a href='/manual/plugins/avg.html'>avg</a></li>
+<li><a href='/manual/plugins/avg.html'>avg - Anti-Virus scanner</a></li>
 <li><a href='/manual/plugins/block_me.html'>block_me</a></li>
 <li><a href='/manual/plugins/bounces.html'>bounce</a></li>
 <li><a href='/manual/plugins/clamd.html'>clamd</a></li>
 <li><a href='/manual/plugins/connect.asn.html'>connect.asn</a></li>
-<li><a href='/manual/plugins/connect.fcrdns.html'>Forward Confirmed Reverse DNS</a></li>
+<li><a href='/manual/plugins/connect.fcrdns.html'>connect.fcrdns - Forward Confirmed Reverse DNS</a></li>
 <li><a href='/manual/plugins/connect.geoip.html'>geoip</a></li>
-<li><a href='/manual/plugins/connect.p0f.html'>connect.p0f - A TCP Fingerprinting Plugin</a></li>
+<li><a href='/manual/plugins/connect.p0f.html'>connect.p0f - TCP Fingerprinting</a></li>
 <li><a href='/manual/plugins/connect.rdns_access.html'>connect.rdns_access</a></li>
 <li><a href='/manual/plugins/daemonize.html'>daemonize</a></li>
 <li><a href='/manual/plugins/data.headers.html'>data.headers</a></li>
-<li><a href='/manual/plugins/data.nomsgid.html'>data.nomsgid</a></li>
-<li><a href='/manual/plugins/data.noreceived.html'>data.noreceived</a></li>
-<li><a href='/manual/plugins/data.rfc5322_header_checks.html'>data.rfc5322_header_checks</a></li>
 <li><a href='/manual/plugins/data.signatures.html'>data.signatures</a></li>
 <li><a href='/manual/plugins/data.uribl.html'>data.uribl</a></li>
 <li><a href='/manual/plugins/delay_deny.html'>delay_deny</a></li>
-<li><a href='/manual/plugins/dkim_sign.html'>dkim_sign</a></li>
+<li><a href='/manual/plugins/dkim_sign.html'>Haraka</a></li>
+<li><a href='/manual/plugins/dkim_verify.html'>dkim_verify</a></li>
 <li><a href='/manual/plugins/dnsbl.html'>dnsbl</a></li>
 <li><a href='/manual/plugins/dnswl.html'>dnswl</a></li>
 <li><a href='/manual/plugins/early_talker.html'>early_talker</a></li>
 <li><a href='/manual/plugins/graph.html'>graph</a></li>
 <li><a href='/manual/plugins/helo.checks.html'>helo.checks</a></li>
-<li><a href='/manual/plugins/karma.html'>Haraka</a></li>
+<li><a href='/manual/plugins/karma.html'>karma - a scoring engine</a></li>
 <li><a href='/manual/plugins/log.syslog.html'>log.syslog</a></li>
-<li><a href='/manual/plugins/lookup_rdns.strict.html'>lookup_rdns.strict</a></li>
 <li><a href='/manual/plugins/mail_from.access.html'>mail_from.access</a></li>
-<li><a href='/manual/plugins/mail_from.blocklist.html'>mail_from.blocklist</a></li>
 <li><a href='/manual/plugins/mail_from.is_resolvable.html'>mail_from.is_resolvable</a></li>
-<li><a href='/manual/plugins/mail_from.nobounces.html'>mail_from.nobounces</a></li>
 <li><a href='/manual/plugins/max_unrecognized_commands.html'>max_unrecognized_commands</a></li>
 <li><a href='/manual/plugins/messagesniffer.html'>messagesniffer</a></li>
+<li><a href='/manual/plugins/prevent_credential_leaks.html'>prevent_credential_leaks</a></li>
 <li><a href='/manual/plugins/process_title.html'>process_title</a></li>
 <li><a href='/manual/plugins/rate_limit.html'>rate_limit</a></li>
 <li><a href='/manual/plugins/rcpt_to.access.html'>rcpt_to.access</a></li>
-<li><a href='/manual/plugins/rcpt_to.blocklist.html'>rcpt_to.blocklist</a></li>
-<li><a href='/manual/plugins/rcpt_to.in_host_list.html'>Haraka</a></li>
+<li><a href='/manual/plugins/rcpt_to.in_host_list.html'>rcpt_to.in_host_list</a></li>
+<li><a href='/manual/plugins/rcpt_to.ldap.html'>Haraka</a></li>
 <li><a href='/manual/plugins/rcpt_to.max_count.html'>rcpt_to.max_count</a></li>
-<li><a href='/manual/plugins/rcpt_to.qmail_deliverable.html'>Haraka</a></li>
-<li><a href='/manual/plugins/rdns.regexp.html'>rdns.regexp</a></li>
+<li><a href='/manual/plugins/rcpt_to.qmail_deliverable.html'>rcpt_to.qmail_deliverable</a></li>
+<li><a href='/manual/plugins/rcpt_to.routes.html'>Haraka</a></li>
+<li><a href='/manual/plugins/record_envelope_addresses.html'>record</a></li>
 <li><a href='/manual/plugins/relay.html'>relay</a></li>
 <li><a href='/manual/plugins/relay_acl.html'>relay_acl</a></li>
 <li><a href='/manual/plugins/relay_all.html'>relay_all</a></li>
@@ -161,7 +168,7 @@
 <li><a href='/manual/plugins/tarpit.html'>tarpit</a></li>
 <li><a href='/manual/plugins/tls.html'>tls</a></li>
 <li><a href='/manual/plugins/toobusy.html'>toobusy</a></li>
-<li><a href='/manual/plugins/xclient.html'>XCLIENT</a></li>
+<li><a href='/manual/plugins/xclient.html'>xclient</a></li>
 </ul></li></ul>
 
               </div>
@@ -225,8 +232,11 @@ if (net_utils.is_public_suffix('com')) {
 if (net_utils.is_public_suffix('wikipedia.org')) {
     // false
 }
+</code></pre>
 
-// reduces a hostname to an Organizational Domain
+<h3>get<em>organizational</em>domain</h3>
+
+<pre><code>// reduces a hostname to an Organizational Domain
 // The O.D. is the portion of a domain name immediately delegated by a registrar
 //   and the portion that is no longer 'Public'
 //
@@ -243,9 +253,11 @@ if (from_dom == to_dom) {
     // the envelope sender domain matches the envelope receiver domain
     // eg: root@mail.example.com would match sysadmin@example.com
 }
+</code></pre>
 
+<h3>split_hostname</h3>
 
-// Split FQDN to host and domain
+<pre><code>// Split FQDN to host and domain
 var split = net_utils.split_hostname('host.sub1.sub2.domain.com');
 // split[0] = 'host.sub1.sub2';
 // split[1] = 'domain.com';
@@ -256,18 +268,62 @@ var split = net_utils.split_hostname('host.sub1.sub2.domain.com');
 if (net_utils.is_ip_in_str('11.22.33.44', '3344.rev.hoster.com')) {
     // true
 }
+</code></pre>
 
-// Convert IPv4 to long
+<h3>ip<em>to</em>long</h3>
+
+<pre><code>// Convert IPv4 to long
 var long = net_utils.ip_to_long('11.22.33.44');  // 185999660
+</code></pre>
 
-// Convert long to IPv4
+<h3>long<em>to</em>ip</h3>
+
+<pre><code>// Convert long to IPv4
 var ip = net_utils.long_to_ip(185999660);  // 11.22.33.44
+</code></pre>
 
-// Convert decimal to hex
+<h3>dec<em>to</em>hex</h3>
+
+<pre><code>// Convert decimal to hex
 var hex = net_utils.dec_to_hex(20111104);  // 132df00
+</code></pre>
 
-// Convert hex to decimal
+<h3>hex<em>to</em>dec</h3>
+
+<pre><code>// Convert hex to decimal
 var dec = net_utils.hex_to_dec('132df00');  // 20111104
+</code></pre>
+
+<h3>is<em>local</em>ipv4</h3>
+
+<pre><code>// Is IPv4 address on a local network?
+net_utils.is_local_ipv4('127.0.0.200');   // true (localhost)
+net_utils.is_local_ipv4('169.254.0.0');   // true (link local)
+net_utils.is_local_ipv4('226.0.0.1');     // false
+</code></pre>
+
+<h3>is<em>private</em>ipv4</h3>
+
+<pre><code>// Is IPv4 address in RFC 1918 reserved private address space?
+net_utils.is_private_ipv4('10.0.0.0');       // true
+net_utils.is_private_ipv4('192.168.0.0');    // true
+net_utils.is_private_ipv4('172.16.0.0');     // true
+</code></pre>
+
+<h3>is<em>local</em>ipv6</h3>
+
+<pre><code>// Is IPv6 addr on local network?
+net_utils.is_local_ipv6('::1');           // true (localhost)
+net_utils.is_local_ipv6('fe80::')         // true (link local)
+net_utils.is_local_ipv6('fc00::')         // true (unique local)
+net_utils.is_local_ipv6('fd00::')         // true (unique local)
+</code></pre>
+
+<h3>is<em>private</em>ip</h3>
+
+<pre><code>// determines if an IPv4 or IPv6 address is on a "private" network
+// For IPv4, returns true if is_private_ipv4 or is_local_ipv4 are true
+// For IPv6, returns true if is_local_ipv6 is true
 </code></pre>
 
               </div>

@@ -80,6 +80,14 @@
 <li><a href='/manual/Connection.html'>Connection Object</a></li>
 <li><a href='/manual/CoreConfig.html'>Core Configuration Files</a></li>
 <li><a href='/manual/CustomReturnCodes.html'>Custom Return Codes</a></li>
+<li><a href='/manual/deprecated/data.nomsgid.html'>data.nomsgid</a></li>
+<li><a href='/manual/deprecated/data.noreceived.html'>data.noreceived</a></li>
+<li><a href='/manual/deprecated/data.rfc5322_header_checks.html'>data.rfc5322_header_checks</a></li>
+<li><a href='/manual/deprecated/lookup_rdns.strict.html'>lookup_rdns.strict</a></li>
+<li><a href='/manual/deprecated/mail_from.blocklist.html'>mail_from.blocklist</a></li>
+<li><a href='/manual/deprecated/mail_from.nobounces.html'>mail_from.nobounces</a></li>
+<li><a href='/manual/deprecated/rcpt_to.blocklist.html'>rcpt_to.blocklist</a></li>
+<li><a href='/manual/deprecated/rdns.regexp.html'>rdns.regexp</a></li>
 <li><a href='/manual/HAProxy.html'>HAProxy PROXY protocol extension support</a></li>
 <li><a href='/manual/Header.html'>Header Object</a></li>
 <li><a href='/manual/Logging_API.html'>Logging API</a></li>
@@ -99,58 +107,57 @@
 <ul id='plugins' class='nav'>
 <li><a href='/manual/plugins/auth/auth_ldap.html'>auth/auth_ldap</a></li>
 <li><a href='/manual/plugins/auth/auth_proxy.html'>auth/auth_proxy</a></li>
-<li><a href='/manual/plugins/auth/auth_vpopmaild.html'>Haraka</a></li>
+<li><a href='/manual/plugins/auth/auth_vpopmaild.html'>auth/auth_vpopmaild</a></li>
 <li><a href='/manual/plugins/auth/flat_file.html'>auth/flat_file</a></li>
 <li><a href='/manual/plugins/queue/deliver.html'>queue/deliver</a></li>
 <li><a href='/manual/plugins/queue/discard.html'>discard</a></li>
 <li><a href='/manual/plugins/queue/lmtp.html'>queue/lmtp</a></li>
 <li><a href='/manual/plugins/queue/qmail-queue.html'>queue/qmail-queue</a></li>
 <li><a href='/manual/plugins/queue/quarantine.html'>quarantine</a></li>
+<li><a href='/manual/plugins/queue/rabbitmq.html'>queue/rabbitmq</a></li>
+<li><a href='/manual/plugins/queue/rabbitmq_amqplib.html'>queue/rabbitmq_amqplib</a></li>
 <li><a href='/manual/plugins/queue/smtp_forward.html'>queue/smtp_forward</a></li>
 <li><a href='/manual/plugins/queue/smtp_proxy.html'>queue/smtp_proxy</a></li>
-<li><a href='/manual/plugins/access.html'>access</a></li>
+<li><a href='/manual/plugins/access.html'>access - ACLs</a></li>
 <li><a href='/manual/plugins/aliases.html'>aliases</a></li>
 <li class="active"><a href='/manual/plugins/attachment.html'>attachment</a></li>
-<li><a href='/manual/plugins/avg.html'>avg</a></li>
+<li><a href='/manual/plugins/avg.html'>avg - Anti-Virus scanner</a></li>
 <li><a href='/manual/plugins/block_me.html'>block_me</a></li>
 <li><a href='/manual/plugins/bounces.html'>bounce</a></li>
 <li><a href='/manual/plugins/clamd.html'>clamd</a></li>
 <li><a href='/manual/plugins/connect.asn.html'>connect.asn</a></li>
-<li><a href='/manual/plugins/connect.fcrdns.html'>Forward Confirmed Reverse DNS</a></li>
+<li><a href='/manual/plugins/connect.fcrdns.html'>connect.fcrdns - Forward Confirmed Reverse DNS</a></li>
 <li><a href='/manual/plugins/connect.geoip.html'>geoip</a></li>
-<li><a href='/manual/plugins/connect.p0f.html'>connect.p0f - A TCP Fingerprinting Plugin</a></li>
+<li><a href='/manual/plugins/connect.p0f.html'>connect.p0f - TCP Fingerprinting</a></li>
 <li><a href='/manual/plugins/connect.rdns_access.html'>connect.rdns_access</a></li>
 <li><a href='/manual/plugins/daemonize.html'>daemonize</a></li>
 <li><a href='/manual/plugins/data.headers.html'>data.headers</a></li>
-<li><a href='/manual/plugins/data.nomsgid.html'>data.nomsgid</a></li>
-<li><a href='/manual/plugins/data.noreceived.html'>data.noreceived</a></li>
-<li><a href='/manual/plugins/data.rfc5322_header_checks.html'>data.rfc5322_header_checks</a></li>
 <li><a href='/manual/plugins/data.signatures.html'>data.signatures</a></li>
 <li><a href='/manual/plugins/data.uribl.html'>data.uribl</a></li>
 <li><a href='/manual/plugins/delay_deny.html'>delay_deny</a></li>
-<li><a href='/manual/plugins/dkim_sign.html'>dkim_sign</a></li>
+<li><a href='/manual/plugins/dkim_sign.html'>Haraka</a></li>
+<li><a href='/manual/plugins/dkim_verify.html'>dkim_verify</a></li>
 <li><a href='/manual/plugins/dnsbl.html'>dnsbl</a></li>
 <li><a href='/manual/plugins/dnswl.html'>dnswl</a></li>
 <li><a href='/manual/plugins/early_talker.html'>early_talker</a></li>
 <li><a href='/manual/plugins/graph.html'>graph</a></li>
 <li><a href='/manual/plugins/helo.checks.html'>helo.checks</a></li>
-<li><a href='/manual/plugins/karma.html'>Haraka</a></li>
+<li><a href='/manual/plugins/karma.html'>karma - a scoring engine</a></li>
 <li><a href='/manual/plugins/log.syslog.html'>log.syslog</a></li>
-<li><a href='/manual/plugins/lookup_rdns.strict.html'>lookup_rdns.strict</a></li>
 <li><a href='/manual/plugins/mail_from.access.html'>mail_from.access</a></li>
-<li><a href='/manual/plugins/mail_from.blocklist.html'>mail_from.blocklist</a></li>
 <li><a href='/manual/plugins/mail_from.is_resolvable.html'>mail_from.is_resolvable</a></li>
-<li><a href='/manual/plugins/mail_from.nobounces.html'>mail_from.nobounces</a></li>
 <li><a href='/manual/plugins/max_unrecognized_commands.html'>max_unrecognized_commands</a></li>
 <li><a href='/manual/plugins/messagesniffer.html'>messagesniffer</a></li>
+<li><a href='/manual/plugins/prevent_credential_leaks.html'>prevent_credential_leaks</a></li>
 <li><a href='/manual/plugins/process_title.html'>process_title</a></li>
 <li><a href='/manual/plugins/rate_limit.html'>rate_limit</a></li>
 <li><a href='/manual/plugins/rcpt_to.access.html'>rcpt_to.access</a></li>
-<li><a href='/manual/plugins/rcpt_to.blocklist.html'>rcpt_to.blocklist</a></li>
-<li><a href='/manual/plugins/rcpt_to.in_host_list.html'>Haraka</a></li>
+<li><a href='/manual/plugins/rcpt_to.in_host_list.html'>rcpt_to.in_host_list</a></li>
+<li><a href='/manual/plugins/rcpt_to.ldap.html'>Haraka</a></li>
 <li><a href='/manual/plugins/rcpt_to.max_count.html'>rcpt_to.max_count</a></li>
-<li><a href='/manual/plugins/rcpt_to.qmail_deliverable.html'>Haraka</a></li>
-<li><a href='/manual/plugins/rdns.regexp.html'>rdns.regexp</a></li>
+<li><a href='/manual/plugins/rcpt_to.qmail_deliverable.html'>rcpt_to.qmail_deliverable</a></li>
+<li><a href='/manual/plugins/rcpt_to.routes.html'>Haraka</a></li>
+<li><a href='/manual/plugins/record_envelope_addresses.html'>record</a></li>
 <li><a href='/manual/plugins/relay.html'>relay</a></li>
 <li><a href='/manual/plugins/relay_acl.html'>relay_acl</a></li>
 <li><a href='/manual/plugins/relay_all.html'>relay_all</a></li>
@@ -161,7 +168,7 @@
 <li><a href='/manual/plugins/tarpit.html'>tarpit</a></li>
 <li><a href='/manual/plugins/tls.html'>tls</a></li>
 <li><a href='/manual/plugins/toobusy.html'>toobusy</a></li>
-<li><a href='/manual/plugins/xclient.html'>XCLIENT</a></li>
+<li><a href='/manual/plugins/xclient.html'>xclient</a></li>
 </ul></li></ul>
 
               </div>
@@ -179,24 +186,69 @@ the message or any MIME parts or on the filename of any attachments.</p>
 <p>This plugin cannot detect forged MIME types where the sender is lying
 about the type.  The type is not confirmed in any way currently.</p>
 
-<p>It also cannot read the filenames within tar/zip/rar archives.</p>
+<p>Encrypted archives that contain encrypted sub-archives cannot be
+expanded and will cause the plugin to reject the message.</p>
+
+<h2>Requirements</h2>
+
+<p>To be able to check filenames inside archive files the npm module
+<code>tmp</code> is required and the <code>bsdtar</code> binary must be available.</p>
+
+<p>If either <code>tmp</code> or <code>bsdtar</code> are unavailable then the plugin will
+automatically disable expansion of archive files.</p>
+
+<h2>Logging</h2>
+
+<p>At INFO level logging this plugin will output the filename and type
+of each attached file along with an MD5 checksum of the contents.
+The MD5 checksum is useful to check against www.virustotal.com</p>
 
 <h2>Configuration</h2>
 
 <ul>
+<li><p>attachment.ini</p>
+
+<ul>
+<li>archive_max_depth
+(default: 5)</li>
+</ul>
+
+<p>The maximum level of nested archives that will be unpacked.
+If this is exceeded the message will be rejected.</p>
+
+<ul>
+<li>archive_extns
+(default: .zip,.tar,.tgz,.taz,.z,.gz,.rar,.7z) </li>
+</ul>
+
+<p>File extensions that should be treated as archives.
+This can be any file type supported by bsdtar.</p>
+
+<ul>
+<li>timeout
+(default: 30)</li>
+</ul>
+
+<p>Timeout in seconds before the plugin will abort.</p></li>
 <li><p>attachment.filename.regex</p>
 
 <p>This file contains a list of regular expressions, one per line that 
-wil be tested against each filename found within a message.
+will be tested against each filename found within a message.
 The first regexp to match will cause the message to be rejected. <br />
+Any invalid regexps will be detected, reported and skipped.</p></li>
+<li><p>attachment.archive.filename.regex</p>
+
+<p>This file contains a list of regular expressions, one per line that
+will be tested against each filename found within an archive file.
+The first regexp to match will cause the message to be rejected.
 Any invalid regexps will be detected, reported and skipped.</p></li>
 <li><p>attachment.ctype.regex</p>
 
-<p>This file contains a list of regular expressions, one per line that
+<p><p>This file contains a list of regular expressions, one per line that
 will be tested against each MIME Content-Type header in the message.
 The first regexp to match will cause the message to be rejected.
 Any invalid regexps will be detected, reported and skipped.</p></li>
-</ul>
+</ul></p>
 
               </div>
             </div>

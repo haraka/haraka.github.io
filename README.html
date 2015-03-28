@@ -80,6 +80,14 @@
 <li><a href='/manual/Connection.html'>Connection Object</a></li>
 <li><a href='/manual/CoreConfig.html'>Core Configuration Files</a></li>
 <li><a href='/manual/CustomReturnCodes.html'>Custom Return Codes</a></li>
+<li><a href='/manual/deprecated/data.nomsgid.html'>data.nomsgid</a></li>
+<li><a href='/manual/deprecated/data.noreceived.html'>data.noreceived</a></li>
+<li><a href='/manual/deprecated/data.rfc5322_header_checks.html'>data.rfc5322_header_checks</a></li>
+<li><a href='/manual/deprecated/lookup_rdns.strict.html'>lookup_rdns.strict</a></li>
+<li><a href='/manual/deprecated/mail_from.blocklist.html'>mail_from.blocklist</a></li>
+<li><a href='/manual/deprecated/mail_from.nobounces.html'>mail_from.nobounces</a></li>
+<li><a href='/manual/deprecated/rcpt_to.blocklist.html'>rcpt_to.blocklist</a></li>
+<li><a href='/manual/deprecated/rdns.regexp.html'>rdns.regexp</a></li>
 <li><a href='/manual/HAProxy.html'>HAProxy PROXY protocol extension support</a></li>
 <li><a href='/manual/Header.html'>Header Object</a></li>
 <li><a href='/manual/Logging_API.html'>Logging API</a></li>
@@ -99,58 +107,57 @@
 <ul id='plugins' class='nav'>
 <li><a href='/manual/plugins/auth/auth_ldap.html'>auth/auth_ldap</a></li>
 <li><a href='/manual/plugins/auth/auth_proxy.html'>auth/auth_proxy</a></li>
-<li><a href='/manual/plugins/auth/auth_vpopmaild.html'>Haraka</a></li>
+<li><a href='/manual/plugins/auth/auth_vpopmaild.html'>auth/auth_vpopmaild</a></li>
 <li><a href='/manual/plugins/auth/flat_file.html'>auth/flat_file</a></li>
 <li><a href='/manual/plugins/queue/deliver.html'>queue/deliver</a></li>
 <li><a href='/manual/plugins/queue/discard.html'>discard</a></li>
 <li><a href='/manual/plugins/queue/lmtp.html'>queue/lmtp</a></li>
 <li><a href='/manual/plugins/queue/qmail-queue.html'>queue/qmail-queue</a></li>
 <li><a href='/manual/plugins/queue/quarantine.html'>quarantine</a></li>
+<li><a href='/manual/plugins/queue/rabbitmq.html'>queue/rabbitmq</a></li>
+<li><a href='/manual/plugins/queue/rabbitmq_amqplib.html'>queue/rabbitmq_amqplib</a></li>
 <li><a href='/manual/plugins/queue/smtp_forward.html'>queue/smtp_forward</a></li>
 <li><a href='/manual/plugins/queue/smtp_proxy.html'>queue/smtp_proxy</a></li>
-<li><a href='/manual/plugins/access.html'>access</a></li>
+<li><a href='/manual/plugins/access.html'>access - ACLs</a></li>
 <li><a href='/manual/plugins/aliases.html'>aliases</a></li>
 <li><a href='/manual/plugins/attachment.html'>attachment</a></li>
-<li><a href='/manual/plugins/avg.html'>avg</a></li>
+<li><a href='/manual/plugins/avg.html'>avg - Anti-Virus scanner</a></li>
 <li><a href='/manual/plugins/block_me.html'>block_me</a></li>
 <li><a href='/manual/plugins/bounces.html'>bounce</a></li>
 <li><a href='/manual/plugins/clamd.html'>clamd</a></li>
 <li><a href='/manual/plugins/connect.asn.html'>connect.asn</a></li>
-<li><a href='/manual/plugins/connect.fcrdns.html'>Forward Confirmed Reverse DNS</a></li>
+<li><a href='/manual/plugins/connect.fcrdns.html'>connect.fcrdns - Forward Confirmed Reverse DNS</a></li>
 <li><a href='/manual/plugins/connect.geoip.html'>geoip</a></li>
-<li><a href='/manual/plugins/connect.p0f.html'>connect.p0f - A TCP Fingerprinting Plugin</a></li>
+<li><a href='/manual/plugins/connect.p0f.html'>connect.p0f - TCP Fingerprinting</a></li>
 <li><a href='/manual/plugins/connect.rdns_access.html'>connect.rdns_access</a></li>
 <li><a href='/manual/plugins/daemonize.html'>daemonize</a></li>
 <li><a href='/manual/plugins/data.headers.html'>data.headers</a></li>
-<li><a href='/manual/plugins/data.nomsgid.html'>data.nomsgid</a></li>
-<li><a href='/manual/plugins/data.noreceived.html'>data.noreceived</a></li>
-<li><a href='/manual/plugins/data.rfc5322_header_checks.html'>data.rfc5322_header_checks</a></li>
 <li><a href='/manual/plugins/data.signatures.html'>data.signatures</a></li>
 <li><a href='/manual/plugins/data.uribl.html'>data.uribl</a></li>
 <li><a href='/manual/plugins/delay_deny.html'>delay_deny</a></li>
-<li><a href='/manual/plugins/dkim_sign.html'>dkim_sign</a></li>
+<li><a href='/manual/plugins/dkim_sign.html'>Haraka</a></li>
+<li><a href='/manual/plugins/dkim_verify.html'>dkim_verify</a></li>
 <li><a href='/manual/plugins/dnsbl.html'>dnsbl</a></li>
 <li><a href='/manual/plugins/dnswl.html'>dnswl</a></li>
 <li><a href='/manual/plugins/early_talker.html'>early_talker</a></li>
 <li><a href='/manual/plugins/graph.html'>graph</a></li>
 <li><a href='/manual/plugins/helo.checks.html'>helo.checks</a></li>
-<li><a href='/manual/plugins/karma.html'>Haraka</a></li>
+<li><a href='/manual/plugins/karma.html'>karma - a scoring engine</a></li>
 <li><a href='/manual/plugins/log.syslog.html'>log.syslog</a></li>
-<li><a href='/manual/plugins/lookup_rdns.strict.html'>lookup_rdns.strict</a></li>
 <li><a href='/manual/plugins/mail_from.access.html'>mail_from.access</a></li>
-<li><a href='/manual/plugins/mail_from.blocklist.html'>mail_from.blocklist</a></li>
 <li><a href='/manual/plugins/mail_from.is_resolvable.html'>mail_from.is_resolvable</a></li>
-<li><a href='/manual/plugins/mail_from.nobounces.html'>mail_from.nobounces</a></li>
 <li><a href='/manual/plugins/max_unrecognized_commands.html'>max_unrecognized_commands</a></li>
 <li><a href='/manual/plugins/messagesniffer.html'>messagesniffer</a></li>
+<li><a href='/manual/plugins/prevent_credential_leaks.html'>prevent_credential_leaks</a></li>
 <li><a href='/manual/plugins/process_title.html'>process_title</a></li>
 <li><a href='/manual/plugins/rate_limit.html'>rate_limit</a></li>
 <li><a href='/manual/plugins/rcpt_to.access.html'>rcpt_to.access</a></li>
-<li><a href='/manual/plugins/rcpt_to.blocklist.html'>rcpt_to.blocklist</a></li>
-<li><a href='/manual/plugins/rcpt_to.in_host_list.html'>Haraka</a></li>
+<li><a href='/manual/plugins/rcpt_to.in_host_list.html'>rcpt_to.in_host_list</a></li>
+<li><a href='/manual/plugins/rcpt_to.ldap.html'>Haraka</a></li>
 <li><a href='/manual/plugins/rcpt_to.max_count.html'>rcpt_to.max_count</a></li>
-<li><a href='/manual/plugins/rcpt_to.qmail_deliverable.html'>Haraka</a></li>
-<li><a href='/manual/plugins/rdns.regexp.html'>rdns.regexp</a></li>
+<li><a href='/manual/plugins/rcpt_to.qmail_deliverable.html'>rcpt_to.qmail_deliverable</a></li>
+<li><a href='/manual/plugins/rcpt_to.routes.html'>Haraka</a></li>
+<li><a href='/manual/plugins/record_envelope_addresses.html'>record</a></li>
 <li><a href='/manual/plugins/relay.html'>relay</a></li>
 <li><a href='/manual/plugins/relay_acl.html'>relay_acl</a></li>
 <li><a href='/manual/plugins/relay_all.html'>relay_all</a></li>
@@ -161,7 +168,7 @@
 <li><a href='/manual/plugins/tarpit.html'>tarpit</a></li>
 <li><a href='/manual/plugins/tls.html'>tls</a></li>
 <li><a href='/manual/plugins/toobusy.html'>toobusy</a></li>
-<li><a href='/manual/plugins/xclient.html'>XCLIENT</a></li>
+<li><a href='/manual/plugins/xclient.html'>xclient</a></li>
 </ul></li></ul>
 
               </div>
@@ -171,36 +178,34 @@
               <div class="bs-docs-section">
                 <h2>Haraka - a Node.js Mail Server</h2>
 
-<p><a href="https://travis-ci.org/baudehlo/Haraka"><img src="https://travis-ci.org/baudehlo/Haraka.svg?branch=master" alt="Build Status" title="" /></a></p>
+<p><a href="https://travis-ci.org/baudehlo/Haraka"><img src="https://travis-ci.org/baudehlo/Haraka.svg?branch=master" alt="Build Status" /></a>
+<a href="https://coveralls.io/r/baudehlo/Haraka"><img src="https://coveralls.io/repos/baudehlo/Haraka/badge.png" alt="Coverage Status" /></a>
+<a href="https://ci.appveyor.com/project/msimerson/haraka-pa8a5"><img src="https://ci.appveyor.com/api/projects/status/g29l24w7qwoam47f?svg=true" alt="Windows Status" /></a></p>
 
-<p>Haraka is an SMTP server which uses a plugin architecture to implement most
-of its functionality. It uses a highly scalable event model to be able to
-cope with thousands of concurrent connections. Plugins are written in
-Javascript using <a href="http://nodejs.org/">Node.js</a>, and as such perform extremely quickly. The
-core Haraka framework is capable of processing thousands of messages per
-second on the right hardware.</p>
+<p>Haraka is a highly scalable <a href="http://nodejs.org/">node.js</a> email server with a modular
+plugin architecture. Haraka can serve thousands of concurrent connections
+and deliver thousands of messages per second. Haraka and plugins are written
+in asyncronous JS and are very fast.</p>
 
-<p>Haraka can be used either as an inbound SMTP server, and is designed with
-good anti-spam protections in mind (see the <code>plugins</code> directory), or it can
-be used as an outbound mail server - the most common way of doing this is by
-running it on port 587 with an "auth" plugin to authenticate your users.</p>
+<p>Haraka has very good spam protection (see <a href="https://haraka.github.io/manual.html">plugins</a>) and works
+well as a filtering <a href="http://en.wikipedia.org/wiki/Message_transfer_agent">MTA</a>. It also works well as a <a href="http://en.wikipedia.org/wiki/Mail_submission_agent">MSA</a> running on
+port 587 with auth and <a href="https://github.com/baudehlo/Haraka/blob/master/docs/plugins/dkim_sign.md">dkim_sign</a> plugins enabled.</p>
 
-<p>A full mail system for end users is vastly complicated, and so Haraka makes
-no attempt to be an IMAP server, figure out where mails should be delivered,
-or implement any of the functionality of a mail store. As such it is common
-to have a backend mail server which Haraka delivers to for that sort of
-functionality - Exchange, Postfix, Dovecot or Courier would be examples of
-such systems.</p>
+<p>Haraka makes no attempt to be a mail store (like Exchange or Postix/Exim/Qmail),
+a <a href="https://en.wikipedia.org/wiki/Mail_delivery_agent">LDA</a>, nor an IMAP server (like Dovecot or Courier). Haraka is
+typically used <strong>with</strong> such systems.</p>
 
-<p>Haraka does have a scalable outbound mail delivery engine built in. Any mail
-marked as <code>relaying</code> (such as via an <code>auth</code> plugin) will automatically be
+<p>Haraka has a scalable outbound mail delivery engine built in. Mail
+marked as <code>relaying</code> (such as via an <code>auth</code> plugin) is automatically
 queued for outbound delivery.</p>
 
-<h3>Join the Mailing List</h3>
+<h3>Getting Help</h3>
 
-<p>To get started with Haraka and ask questions about it, please join the
-mailing list: mailto:haraka-sub@harakamail.com - the mailing list is
-implemented as a Haraka plugin.</p>
+<ul>
+<li><a href="mailto:haraka-sub@harakamail.com">Join the mailing list</a> (implemented as a Haraka plugin)</li>
+<li>Join us on IRC at <code>#haraka</code> on <a href="https://freenode.net/irc_servers.shtml">freenode</a></li>
+<li><a href="https://github.com/baudehlo/Haraka/issues">GitHub Issues</a></li>
+</ul>
 
 <h3>Screencast</h3>
 
@@ -208,72 +213,68 @@ implemented as a Haraka plugin.</p>
 
 <h3>Why Use Haraka?</h3>
 
-<p>Haraka's primary purpose is to provide you with a much easier to extend
-mail server than most available SMTP servers out there such as Postfix,
-Exim or Microsoft Exchange, yet while still running those systems for their
-excellent ability to deliver mail to users.</p>
+<p>Haraka's plugin architecure provides an easily extensible MTA that
+complements traditional MTAs that excel at managing mail stores but do
+not have sufficient filtering.</p>
 
-<p>The plugin system makes it trivial to code new features. A typical example
-might be to provide qmail-like extended addresses to an Exchange system,
-whereby you could receive mail as <code>user-anywordshere@domain.com</code>, and yet
+<p>The plugin system makes it easy to code new features. A typical example
+is providing qmail-like extended addresses to an Exchange system,
+whereby you could receive mail as <code>user-anyword@domain.com</code>, and yet
 still have it correctly routed to <code>user@domain.com</code>. This is a few lines of
-code in Haraka, or maybe someone has already written this plugin.</p>
+code in Haraka.</p>
 
-<p>Plugins are already provided for running mail through SpamAssassin, checking
-for known bad HELO patterns, checking DNS Blocklists, and watching for
-violators of the SMTP protocol via the "early_talker" plugin.</p>
-
-<p>Furthermore Haraka comes with a simple plugin called "graph" which shows you
-real-time charts of which plugins rejected the most mail, allowing you to
-easily fine-tune your list of plugins to more effectively stop spam.</p>
+<p>Plugins are provided for running mail through <a href="https://haraka.github.io/manual/plugins/spamassassin.html">SpamAssassin</a>, validating
+<a href="https://haraka.github.io/manual/plugins/helo.checks.html">HELO</a> names, checking <a href="https://haraka.github.io/manual/plugins/dnsbl.html">DNS Blocklists</a>, and <a href="https://github.com/baudehlo/Haraka/tree/master/plugins">many others</a>.</p>
 
 <h3>Installing Haraka</h3>
 
-<p>Haraka is written in Javascript and requires <a href="http://nodejs.org/">node.js</a> to run.</p>
+<p>Haraka requires <a href="http://nodejs.org/">node.js</a> to run. Install Haraka with <a href="http://youtu.be/6twKXMAsPsw">npm</a>:</p>
 
-<p>Installation is very simple via <a href="http://youtu.be/6twKXMAsPsw">npm</a>:</p>
+<p><code>sh
+npm install -g Haraka
+</code></p>
 
-<pre><code>$ npm install -g Haraka
-</code></pre>
-
-<p>That will provide you with a <code>haraka</code> binary which allows you to setup the
-service.</p>
+<p>After installion, use the <code>haraka</code> binary to set up the service.</p>
 
 <h3>Running Haraka</h3>
 
-<p>Setting up Haraka is simple. Firstly we need to create the service:</p>
+<p>First, create the service:</p>
 
-<pre><code>$ haraka -i /path/to/haraka_test
-</code></pre>
+<p><code>sh
+haraka -i /path/to/haraka_test
+</code></p>
 
-<p>That creates the directory <code>haraka_test</code> and creates <code>config</code> and <code>plugin</code>
-directories in there, and automatically sets the host name used by Haraka
-to the output of the <code>hostname</code> command.</p>
+<p>That creates the directory <code>haraka_test</code> with <code>config</code> and <code>plugin</code>
+directories within. It also sets the host name used by Haraka
+to the output of <code>hostname</code>.</p>
 
-<p>This assumes that <code>hostname</code> gives you the correct host you want to receive
-mail for. If not, edit the <code>config/host_list</code> file. For example if you want
+<p>If <code>hostname</code> is not correct, edit <code>config/host_list</code>. For example,
 to receive mail addressed to <code>user@domain.com</code>, add <code>domain.com</code> to the
 <code>config/host_list</code> file.</p>
 
-<p>Finally just start Haraka:</p>
+<p>Finally, start Haraka using root permissions:</p>
 
-<pre><code>$ haraka -c /path/to/haraka_test
-</code></pre>
+<p><code>sh
+haraka -c /path/to/haraka_test
+</code></p>
 
 <p>And it will run.</p>
 
-<p>However the big thing you want to do next is to edit the <code>config/plugins</code>
-file. This determines what plugins run in Haraka, and controls the overall
-behaviour of the server. By default the server is setup to receive mails for
-domains in <code>host_list</code> and deliver them via <code>smtp-forward</code>. Configure the
-destination in <code>config/smtp_forward.ini</code>.</p>
+<h3>Configure Haraka</h3>
 
-<p>Each plugin has documentation available via <code>haraka -h plugins/&lt;name&gt;</code>.
-Look there for information about how each plugin is configured, edit your
-<code>config/plugins</code> file, restart Haraka and enjoy!</p>
+<p>To choose which plugins run, edit <code>config/plugins</code>. Plugins control the
+overall behaviour of Haraka. By default, only messages to domains listed
+in <code>config/host_list</code> will be accepted and then delivered via the
+<code>smtp-forward</code> plugin. Configure the destination in <code>config/smtp_forward.ini</code>.</p>
 
-<p>Feel free to write to the mailing list with any questions. Or use github
-"Issues".</p>
+<h3>Read the Fine Manual</h3>
+
+<p><code>sh
+haraka -h plugins/$name
+</code></p>
+
+<p>The docs detail how each plugin is configured. After editing
+<code>config/plugins</code>, restart Haraka and enjoy!</p>
 
 <h3>Running from git</h3>
 
@@ -294,23 +295,13 @@ config you want.</p>
 <pre><code>$ node haraka.js
 </code></pre>
 
-<h3>Performance</h3>
-
-<p>Haraka is fast, due to the nature of using the v8 Javascript engine, and
-it is scalable due to using async I/O everywhere. On my local system I have
-managed to scale it up to 5000 emails per second (with minimal plugins).</p>
-
-<p>I welcome other performance evaluations.</p>
-
 <h3>License and Author</h3>
 
 <p>Haraka is MIT licensed - see the LICENSE file for details.</p>
 
 <p>Haraka is a project started by Matt Sergeant, a 10 year veteran of the email
 and anti-spam world. Previous projects have been the project leader for
-SpamAssassin and a hacker on Qpsmtpd, a perl based mail server which is 
-quite similar to Haraka (but not as fast due to perl being slower than
-Javascript).</p>
+SpamAssassin and a hacker on <a href="https://github.com/smtpd/qpsmtpd/">Qpsmtpd</a>.</p>
 
               </div>
             </div>

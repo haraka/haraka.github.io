@@ -80,6 +80,14 @@
 <li><a href='/manual/Connection.html'>Connection Object</a></li>
 <li><a href='/manual/CoreConfig.html'>Core Configuration Files</a></li>
 <li><a href='/manual/CustomReturnCodes.html'>Custom Return Codes</a></li>
+<li><a href='/manual/deprecated/data.nomsgid.html'>data.nomsgid</a></li>
+<li><a href='/manual/deprecated/data.noreceived.html'>data.noreceived</a></li>
+<li><a href='/manual/deprecated/data.rfc5322_header_checks.html'>data.rfc5322_header_checks</a></li>
+<li><a href='/manual/deprecated/lookup_rdns.strict.html'>lookup_rdns.strict</a></li>
+<li><a href='/manual/deprecated/mail_from.blocklist.html'>mail_from.blocklist</a></li>
+<li><a href='/manual/deprecated/mail_from.nobounces.html'>mail_from.nobounces</a></li>
+<li><a href='/manual/deprecated/rcpt_to.blocklist.html'>rcpt_to.blocklist</a></li>
+<li><a href='/manual/deprecated/rdns.regexp.html'>rdns.regexp</a></li>
 <li><a href='/manual/HAProxy.html'>HAProxy PROXY protocol extension support</a></li>
 <li><a href='/manual/Header.html'>Header Object</a></li>
 <li><a href='/manual/Logging_API.html'>Logging API</a></li>
@@ -99,58 +107,57 @@
 <ul id='plugins' class='nav'>
 <li><a href='/manual/plugins/auth/auth_ldap.html'>auth/auth_ldap</a></li>
 <li><a href='/manual/plugins/auth/auth_proxy.html'>auth/auth_proxy</a></li>
-<li><a href='/manual/plugins/auth/auth_vpopmaild.html'>Haraka</a></li>
+<li><a href='/manual/plugins/auth/auth_vpopmaild.html'>auth/auth_vpopmaild</a></li>
 <li><a href='/manual/plugins/auth/flat_file.html'>auth/flat_file</a></li>
 <li><a href='/manual/plugins/queue/deliver.html'>queue/deliver</a></li>
 <li><a href='/manual/plugins/queue/discard.html'>discard</a></li>
 <li><a href='/manual/plugins/queue/lmtp.html'>queue/lmtp</a></li>
 <li><a href='/manual/plugins/queue/qmail-queue.html'>queue/qmail-queue</a></li>
 <li><a href='/manual/plugins/queue/quarantine.html'>quarantine</a></li>
+<li><a href='/manual/plugins/queue/rabbitmq.html'>queue/rabbitmq</a></li>
+<li><a href='/manual/plugins/queue/rabbitmq_amqplib.html'>queue/rabbitmq_amqplib</a></li>
 <li><a href='/manual/plugins/queue/smtp_forward.html'>queue/smtp_forward</a></li>
 <li><a href='/manual/plugins/queue/smtp_proxy.html'>queue/smtp_proxy</a></li>
-<li><a href='/manual/plugins/access.html'>access</a></li>
+<li><a href='/manual/plugins/access.html'>access - ACLs</a></li>
 <li><a href='/manual/plugins/aliases.html'>aliases</a></li>
 <li><a href='/manual/plugins/attachment.html'>attachment</a></li>
-<li><a href='/manual/plugins/avg.html'>avg</a></li>
+<li><a href='/manual/plugins/avg.html'>avg - Anti-Virus scanner</a></li>
 <li><a href='/manual/plugins/block_me.html'>block_me</a></li>
 <li><a href='/manual/plugins/bounces.html'>bounce</a></li>
 <li><a href='/manual/plugins/clamd.html'>clamd</a></li>
 <li><a href='/manual/plugins/connect.asn.html'>connect.asn</a></li>
-<li><a href='/manual/plugins/connect.fcrdns.html'>Forward Confirmed Reverse DNS</a></li>
+<li><a href='/manual/plugins/connect.fcrdns.html'>connect.fcrdns - Forward Confirmed Reverse DNS</a></li>
 <li><a href='/manual/plugins/connect.geoip.html'>geoip</a></li>
-<li><a href='/manual/plugins/connect.p0f.html'>connect.p0f - A TCP Fingerprinting Plugin</a></li>
+<li><a href='/manual/plugins/connect.p0f.html'>connect.p0f - TCP Fingerprinting</a></li>
 <li><a href='/manual/plugins/connect.rdns_access.html'>connect.rdns_access</a></li>
 <li><a href='/manual/plugins/daemonize.html'>daemonize</a></li>
 <li><a href='/manual/plugins/data.headers.html'>data.headers</a></li>
-<li><a href='/manual/plugins/data.nomsgid.html'>data.nomsgid</a></li>
-<li><a href='/manual/plugins/data.noreceived.html'>data.noreceived</a></li>
-<li><a href='/manual/plugins/data.rfc5322_header_checks.html'>data.rfc5322_header_checks</a></li>
 <li><a href='/manual/plugins/data.signatures.html'>data.signatures</a></li>
 <li><a href='/manual/plugins/data.uribl.html'>data.uribl</a></li>
 <li><a href='/manual/plugins/delay_deny.html'>delay_deny</a></li>
-<li><a href='/manual/plugins/dkim_sign.html'>dkim_sign</a></li>
+<li><a href='/manual/plugins/dkim_sign.html'>Haraka</a></li>
+<li><a href='/manual/plugins/dkim_verify.html'>dkim_verify</a></li>
 <li><a href='/manual/plugins/dnsbl.html'>dnsbl</a></li>
 <li><a href='/manual/plugins/dnswl.html'>dnswl</a></li>
 <li><a href='/manual/plugins/early_talker.html'>early_talker</a></li>
 <li><a href='/manual/plugins/graph.html'>graph</a></li>
 <li><a href='/manual/plugins/helo.checks.html'>helo.checks</a></li>
-<li><a href='/manual/plugins/karma.html'>Haraka</a></li>
+<li><a href='/manual/plugins/karma.html'>karma - a scoring engine</a></li>
 <li><a href='/manual/plugins/log.syslog.html'>log.syslog</a></li>
-<li><a href='/manual/plugins/lookup_rdns.strict.html'>lookup_rdns.strict</a></li>
 <li><a href='/manual/plugins/mail_from.access.html'>mail_from.access</a></li>
-<li><a href='/manual/plugins/mail_from.blocklist.html'>mail_from.blocklist</a></li>
 <li><a href='/manual/plugins/mail_from.is_resolvable.html'>mail_from.is_resolvable</a></li>
-<li><a href='/manual/plugins/mail_from.nobounces.html'>mail_from.nobounces</a></li>
 <li><a href='/manual/plugins/max_unrecognized_commands.html'>max_unrecognized_commands</a></li>
 <li><a href='/manual/plugins/messagesniffer.html'>messagesniffer</a></li>
+<li><a href='/manual/plugins/prevent_credential_leaks.html'>prevent_credential_leaks</a></li>
 <li><a href='/manual/plugins/process_title.html'>process_title</a></li>
 <li><a href='/manual/plugins/rate_limit.html'>rate_limit</a></li>
 <li><a href='/manual/plugins/rcpt_to.access.html'>rcpt_to.access</a></li>
-<li><a href='/manual/plugins/rcpt_to.blocklist.html'>rcpt_to.blocklist</a></li>
-<li><a href='/manual/plugins/rcpt_to.in_host_list.html'>Haraka</a></li>
+<li><a href='/manual/plugins/rcpt_to.in_host_list.html'>rcpt_to.in_host_list</a></li>
+<li><a href='/manual/plugins/rcpt_to.ldap.html'>Haraka</a></li>
 <li><a href='/manual/plugins/rcpt_to.max_count.html'>rcpt_to.max_count</a></li>
-<li><a href='/manual/plugins/rcpt_to.qmail_deliverable.html'>Haraka</a></li>
-<li><a href='/manual/plugins/rdns.regexp.html'>rdns.regexp</a></li>
+<li><a href='/manual/plugins/rcpt_to.qmail_deliverable.html'>rcpt_to.qmail_deliverable</a></li>
+<li><a href='/manual/plugins/rcpt_to.routes.html'>Haraka</a></li>
+<li><a href='/manual/plugins/record_envelope_addresses.html'>record</a></li>
 <li><a href='/manual/plugins/relay.html'>relay</a></li>
 <li><a href='/manual/plugins/relay_acl.html'>relay_acl</a></li>
 <li><a href='/manual/plugins/relay_all.html'>relay_all</a></li>
@@ -161,7 +168,7 @@
 <li><a href='/manual/plugins/tarpit.html'>tarpit</a></li>
 <li><a href='/manual/plugins/tls.html'>tls</a></li>
 <li><a href='/manual/plugins/toobusy.html'>toobusy</a></li>
-<li><a href='/manual/plugins/xclient.html'>XCLIENT</a></li>
+<li><a href='/manual/plugins/xclient.html'>xclient</a></li>
 </ul></li></ul>
 
               </div>
@@ -189,35 +196,56 @@ process with the SIGHUP signal (via the <code>kill</code> command line tool).</p
 
 <h2>Outbound Configuration Files</h2>
 
-<h3>outbound.concurrency_max</h3>
+<h3>outbound.ini</h3>
+
+<ul>
+<li><code>disabled</code></li>
+</ul>
+
+<p>Default: false. Allows one to temporarily disable outbound delivery, while
+still receiving and queuing emails. This can be changed while Haraka is
+running.</p>
+
+<ul>
+<li><code>concurrency_max</code></li>
+</ul>
 
 <p>Default: 100. Specifies the maximum concurrent connections to make. Note that
 if using cluster (multiple CPUs) then this will be multiplied by the number
 of CPUs that you have.</p>
 
-<h3>outbound.enable_tls</h3>
+<ul>
+<li><code>enable_tls</code></li>
+</ul>
 
-<p>Default: 0. Put a "1" in this file to enable TLS for outbound mail when the
-remote end is capable of receiving TLS connections.</p>
+<p>Default: false. Switch to true to enable TLS for outbound mail when the
+remote end is capable.</p>
 
 <p>This uses the same <code>tls_key.pem</code> and <code>tls_cert.pem</code> files that the <code>tls</code>
-plugin uses. See the plugin documentation for information on generating those
+plugin uses. See the <a href="http://haraka.github.io/manual/plugins/tls.html">tls plugin
+docs</a> for information on generating those
 files.</p>
+
+<ul>
+<li><code>ipv6_enabled</code></li>
+</ul>
+
+<p>When this has a "true" value inside (usually a <code>1</code>), it defaults to an 'AAAA'
+lookup first for each MX record, and uses those hosts to send email via.</p>
+
+<ul>
+<li><code>always_split</code></li>
+</ul>
+
+<p>Default: false. By default, Haraka groups message recipients by domain so that
+messages with multiple recipients at the same domain get sent in a single SMTP
+session. When <code>always_split</code> is enabled, each recipient gets a queue entry and
+delivery in its own SMTP session. This carries a performance penalty but
+enables more flexibility in mail delivery and bounce handling.</p>
 
 <h3>outbound.bounce_message</h3>
 
 <p>See "Bounce Messages" below for details.</p>
-
-<h3>outbound.disabled</h3>
-
-<p>Allows you to temporarily disable outbound delivery, while still able to
-receive and queue emails. This can be done while Haraka is running due to
-how Haraka watches for config file changes.</p>
-
-<h3>outbound.ipv6_enabled</h3>
-
-<p>When this has a "true" value inside (usually a <code>1</code>), it defaults to an 'AAAA'
-lookup first for each MX record, and uses those hosts to send email via.</p>
 
 <h2>Outbound Mail Hooks</h2>
 
@@ -259,10 +287,18 @@ records for you.</p>
 <li>ipaddress</li>
 <li>ipaddress:port</li>
 </ul></li>
-<li>An MX object of the form: <code>{priority: 0, exchange: hostname}</code> and optionally
-a <code>port</code> value to specify an alternate port, and a <code>bind</code> value to specify an
-outbound IP address to bind to and a <code>using_lmtp</code> boolean to specify that
-delivery should be attempted using LMTP instead of SMTP.</li>
+<li>An MX object of the form: <code>{priority: 0, exchange: hostname}</code> with the 
+following optional properies:
+<ul>
+<li><code>port</code> to specify an alternate port</li>
+<li><code>bind</code> to specify an outbound IP address to bind to</li>
+<li><code>using_lmtp</code> boolean to specify that delivery should be attempted using 
+  LMTP instead of SMTP.</li>
+<li><code>auth_user</code> to specify an AUTH username (required if AUTH is desired)</li>
+<li><code>auth_pass</code> to specify an AUTH password (required if AUTH is desired)</li>
+<li><code>auth_type</code> to specify an AUTH type that should be used with the MX.
+If this is not specified then Haraka will pick an appropriate method.</li>
+</ul></li>
 <li>A list of MX objects in an array, each in the same format as above.</li>
 </ul>
 
@@ -303,13 +339,11 @@ email then you can return <code>OK</code> from this hook to stop it from sending
 
 <p>Parameters: <code>next, hmail, params</code></p>
 
-<p>Params is a list of: <code>[host, ip, response, delay, port, mode, ok_recips]</code></p>
+<p>Params is a list of: <code>[host, ip, response, delay, port, mode, ok_recips, secured]</code></p>
 
 <p>When mails are successfully delivered to the remote end then the <code>delivered</code>
 hook is called. The return codes from this hook have no effect, so it is only
-useful for logging the fact that a successful delivery occurred.
-This hook is called with <code>(hmail, [host, ip, response, delay, port, mode, recipients])</code> 
-as parameters:</p>
+useful for logging the fact that a successful delivery occurred.</p>
 
 <ul>
 <li><code>host</code> - Hostname of the MX that the message was delivered to,</li>
@@ -320,9 +354,43 @@ that received the message and will typically contain the remote queue ID and</li
 message being delivered.</li>
 <li><code>port</code> - Port number that the message was delivered to.</li>
 <li><code>mode</code> - Shows whether SMTP or LMTP was used to deliver the mail.</li>
-<li><code>recipients</code> - an Address array containing all of the recipients that were
+<li><code>ok_recips</code> - an Address array containing all of the recipients that were
 successfully delivered to.</li>
+<li><code>secured</code> - A boolean denoting if the connection used TLS or not.</li>
 </ul>
+
+<h2>Outbound IP address</h2>
+
+<p>Normally the OS will decide which IP address will be used for outbound 
+connections using the IP routing table.  </p>
+
+<p>There are instances where you may want to separate outbound traffic on 
+different IP addresses based on sender, domain or some other identifier. <br />
+To do this, the IP address that you want to use <em>must</em> be bound to an 
+interface (or alias) on the local system.</p>
+
+<p>As described above the outbound IP can be set using the <code>bind</code> parameter 
+returned my the <code>get_mx</code> hook or during the reception of the message you
+can set a transaction note in a plugin to tell Haraka which outbound IP 
+address you would like it to use when it tries to deliver the message:</p>
+
+<p><code>
+connection.transaction.notes.outbound_ip = '1.2.3.4';
+</code></p>
+
+<p>Note: if the <code>get_mx</code> hook returns a <code>bind</code> parameter, then this will be 
+used in preference to the transaction note.</p>
+
+<h2>AUTH</h2>
+
+<p>If you wish to use AUTH for a particular domain or domains, or you wish to
+force all mail to an outbound service or smart host that requires authentication
+then you can use the <code>get_mx</code> hook documented above to do this by supplying
+both <code>auth_user</code> and <code>auth_pass</code> properties in an MX object.</p>
+
+<p>If AUTH properties are supplied and the remote end does not offer AUTH or there
+are no compatible AUTH methods, then the message with be sent without AUTH and
+a warning will be logged.</p>
 
 <h2>Bounce Messages</h2>
 

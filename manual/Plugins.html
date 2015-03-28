@@ -80,6 +80,14 @@
 <li><a href='/manual/Connection.html'>Connection Object</a></li>
 <li><a href='/manual/CoreConfig.html'>Core Configuration Files</a></li>
 <li><a href='/manual/CustomReturnCodes.html'>Custom Return Codes</a></li>
+<li><a href='/manual/deprecated/data.nomsgid.html'>data.nomsgid</a></li>
+<li><a href='/manual/deprecated/data.noreceived.html'>data.noreceived</a></li>
+<li><a href='/manual/deprecated/data.rfc5322_header_checks.html'>data.rfc5322_header_checks</a></li>
+<li><a href='/manual/deprecated/lookup_rdns.strict.html'>lookup_rdns.strict</a></li>
+<li><a href='/manual/deprecated/mail_from.blocklist.html'>mail_from.blocklist</a></li>
+<li><a href='/manual/deprecated/mail_from.nobounces.html'>mail_from.nobounces</a></li>
+<li><a href='/manual/deprecated/rcpt_to.blocklist.html'>rcpt_to.blocklist</a></li>
+<li><a href='/manual/deprecated/rdns.regexp.html'>rdns.regexp</a></li>
 <li><a href='/manual/HAProxy.html'>HAProxy PROXY protocol extension support</a></li>
 <li><a href='/manual/Header.html'>Header Object</a></li>
 <li><a href='/manual/Logging_API.html'>Logging API</a></li>
@@ -99,58 +107,57 @@
 <ul id='plugins' class='nav'>
 <li><a href='/manual/plugins/auth/auth_ldap.html'>auth/auth_ldap</a></li>
 <li><a href='/manual/plugins/auth/auth_proxy.html'>auth/auth_proxy</a></li>
-<li><a href='/manual/plugins/auth/auth_vpopmaild.html'>Haraka</a></li>
+<li><a href='/manual/plugins/auth/auth_vpopmaild.html'>auth/auth_vpopmaild</a></li>
 <li><a href='/manual/plugins/auth/flat_file.html'>auth/flat_file</a></li>
 <li><a href='/manual/plugins/queue/deliver.html'>queue/deliver</a></li>
 <li><a href='/manual/plugins/queue/discard.html'>discard</a></li>
 <li><a href='/manual/plugins/queue/lmtp.html'>queue/lmtp</a></li>
 <li><a href='/manual/plugins/queue/qmail-queue.html'>queue/qmail-queue</a></li>
 <li><a href='/manual/plugins/queue/quarantine.html'>quarantine</a></li>
+<li><a href='/manual/plugins/queue/rabbitmq.html'>queue/rabbitmq</a></li>
+<li><a href='/manual/plugins/queue/rabbitmq_amqplib.html'>queue/rabbitmq_amqplib</a></li>
 <li><a href='/manual/plugins/queue/smtp_forward.html'>queue/smtp_forward</a></li>
 <li><a href='/manual/plugins/queue/smtp_proxy.html'>queue/smtp_proxy</a></li>
-<li><a href='/manual/plugins/access.html'>access</a></li>
+<li><a href='/manual/plugins/access.html'>access - ACLs</a></li>
 <li><a href='/manual/plugins/aliases.html'>aliases</a></li>
 <li><a href='/manual/plugins/attachment.html'>attachment</a></li>
-<li><a href='/manual/plugins/avg.html'>avg</a></li>
+<li><a href='/manual/plugins/avg.html'>avg - Anti-Virus scanner</a></li>
 <li><a href='/manual/plugins/block_me.html'>block_me</a></li>
 <li><a href='/manual/plugins/bounces.html'>bounce</a></li>
 <li><a href='/manual/plugins/clamd.html'>clamd</a></li>
 <li><a href='/manual/plugins/connect.asn.html'>connect.asn</a></li>
-<li><a href='/manual/plugins/connect.fcrdns.html'>Forward Confirmed Reverse DNS</a></li>
+<li><a href='/manual/plugins/connect.fcrdns.html'>connect.fcrdns - Forward Confirmed Reverse DNS</a></li>
 <li><a href='/manual/plugins/connect.geoip.html'>geoip</a></li>
-<li><a href='/manual/plugins/connect.p0f.html'>connect.p0f - A TCP Fingerprinting Plugin</a></li>
+<li><a href='/manual/plugins/connect.p0f.html'>connect.p0f - TCP Fingerprinting</a></li>
 <li><a href='/manual/plugins/connect.rdns_access.html'>connect.rdns_access</a></li>
 <li><a href='/manual/plugins/daemonize.html'>daemonize</a></li>
 <li><a href='/manual/plugins/data.headers.html'>data.headers</a></li>
-<li><a href='/manual/plugins/data.nomsgid.html'>data.nomsgid</a></li>
-<li><a href='/manual/plugins/data.noreceived.html'>data.noreceived</a></li>
-<li><a href='/manual/plugins/data.rfc5322_header_checks.html'>data.rfc5322_header_checks</a></li>
 <li><a href='/manual/plugins/data.signatures.html'>data.signatures</a></li>
 <li><a href='/manual/plugins/data.uribl.html'>data.uribl</a></li>
 <li><a href='/manual/plugins/delay_deny.html'>delay_deny</a></li>
-<li><a href='/manual/plugins/dkim_sign.html'>dkim_sign</a></li>
+<li><a href='/manual/plugins/dkim_sign.html'>Haraka</a></li>
+<li><a href='/manual/plugins/dkim_verify.html'>dkim_verify</a></li>
 <li><a href='/manual/plugins/dnsbl.html'>dnsbl</a></li>
 <li><a href='/manual/plugins/dnswl.html'>dnswl</a></li>
 <li><a href='/manual/plugins/early_talker.html'>early_talker</a></li>
 <li><a href='/manual/plugins/graph.html'>graph</a></li>
 <li><a href='/manual/plugins/helo.checks.html'>helo.checks</a></li>
-<li><a href='/manual/plugins/karma.html'>Haraka</a></li>
+<li><a href='/manual/plugins/karma.html'>karma - a scoring engine</a></li>
 <li><a href='/manual/plugins/log.syslog.html'>log.syslog</a></li>
-<li><a href='/manual/plugins/lookup_rdns.strict.html'>lookup_rdns.strict</a></li>
 <li><a href='/manual/plugins/mail_from.access.html'>mail_from.access</a></li>
-<li><a href='/manual/plugins/mail_from.blocklist.html'>mail_from.blocklist</a></li>
 <li><a href='/manual/plugins/mail_from.is_resolvable.html'>mail_from.is_resolvable</a></li>
-<li><a href='/manual/plugins/mail_from.nobounces.html'>mail_from.nobounces</a></li>
 <li><a href='/manual/plugins/max_unrecognized_commands.html'>max_unrecognized_commands</a></li>
 <li><a href='/manual/plugins/messagesniffer.html'>messagesniffer</a></li>
+<li><a href='/manual/plugins/prevent_credential_leaks.html'>prevent_credential_leaks</a></li>
 <li><a href='/manual/plugins/process_title.html'>process_title</a></li>
 <li><a href='/manual/plugins/rate_limit.html'>rate_limit</a></li>
 <li><a href='/manual/plugins/rcpt_to.access.html'>rcpt_to.access</a></li>
-<li><a href='/manual/plugins/rcpt_to.blocklist.html'>rcpt_to.blocklist</a></li>
-<li><a href='/manual/plugins/rcpt_to.in_host_list.html'>Haraka</a></li>
+<li><a href='/manual/plugins/rcpt_to.in_host_list.html'>rcpt_to.in_host_list</a></li>
+<li><a href='/manual/plugins/rcpt_to.ldap.html'>Haraka</a></li>
 <li><a href='/manual/plugins/rcpt_to.max_count.html'>rcpt_to.max_count</a></li>
-<li><a href='/manual/plugins/rcpt_to.qmail_deliverable.html'>Haraka</a></li>
-<li><a href='/manual/plugins/rdns.regexp.html'>rdns.regexp</a></li>
+<li><a href='/manual/plugins/rcpt_to.qmail_deliverable.html'>rcpt_to.qmail_deliverable</a></li>
+<li><a href='/manual/plugins/rcpt_to.routes.html'>Haraka</a></li>
+<li><a href='/manual/plugins/record_envelope_addresses.html'>record</a></li>
 <li><a href='/manual/plugins/relay.html'>relay</a></li>
 <li><a href='/manual/plugins/relay_acl.html'>relay_acl</a></li>
 <li><a href='/manual/plugins/relay_all.html'>relay_all</a></li>
@@ -161,7 +168,7 @@
 <li><a href='/manual/plugins/tarpit.html'>tarpit</a></li>
 <li><a href='/manual/plugins/tls.html'>tls</a></li>
 <li><a href='/manual/plugins/toobusy.html'>toobusy</a></li>
-<li><a href='/manual/plugins/xclient.html'>XCLIENT</a></li>
+<li><a href='/manual/plugins/xclient.html'>xclient</a></li>
 </ul></li></ul>
 
               </div>
@@ -178,6 +185,17 @@ plugin and a 'queue' plugin.</p>
 <p>The 'rcpt' plugin is used to determine if a particular recipient should be
 allowed to be relayed or received for. The 'queue' plugin queue's the email
 somewhere - perhaps to disk, or perhaps to an onward SMTP server.</p>
+
+<p>You can get a list of built-in plugins by running:</p>
+
+<p><code>haraka -l -c /path/to/config</code></p>
+
+<p>and display the help text for a plugin by running:</p>
+
+<p><code>haraka -h &lt;name&gt; -c /path/to/config</code></p>
+
+<p>You can omit the <code>-c /path/to/config</code> if you want to only see the plugins 
+supplied with Haraka and not your own local plugins in your <code>config</code> directory.</p>
 
 <h2>Anatomy of a Plugin</h2>
 
@@ -329,8 +347,8 @@ must be set to the name of the hook that is to be run.</p></li>
 <li>get_mx (hmail, domain) - called when sending outbound mail to lookup the MX record</li>
 <li>deferred (hmail, params) - called when sending outbound mail if the mail was deferred</li>
 <li>bounce (hmail, err) - called when sending outbound mail if the mail would bounce</li>
-<li>delivered (hmail, [host, ip, response, delay, port, mode, recipients]) - called
-when outbound mail is delivered to the destination</li>
+<li>delivered (hmail, [host, ip, response, delay, port, mode, ok_recips, secured, authenticated]) - 
+called when outbound mail is delivered to the destination</li>
 <li>send_email (hmail) - called when outbound is about to be sent</li>
 </ul>
 
@@ -346,6 +364,83 @@ lists the domains for which you wish to receive email.</p>
 <p>If a rcpt plugin DOES call <code>next(OK)</code> then the <code>rcpt_ok</code> hook is run. This
 is primarily used by the <code>queue/smtp_proxy</code> plugin which needs to run after
 all rcpt hooks.</p>
+
+<h2>Hook Run Order</h2>
+
+<p>The ordering of hooks is determined by the SMTP protocol, some knowledge of
+RFC5321 is required.</p>
+
+<h5>Typical Inbound mail</h5>
+
+<ul>
+<li>hook<em>lookup</em>rdns</li>
+<li>hook_connect</li>
+<li>hook<em>helo <strong>OR</strong> hook</em>ehlo (EHLO is sent when ESMTP is desired which allows extensions
+such as STARTTLS, AUTH, SIZE etc.)
+<ul>
+<li>hook<em>helo</li>
+<li>hook<em>ehlo
+<ul>
+<li>hook</em>capabilities</li>
+<li><em>hook<em>unrecognized</em>command</em> will run for each ESMTP extension the client requests 
+e.g. STARTTLS, AUTH etc.)</li>
+</ul></li>
+<li>hook</em>mail</li>
+<li>hook<em>rcpt (this will run once per-recipient)</li>
+<li>hook<em>rcpt</em>ok (this will run for every recipient that hook</em>rcpt returned <code>next(OK)</code> for)</li>
+<li>hook<em>data</li>
+<li><em>[attachment hooks]</em></li>
+<li>hook<em>data</em>post</li>
+<li>hook<em>queue <strong>OR</strong> hook</em>queue</em>outbound</li>
+<li>hook<em>queue</em>ok (called if hook<em>queue or hook</em>queue_outbound returns <code>next(OK)</code>)</li>
+</ul></li>
+<li>hook<em>quit <strong>OR</strong> hook</em>rset <strong>OR</strong> hook<em>helo <strong>OR</strong> hook</em>ehlo (the client can either 
+disconnect once a message has been sent or it can start a new transaction by sending RSET, EHLO
+or HELO to reset the transaction and then start a new transaction by starting with MAIL again)
+<ul>
+<li>hook<em>reset</em>transaction</li>
+</ul></li>
+<li>hook_disconnect</li>
+</ul>
+
+<h5>Typical Outbound mail</h5>
+
+<p>When we say outbound here - we mean messages that use Haraka built-in queueing and delivery
+mechanisms which are used when <code>connection.relaying = true</code> is set during the message transaction
+and <code>hook_queue_outbound</code> is called to queue the message.</p>
+
+<p>The Outbound ordering will be the mirror the Inbound mail order above until <code>hook_queue_outbound</code>
+is reached, after that the order is:</p>
+
+<ul>
+<li>hook<em>send</em>email</li>
+<li>hook<em>get</em>mx</li>
+<li>hook<em>delivered <strong>OR</strong> hook</em>deferred <strong>OR</strong> hook<em>bounce
+<ul>
+<li>hook</em>delivered  (called once per delivery domain with at least one successfull recipient)</li>
+<li>hook<em>deferred  (called once per delivery domain where at least one recipient or connection was deferred)</li>
+<li>hook</em>bounce  (called once per delivery domain where the recipient(s) or message was rejected by the destination)</li>
+</ul></li>
+</ul>
+
+<h2>Plugin Run Order</h2>
+
+<p>Plugins will be run on each hook in the order that they are specified on 
+<code>config/plugins</code>.  If a plugin returns anything other than <code>next()</code> on a hook, 
+then all subsequent plugins due to run on that hook will be skipped.</p>
+
+<p>This is important as some plugins might rely on <code>results</code> or <code>notes</code> that have
+been set by plugins that need to run before them.   This should be noted in the
+plugins documentation though, so you should make sure that you read it.</p>
+
+<p>If you are writing complex plugins of your own, you may find that you have to 
+split your plugins into multiple plugins if you require your hooks to run in a 
+specific order e.g. you want hook<em>deny to run last after all other plugins and
+hook</em>lookup_rdns to run first, then you'd need two plugins to achieve this.</p>
+
+<p>You can check the order that the plugins will run on each hook by running:</p>
+
+<p><code>haraka -o -c /path/to/config</code></p>
 
 <h2>Sharing State</h2>
 

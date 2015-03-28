@@ -80,6 +80,14 @@
 <li><a href='/manual/Connection.html'>Connection Object</a></li>
 <li><a href='/manual/CoreConfig.html'>Core Configuration Files</a></li>
 <li><a href='/manual/CustomReturnCodes.html'>Custom Return Codes</a></li>
+<li><a href='/manual/deprecated/data.nomsgid.html'>data.nomsgid</a></li>
+<li><a href='/manual/deprecated/data.noreceived.html'>data.noreceived</a></li>
+<li><a href='/manual/deprecated/data.rfc5322_header_checks.html'>data.rfc5322_header_checks</a></li>
+<li><a href='/manual/deprecated/lookup_rdns.strict.html'>lookup_rdns.strict</a></li>
+<li><a href='/manual/deprecated/mail_from.blocklist.html'>mail_from.blocklist</a></li>
+<li><a href='/manual/deprecated/mail_from.nobounces.html'>mail_from.nobounces</a></li>
+<li><a href='/manual/deprecated/rcpt_to.blocklist.html'>rcpt_to.blocklist</a></li>
+<li><a href='/manual/deprecated/rdns.regexp.html'>rdns.regexp</a></li>
 <li><a href='/manual/HAProxy.html'>HAProxy PROXY protocol extension support</a></li>
 <li><a href='/manual/Header.html'>Header Object</a></li>
 <li><a href='/manual/Logging_API.html'>Logging API</a></li>
@@ -99,58 +107,57 @@
 <ul id='plugins' class='nav'>
 <li><a href='/manual/plugins/auth/auth_ldap.html'>auth/auth_ldap</a></li>
 <li><a href='/manual/plugins/auth/auth_proxy.html'>auth/auth_proxy</a></li>
-<li><a href='/manual/plugins/auth/auth_vpopmaild.html'>Haraka</a></li>
+<li><a href='/manual/plugins/auth/auth_vpopmaild.html'>auth/auth_vpopmaild</a></li>
 <li><a href='/manual/plugins/auth/flat_file.html'>auth/flat_file</a></li>
 <li><a href='/manual/plugins/queue/deliver.html'>queue/deliver</a></li>
 <li><a href='/manual/plugins/queue/discard.html'>discard</a></li>
 <li><a href='/manual/plugins/queue/lmtp.html'>queue/lmtp</a></li>
 <li><a href='/manual/plugins/queue/qmail-queue.html'>queue/qmail-queue</a></li>
 <li><a href='/manual/plugins/queue/quarantine.html'>quarantine</a></li>
+<li><a href='/manual/plugins/queue/rabbitmq.html'>queue/rabbitmq</a></li>
+<li><a href='/manual/plugins/queue/rabbitmq_amqplib.html'>queue/rabbitmq_amqplib</a></li>
 <li><a href='/manual/plugins/queue/smtp_forward.html'>queue/smtp_forward</a></li>
 <li><a href='/manual/plugins/queue/smtp_proxy.html'>queue/smtp_proxy</a></li>
-<li><a href='/manual/plugins/access.html'>access</a></li>
+<li><a href='/manual/plugins/access.html'>access - ACLs</a></li>
 <li><a href='/manual/plugins/aliases.html'>aliases</a></li>
 <li><a href='/manual/plugins/attachment.html'>attachment</a></li>
-<li><a href='/manual/plugins/avg.html'>avg</a></li>
+<li><a href='/manual/plugins/avg.html'>avg - Anti-Virus scanner</a></li>
 <li><a href='/manual/plugins/block_me.html'>block_me</a></li>
 <li><a href='/manual/plugins/bounces.html'>bounce</a></li>
 <li><a href='/manual/plugins/clamd.html'>clamd</a></li>
 <li><a href='/manual/plugins/connect.asn.html'>connect.asn</a></li>
-<li><a href='/manual/plugins/connect.fcrdns.html'>Forward Confirmed Reverse DNS</a></li>
+<li><a href='/manual/plugins/connect.fcrdns.html'>connect.fcrdns - Forward Confirmed Reverse DNS</a></li>
 <li><a href='/manual/plugins/connect.geoip.html'>geoip</a></li>
-<li><a href='/manual/plugins/connect.p0f.html'>connect.p0f - A TCP Fingerprinting Plugin</a></li>
+<li><a href='/manual/plugins/connect.p0f.html'>connect.p0f - TCP Fingerprinting</a></li>
 <li><a href='/manual/plugins/connect.rdns_access.html'>connect.rdns_access</a></li>
 <li><a href='/manual/plugins/daemonize.html'>daemonize</a></li>
 <li><a href='/manual/plugins/data.headers.html'>data.headers</a></li>
-<li><a href='/manual/plugins/data.nomsgid.html'>data.nomsgid</a></li>
-<li><a href='/manual/plugins/data.noreceived.html'>data.noreceived</a></li>
-<li><a href='/manual/plugins/data.rfc5322_header_checks.html'>data.rfc5322_header_checks</a></li>
 <li><a href='/manual/plugins/data.signatures.html'>data.signatures</a></li>
 <li><a href='/manual/plugins/data.uribl.html'>data.uribl</a></li>
 <li><a href='/manual/plugins/delay_deny.html'>delay_deny</a></li>
-<li><a href='/manual/plugins/dkim_sign.html'>dkim_sign</a></li>
+<li><a href='/manual/plugins/dkim_sign.html'>Haraka</a></li>
+<li><a href='/manual/plugins/dkim_verify.html'>dkim_verify</a></li>
 <li><a href='/manual/plugins/dnsbl.html'>dnsbl</a></li>
 <li><a href='/manual/plugins/dnswl.html'>dnswl</a></li>
 <li><a href='/manual/plugins/early_talker.html'>early_talker</a></li>
 <li><a href='/manual/plugins/graph.html'>graph</a></li>
 <li><a href='/manual/plugins/helo.checks.html'>helo.checks</a></li>
-<li><a href='/manual/plugins/karma.html'>Haraka</a></li>
+<li><a href='/manual/plugins/karma.html'>karma - a scoring engine</a></li>
 <li><a href='/manual/plugins/log.syslog.html'>log.syslog</a></li>
-<li><a href='/manual/plugins/lookup_rdns.strict.html'>lookup_rdns.strict</a></li>
 <li><a href='/manual/plugins/mail_from.access.html'>mail_from.access</a></li>
-<li><a href='/manual/plugins/mail_from.blocklist.html'>mail_from.blocklist</a></li>
 <li><a href='/manual/plugins/mail_from.is_resolvable.html'>mail_from.is_resolvable</a></li>
-<li><a href='/manual/plugins/mail_from.nobounces.html'>mail_from.nobounces</a></li>
 <li><a href='/manual/plugins/max_unrecognized_commands.html'>max_unrecognized_commands</a></li>
 <li><a href='/manual/plugins/messagesniffer.html'>messagesniffer</a></li>
+<li><a href='/manual/plugins/prevent_credential_leaks.html'>prevent_credential_leaks</a></li>
 <li><a href='/manual/plugins/process_title.html'>process_title</a></li>
 <li><a href='/manual/plugins/rate_limit.html'>rate_limit</a></li>
 <li><a href='/manual/plugins/rcpt_to.access.html'>rcpt_to.access</a></li>
-<li><a href='/manual/plugins/rcpt_to.blocklist.html'>rcpt_to.blocklist</a></li>
-<li><a href='/manual/plugins/rcpt_to.in_host_list.html'>Haraka</a></li>
+<li><a href='/manual/plugins/rcpt_to.in_host_list.html'>rcpt_to.in_host_list</a></li>
+<li><a href='/manual/plugins/rcpt_to.ldap.html'>Haraka</a></li>
 <li><a href='/manual/plugins/rcpt_to.max_count.html'>rcpt_to.max_count</a></li>
-<li><a href='/manual/plugins/rcpt_to.qmail_deliverable.html'>Haraka</a></li>
-<li><a href='/manual/plugins/rdns.regexp.html'>rdns.regexp</a></li>
+<li><a href='/manual/plugins/rcpt_to.qmail_deliverable.html'>rcpt_to.qmail_deliverable</a></li>
+<li><a href='/manual/plugins/rcpt_to.routes.html'>Haraka</a></li>
+<li><a href='/manual/plugins/record_envelope_addresses.html'>record</a></li>
 <li><a href='/manual/plugins/relay.html'>relay</a></li>
 <li><a href='/manual/plugins/relay_acl.html'>relay_acl</a></li>
 <li><a href='/manual/plugins/relay_all.html'>relay_all</a></li>
@@ -161,7 +168,7 @@
 <li><a href='/manual/plugins/tarpit.html'>tarpit</a></li>
 <li><a href='/manual/plugins/tls.html'>tls</a></li>
 <li><a href='/manual/plugins/toobusy.html'>toobusy</a></li>
-<li><a href='/manual/plugins/xclient.html'>XCLIENT</a></li>
+<li><a href='/manual/plugins/xclient.html'>xclient</a></li>
 </ul></li></ul>
 
               </div>
@@ -171,47 +178,82 @@
               <div class="bs-docs-section">
                 <h1>Config Files</h1>
 
-<p>Haraka contains a flexible config loader which can load a few different types
-of configuration files.</p>
+<p>Haraka's config loader can load several types of configuration files.</p>
 
 <p>The API is fairly simple:</p>
 
 <pre><code>// From within a plugin:
-var config_item = this.config.get(name, [type], [callback], [options]);
+var cfg = this.config.get(name, [type], [callback], [options]);
 </code></pre>
 
-<p>Type can be one of:</p>
+<p><code>name</code> is not a filename, but a name in the config/ directory. For example:</p>
 
-<ul>
-<li>'value' - load a flat file containing a single value (default)</li>
-<li>'ini' - load an "ini" style file</li>
-<li>'json' - load a json file</li>
-<li>'list' - load a flat file containing a list of values</li>
-<li>'data' - load a flat file containing a list of values, keeping comments and whitespace.</li>
-</ul>
-
-<p>The name is not a filename, but a name in the config/ directory. For example:</p>
-
-<pre><code>var config_item = this.config.get('rambling.paths', 'list');
+<pre><code>var cfg = this.config.get('rambling.paths', 'list');
 </code></pre>
 
 <p>This will load the file config/rambling.paths in the Haraka directory.</p>
 
-<p>If your ini and json files have <code>.ini</code> and <code>.json</code> suffixes,
-the <code>type</code> parameter can be omitted.</p>
+<p><code>type</code> can be one of:</p>
 
-<p>You can optionally pass in a callback function which will be called when
-an update is detected on the file.</p>
+<ul>
+<li>'value' - load a flat file containing a single value (default)</li>
+<li>'ini'   - load an "ini" style file</li>
+<li>'json'  - load a json file</li>
+<li>'yaml'  - load a yaml file</li>
+<li>'list'  - load a flat file containing a list of values</li>
+<li>'data'  - load a flat file containing a list of values, keeping comments and whitespace.</li>
+<li>'binary' - load a binary file into a Buffer</li>
+</ul>
 
-<p>For ini files, an <code>options</code> object is allowed.</p>
+<p>If your ini and json files have <code>.ini</code>, <code>.json</code> or <code>.yaml</code> suffixes,
+the <code>type</code> parameter can be omitted.  </p>
 
-<h1>File Formats</h1>
+<p>See the <a href="#file_formats">File Formats</a> section below for a more detailed
+explaination of each of the formats.</p>
+
+<p><code>callback</code> is an optional callback function that will be called when
+an update is detected on the file after the configuration cache has been 
+updated by re-reading the file.  You can use this to refresh configuration
+variables within your plugin if you are not calling <code>config.get</code> within
+one of the hooks (e.g. if you use the <code>register()</code> function):</p>
+
+<p>`````javascript
+var cfg;  // variable global to this plugin only</p>
+
+<p>exports.register = function () {
+    var plugin = this;
+    plugin.loginfo('register function called');
+    cfg = plugin.config.get('my<em>plugin.ini', function () {
+        // This closure will be run for each detected update of my</em>plugin.ini
+        // Re-run the outer function again
+        plugin.register();
+    });
+    plugin.loginfo('cfg=' + JSON.stringify(cfg));
+}</p>
+
+<p>exports.hook_connect = function (next, connection) {
+    // cfg variable available here and will always be up-to-date
+}
+`````</p>
+
+<p>The optional <code>options</code> object can accepts the following keys:</p>
+
+<ul>
+<li><code>no_watch</code> (default: false) - prevents Haraka from watching for updates.</li>
+<li><code>no_cache</code> (default: false) - prevents Haraka from caching the file. This
+means that the file will be re-read on every call to <code>config.get</code>.  This is
+not recommended as config files are read syncronously, will block the event
+loop, and will slow down Haraka.</li>
+<li><code>booleans</code> (default: none) - for .ini files, this allows specifying
+boolean type keys. Default true or false can be specified.</li>
+</ul>
+
+<h1><a name="file_formats">File Formats</a></h1>
 
 <h2>Ini Files</h2>
 
-<p>INI files had their heritage in early versions of Microsoft Windows products.</p>
-
-<p>They are a simple format of key=value pairs, with an optional [section].</p>
+<p>INI files had their heritage in early versions of Microsoft Windows products. <br />
+They are a simple format of key=value pairs, with an optional [section].</p>
 
 <p>Here is a typical example:</p>
 
@@ -225,7 +267,8 @@ role=Architect
 
 <p>That produces the following Javascript object:</p>
 
-<pre><code>{
+<p><code>javascript
+{
     main: {
         first_name: 'Matt',
         last_name: 'Sergeant'
@@ -235,9 +278,8 @@ role=Architect
         role: 'Architect'
     }
 }
-</code></pre>
-
-<p>The key point there is that items before any [section] marker go in the "main"
+</code>
+The key point there is that items before any [section] marker go in the "main"
 section.</p>
 
 <p>Note that there is some auto-conversion of values on the right hand side of
@@ -278,16 +320,37 @@ the config file is missing) then prefix the key with +:</p>
 
 <p>Flat files are simply either lists of values separated by \n or a single
 value in a file on its own. Those who have used qmail or qpsmtpd will be
-familiar with this format.</p>
-
-<p>Lines starting with '#' and blank lines will be ignored unless the type is
-specified as 'data', however even then line endings will be stripped.</p>
-
-<p>See plugins/dnsbl.js for an example.</p>
+familiar with this format. <br />
+Lines starting with '#' and blank lines will be ignored unless the type is
+specified as 'data', however even then line endings will be stripped. <br />
+See plugins/dnsbl.js for an example.</p>
 
 <h2>JSON Files</h2>
 
 <p>These are as you would expect, and returns an object as given in the file.</p>
+
+<p>If a requested .json file does not exist then the same file will be checked
+for with a .yaml extension and that will be loaded instead.   This is done
+because YAML files are far easier for a human to write.</p>
+
+<p>You can use JSON or YAML files to override any other file by prefixing the
+outer variable name with a <code>!</code> e.g.</p>
+
+<p><code>`
+{
+    "!smtpgreeting": [ 'this is line one', 'this is line two' ]
+}
+</code></p>
+
+<p>If the config/smtpgreeting file did not exist, then this value would replace
+it.</p>
+
+<p>NOTE: You must ensure that the data type (e.g. Object, Array or String) for 
+the replaced value is correct.  This cannot be done automatically.</p>
+
+<h2>YAML Files</h2>
+
+<p>As per JSON files above but in YAML format.</p>
 
 <h1>Reloading/Caching</h1>
 
@@ -297,6 +360,12 @@ configuration file after it has changed. Configuration files are watched for
 changes so this process is not a heavyweight "poll" process, and files are
 not re-read every time config.get() is called so this can be considered a
 lightweight process.</p>
+
+<p>On Linux/Windows if you create a previously non-existant file that Haraka
+has tried to read in the past; it will notice immediately and will load 
+that configuration file.   For other operating systems it will take up to
+60 seconds for this to happen due to the differences between the various 
+kernel APIs for watching files/directories.</p>
 
 <p>Note that Haraka reads a number of configuration files and any configuration
 read in a plugins register() function <em>before</em> it drops privileges, so you
