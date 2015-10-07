@@ -7,7 +7,7 @@
     <meta name="description" content="">
     <meta name="author" content="">
 
-    <title>Haraka Manual &raquo; connect.asn</title>
+    <title>Haraka Manual &raquo; connect.asn - get AS number of remote</title>
     
     <!-- Bootstrap core CSS -->
     <link href="/css/bootstrap.css" rel="stylesheet">
@@ -63,7 +63,7 @@
         <!-- Docs page layout -->
         <div class="bs-header" id="content">
           <div class="container">
-            <h1>connect.asn</h1>
+            <h1>connect.asn - get AS number of remote</h1>
           </div>
         </div>
         
@@ -93,7 +93,7 @@
 <li><a href='/manual/Logging_API.html'>Logging API</a></li>
 <li><a href='/manual/Net_Utils.html'>Net_Utils</a></li>
 <li><a href='/manual/Outbound.html'>Outbound Mail with Haraka</a></li>
-<li><a href='/manual/Plugins.html'>Writing Haraka Plugins</a></li>
+<li><a href='/manual/Plugins.html'>Plugins</a></li>
 <li><a href='/manual/Results.html'>Results</a></li>
 <li><a href='/manual/Transaction.html'>Transaction Object</a></li>
 </ul></li>
@@ -122,10 +122,11 @@
 <li><a href='/manual/plugins/aliases.html'>aliases</a></li>
 <li><a href='/manual/plugins/attachment.html'>attachment</a></li>
 <li><a href='/manual/plugins/avg.html'>avg - Anti-Virus scanner</a></li>
+<li><a href='/manual/plugins/backscatterer.html'>backscatterer</a></li>
 <li><a href='/manual/plugins/block_me.html'>block_me</a></li>
-<li><a href='/manual/plugins/bounces.html'>bounce</a></li>
+<li><a href='/manual/plugins/bounce.html'>bounce</a></li>
 <li><a href='/manual/plugins/clamd.html'>clamd</a></li>
-<li class="active"><a href='/manual/plugins/connect.asn.html'>connect.asn</a></li>
+<li class="active"><a href='/manual/plugins/connect.asn.html'>connect.asn - get AS number of remote</a></li>
 <li><a href='/manual/plugins/connect.fcrdns.html'>connect.fcrdns - Forward Confirmed Reverse DNS</a></li>
 <li><a href='/manual/plugins/connect.geoip.html'>geoip</a></li>
 <li><a href='/manual/plugins/connect.p0f.html'>connect.p0f - TCP Fingerprinting</a></li>
@@ -134,15 +135,19 @@
 <li><a href='/manual/plugins/data.headers.html'>data.headers</a></li>
 <li><a href='/manual/plugins/data.signatures.html'>data.signatures</a></li>
 <li><a href='/manual/plugins/data.uribl.html'>data.uribl</a></li>
+<li><a href='/manual/plugins/dcc.html'>Haraka</a></li>
 <li><a href='/manual/plugins/delay_deny.html'>delay_deny</a></li>
 <li><a href='/manual/plugins/dkim_sign.html'>Haraka</a></li>
 <li><a href='/manual/plugins/dkim_verify.html'>dkim_verify</a></li>
 <li><a href='/manual/plugins/dnsbl.html'>dnsbl</a></li>
 <li><a href='/manual/plugins/dnswl.html'>dnswl</a></li>
 <li><a href='/manual/plugins/early_talker.html'>early_talker</a></li>
+<li><a href='/manual/plugins/esets.html'>Haraka</a></li>
 <li><a href='/manual/plugins/graph.html'>graph</a></li>
 <li><a href='/manual/plugins/helo.checks.html'>helo.checks</a></li>
 <li><a href='/manual/plugins/karma.html'>karma - a scoring engine</a></li>
+<li><a href='/manual/plugins/limit.html'>limit</a></li>
+<li><a href='/manual/plugins/log.elasticsearch.html'>log.elasticsearch</a></li>
 <li><a href='/manual/plugins/log.syslog.html'>log.syslog</a></li>
 <li><a href='/manual/plugins/mail_from.access.html'>mail_from.access</a></li>
 <li><a href='/manual/plugins/mail_from.is_resolvable.html'>mail_from.is_resolvable</a></li>
@@ -158,16 +163,19 @@
 <li><a href='/manual/plugins/rcpt_to.qmail_deliverable.html'>rcpt_to.qmail_deliverable</a></li>
 <li><a href='/manual/plugins/rcpt_to.routes.html'>Haraka</a></li>
 <li><a href='/manual/plugins/record_envelope_addresses.html'>record</a></li>
+<li><a href='/manual/plugins/redis.html'>redis</a></li>
 <li><a href='/manual/plugins/relay.html'>relay</a></li>
 <li><a href='/manual/plugins/relay_acl.html'>relay_acl</a></li>
 <li><a href='/manual/plugins/relay_all.html'>relay_all</a></li>
 <li><a href='/manual/plugins/relay_force_routing.html'>relay_force_routing.js</a></li>
 <li><a href='/manual/plugins/reseed_rng.html'>reseed_rng</a></li>
+<li><a href='/manual/plugins/rspamd.html'>rspamd</a></li>
 <li><a href='/manual/plugins/spamassassin.html'>spamassassin</a></li>
 <li><a href='/manual/plugins/spf.html'>spf</a></li>
 <li><a href='/manual/plugins/tarpit.html'>tarpit</a></li>
 <li><a href='/manual/plugins/tls.html'>tls</a></li>
 <li><a href='/manual/plugins/toobusy.html'>toobusy</a></li>
+<li><a href='/manual/plugins/watch.html'>watch - smtp connections in HTTP browser</a></li>
 <li><a href='/manual/plugins/xclient.html'>xclient</a></li>
 </ul></li></ul>
 
@@ -176,25 +184,28 @@
             
             <div class="col-md-9" role="main">
               <div class="bs-docs-section">
-                <h1>connect.asn</h1>
+                <h1>connect.asn - get AS number of remote</h1>
 
 <ul>
-<li>Use network services to look up the ASN of the remote IP.</li>
-<li>Inserts a result object with the ASN of the connecting IP address.</li>
+<li>Use DNS queries to look up the ASN of the remote IP.</li>
+<li>Inserts a result object with the ASN of the remote host.</li>
 </ul>
 
-<p>The AS Nunber is the <a href="http://en.wikipedia.org/wiki/Autonomous_System_(Internet">Autonomous System Number</a>)
+<p>The AS Number is the <a href="http://en.wikipedia.org/wiki/Autonomous_System_(Internet">Autonomous System Number</a>)
 that represents the bailiwick or sphere of control of a network operator.</p>
 
-<h2>alternate source</h2>
+<h2>Faster Lookups</h2>
 
-<p>If your mail server is very busy, use instead the <code>connect.geoip</code>
-plugin with the MaxMind backend. It caches a copy of the ASN database locally
-and gets the ASN without the additional network traffic and delays.</p>
+<p>If your mail server is very busy:</p>
+
+<ul>
+<li>Download the <a href="ftp://ftp.routeviews.org/dnszones/">routeviews ASN zones</a> and serve them on a local DNS server. If you use SpamAssassin, this is highly recommended as it looks up ASN using routeviews via DNS.</li>
+<li>Use instead the <code>connect.geoip</code> plugin with the MaxMind backend. It caches the ASN database locally and gets the ASN without network traffic and delays.</li>
+</ul>
 
 <h2>Usage</h2>
 
-<p>You can also access the ASN number for other plugins that run after this plugin like so:</p>
+<p>The AS number can be accessed by plugins that run after <code>connect.asn</code> like so:</p>
 
 <pre><code>var asn = connection.results.get('connect.asn');
 if (asn &amp;&amp; asn.asn) {
@@ -207,14 +218,14 @@ if (asn &amp;&amp; asn.asn) {
 <p>The following settings can be set in config/connect.asn.ini.</p>
 
 <ul>
-<li>providers: comma separated list of DNS zones that provide IP to ASN lookups</li>
-</ul>
-
-<p>Supported providers: origin.asn.cymru.com, origin.asn.spameatingmonkey.net
-and asn.routeviews.org</p>
+<li><p>providers: comma separated list of DNS zones that provide IP to ASN lookups</p>
 
 <ul>
-<li>test_ip: (Default:</li>
+<li>origin.asn.cymru.com</li>
+<li>origin.asn.spameatingmonkey.net</li>
+<li>asn.routeviews.org</li>
+</ul></li>
+<li><p>test_ip: (Default:</p></li>
 </ul>
 
 <p>An IP address that maps to an ASN (any valid public IP should work)</p>

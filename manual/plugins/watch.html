@@ -7,7 +7,7 @@
     <meta name="description" content="">
     <meta name="author" content="">
 
-    <title>Haraka Manual &raquo; lookup_rdns.strict</title>
+    <title>Haraka Manual &raquo; watch - smtp connections in HTTP browser</title>
     
     <!-- Bootstrap core CSS -->
     <link href="/css/bootstrap.css" rel="stylesheet">
@@ -63,7 +63,7 @@
         <!-- Docs page layout -->
         <div class="bs-header" id="content">
           <div class="container">
-            <h1>lookup_rdns.strict</h1>
+            <h1>watch - smtp connections in HTTP browser</h1>
           </div>
         </div>
         
@@ -83,7 +83,7 @@
 <li><a href='/manual/deprecated/data.nomsgid.html'>data.nomsgid</a></li>
 <li><a href='/manual/deprecated/data.noreceived.html'>data.noreceived</a></li>
 <li><a href='/manual/deprecated/data.rfc5322_header_checks.html'>data.rfc5322_header_checks</a></li>
-<li class="active"><a href='/manual/deprecated/lookup_rdns.strict.html'>lookup_rdns.strict</a></li>
+<li><a href='/manual/deprecated/lookup_rdns.strict.html'>lookup_rdns.strict</a></li>
 <li><a href='/manual/deprecated/mail_from.blocklist.html'>mail_from.blocklist</a></li>
 <li><a href='/manual/deprecated/mail_from.nobounces.html'>mail_from.nobounces</a></li>
 <li><a href='/manual/deprecated/rcpt_to.blocklist.html'>rcpt_to.blocklist</a></li>
@@ -175,7 +175,7 @@
 <li><a href='/manual/plugins/tarpit.html'>tarpit</a></li>
 <li><a href='/manual/plugins/tls.html'>tls</a></li>
 <li><a href='/manual/plugins/toobusy.html'>toobusy</a></li>
-<li><a href='/manual/plugins/watch.html'>watch - smtp connections in HTTP browser</a></li>
+<li class="active"><a href='/manual/plugins/watch.html'>watch - smtp connections in HTTP browser</a></li>
 <li><a href='/manual/plugins/xclient.html'>xclient</a></li>
 </ul></li></ul>
 
@@ -184,69 +184,41 @@
             
             <div class="col-md-9" role="main">
               <div class="bs-docs-section">
-                <h1>lookup_rdns.strict</h1>
+                <h1>watch - smtp connections in HTTP browser</h1>
 
-<p>This plugin checks the reverse-DNS and compares the resulting addresses
-against forward DNS for a match.  If there is no match it sends a
-DENYDISCONNECT, otherwise if it matches it sends an OK.  DENYDISCONNECT
-messages are configurable.</p>
+<p>Watch SMTP traffic to your Haraka server in a web interface. </p>
 
-<h2>Configuration lookup_rdns.strict.ini</h2>
+<p><img src="http://www.tnpi.net/internet/mail/haraka-watch.png" alt="Watch Screen Capture" title="" /></p>
 
-<p>This is the general configuration file for the plugin.  In it you can find
-ways to customize user messages, specify timeouts, and some whitelist
-parsing options.</p>
+<h2>Enable Watch</h2>
+
+<ol>
+<li>Enable Haraka's HTTP server (see <code>listen</code> in http.ini)</li>
+<li>Add 'watch' to config/plugins</li>
+<li>Point your web browser at http://mail.example.com/watch/</li>
+</ol>
+
+<p>Enjoy the blinky lights. </p>
+
+<h2>Tips</h2>
 
 <ul>
-<li><p>lookup_rdns.strict.general.nomatch</p>
-
-<p>Text to send the user if there is no reverse to forward match (text).</p></li>
-<li><p>lookup_rdns.strict.general.timeout</p>
-
-<p>How long we should give this plugin before we time it out (seconds).</p></li>
-<li><p>lookup_rdns.strict.general.timeout_msg</p>
-
-<p>Text to send when plugin reaches timeout (text).</p></li>
-<li><p>lookup_rdns.strict.forward.nxdomain</p>
-
-<p>Text to send the user if there is no forward match (text).</p></li>
-<li><p>lookup_rdns.strict.forward.dnserror</p>
-
-<p>Text to send the user if there is some other error with the forward
-lookup (text).</p></li>
-<li><p>lookup_rdns.strict.reverse.nxdomain</p>
-
-<p>Text to send the user if there is no reverse match (text).</p></li>
-<li><p>lookup_rdns.strict.reverse.dnserror</p>
-
-<p>Text to send the user if there is some other error with the reverse
-lookup (text).</p></li>
+<li>Hover your mouse pointer or tap (with touch devices) on table data to see more
+details. </li>
+<li>Copy that connection UUID at left and use it to grep your logs for even more.</li>
+<li>Edit the files in watch/html and play with the appearance. If you make it
+better, post a screen shot somewhere and create an Issue or PR.</li>
 </ul>
 
-<h2>Configuration lookup_rdns.strict.timeout</h2>
+<h2>Interpretation Key</h2>
 
-<p>This is how we specify to Haraka that our plugin should have a certain timeout.
-If you specify 0 here, then the plugin will never timeout while the connection
-is active.  This is also required for this plugin, which needs to handle its
-own timeouts.  To actually specify the timeout for this plugin, please see
-the general config in lookup_rdns.strict.ini.</p>
-
-<h2>Configuration lookup_rdns.strict.whitelist</h2>
-
-<p>No matter how much you believe in checking that DNS and rDNS match, it is not
-required by RFC, and there will always be some legitimate mail server that
-has great trouble getting their DNS in order.  For this reason we are
-providing a whitelist.</p>
-
-<p>This file will match exactly what you put on each line.</p>
-
-<h2>Configuration lookup_rdns.strict.whitelist_regex</h2>
-
-<p>Does the same thing as the whitelist file, but each line is a regex.
-Each line is also anchored for you, meaning '^' + regex + '$' is added for
-you.  If you need to get around this restriction, you may use a '.*' at
-either the start or the end of your regex.  This should help prevent people
-from writing overly permissive rules on accident.</p>
+<ul>
+<li>Green: tests passed</li>
+<li>Light Green: tests passed, but with conditions</li>
+<li>Yellow: poor results, but not awful.</li>
+<li>Light red: tests failed, but no rejection</li>
+<li>Red: tests failed causing rejection</li>
+</ul>
 
               </div>
             </div>

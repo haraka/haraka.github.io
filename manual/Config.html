@@ -93,7 +93,7 @@
 <li><a href='/manual/Logging_API.html'>Logging API</a></li>
 <li><a href='/manual/Net_Utils.html'>Net_Utils</a></li>
 <li><a href='/manual/Outbound.html'>Outbound Mail with Haraka</a></li>
-<li><a href='/manual/Plugins.html'>Writing Haraka Plugins</a></li>
+<li><a href='/manual/Plugins.html'>Plugins</a></li>
 <li><a href='/manual/Results.html'>Results</a></li>
 <li><a href='/manual/Transaction.html'>Transaction Object</a></li>
 </ul></li>
@@ -122,10 +122,11 @@
 <li><a href='/manual/plugins/aliases.html'>aliases</a></li>
 <li><a href='/manual/plugins/attachment.html'>attachment</a></li>
 <li><a href='/manual/plugins/avg.html'>avg - Anti-Virus scanner</a></li>
+<li><a href='/manual/plugins/backscatterer.html'>backscatterer</a></li>
 <li><a href='/manual/plugins/block_me.html'>block_me</a></li>
-<li><a href='/manual/plugins/bounces.html'>bounce</a></li>
+<li><a href='/manual/plugins/bounce.html'>bounce</a></li>
 <li><a href='/manual/plugins/clamd.html'>clamd</a></li>
-<li><a href='/manual/plugins/connect.asn.html'>connect.asn</a></li>
+<li><a href='/manual/plugins/connect.asn.html'>connect.asn - get AS number of remote</a></li>
 <li><a href='/manual/plugins/connect.fcrdns.html'>connect.fcrdns - Forward Confirmed Reverse DNS</a></li>
 <li><a href='/manual/plugins/connect.geoip.html'>geoip</a></li>
 <li><a href='/manual/plugins/connect.p0f.html'>connect.p0f - TCP Fingerprinting</a></li>
@@ -134,15 +135,19 @@
 <li><a href='/manual/plugins/data.headers.html'>data.headers</a></li>
 <li><a href='/manual/plugins/data.signatures.html'>data.signatures</a></li>
 <li><a href='/manual/plugins/data.uribl.html'>data.uribl</a></li>
+<li><a href='/manual/plugins/dcc.html'>Haraka</a></li>
 <li><a href='/manual/plugins/delay_deny.html'>delay_deny</a></li>
 <li><a href='/manual/plugins/dkim_sign.html'>Haraka</a></li>
 <li><a href='/manual/plugins/dkim_verify.html'>dkim_verify</a></li>
 <li><a href='/manual/plugins/dnsbl.html'>dnsbl</a></li>
 <li><a href='/manual/plugins/dnswl.html'>dnswl</a></li>
 <li><a href='/manual/plugins/early_talker.html'>early_talker</a></li>
+<li><a href='/manual/plugins/esets.html'>Haraka</a></li>
 <li><a href='/manual/plugins/graph.html'>graph</a></li>
 <li><a href='/manual/plugins/helo.checks.html'>helo.checks</a></li>
 <li><a href='/manual/plugins/karma.html'>karma - a scoring engine</a></li>
+<li><a href='/manual/plugins/limit.html'>limit</a></li>
+<li><a href='/manual/plugins/log.elasticsearch.html'>log.elasticsearch</a></li>
 <li><a href='/manual/plugins/log.syslog.html'>log.syslog</a></li>
 <li><a href='/manual/plugins/mail_from.access.html'>mail_from.access</a></li>
 <li><a href='/manual/plugins/mail_from.is_resolvable.html'>mail_from.is_resolvable</a></li>
@@ -158,16 +163,19 @@
 <li><a href='/manual/plugins/rcpt_to.qmail_deliverable.html'>rcpt_to.qmail_deliverable</a></li>
 <li><a href='/manual/plugins/rcpt_to.routes.html'>Haraka</a></li>
 <li><a href='/manual/plugins/record_envelope_addresses.html'>record</a></li>
+<li><a href='/manual/plugins/redis.html'>redis</a></li>
 <li><a href='/manual/plugins/relay.html'>relay</a></li>
 <li><a href='/manual/plugins/relay_acl.html'>relay_acl</a></li>
 <li><a href='/manual/plugins/relay_all.html'>relay_all</a></li>
 <li><a href='/manual/plugins/relay_force_routing.html'>relay_force_routing.js</a></li>
 <li><a href='/manual/plugins/reseed_rng.html'>reseed_rng</a></li>
+<li><a href='/manual/plugins/rspamd.html'>rspamd</a></li>
 <li><a href='/manual/plugins/spamassassin.html'>spamassassin</a></li>
 <li><a href='/manual/plugins/spf.html'>spf</a></li>
 <li><a href='/manual/plugins/tarpit.html'>tarpit</a></li>
 <li><a href='/manual/plugins/tls.html'>tls</a></li>
 <li><a href='/manual/plugins/toobusy.html'>toobusy</a></li>
+<li><a href='/manual/plugins/watch.html'>watch - smtp connections in HTTP browser</a></li>
 <li><a href='/manual/plugins/xclient.html'>xclient</a></li>
 </ul></li></ul>
 
@@ -197,7 +205,7 @@ var cfg = this.config.get(name, [type], [callback], [options]);
 
 <ul>
 <li>'value' - load a flat file containing a single value (default)</li>
-<li>'ini'   - load an "ini" style file</li>
+<li>'ini'   - load an ini file</li>
 <li>'json'  - load a json file</li>
 <li>'yaml'  - load a yaml file</li>
 <li>'list'  - load a flat file containing a list of values</li>
@@ -252,8 +260,8 @@ boolean type keys. Default true or false can be specified.</li>
 
 <h2>Ini Files</h2>
 
-<p>INI files had their heritage in early versions of Microsoft Windows products. <br />
-They are a simple format of key=value pairs, with an optional [section].</p>
+<p>INI files have their heritage in early versions of Microsoft Windows.
+Entries are a simple format of key=value pairs, with optional [sections].</p>
 
 <p>Here is a typical example:</p>
 
@@ -263,6 +271,11 @@ last_name=Sergeant
 [job]
 title=Senior Principal Software Engineer
 role=Architect
+
+[projects]
+haraka
+qpsmtpd
+spamassassin
 </code></pre>
 
 <p>That produces the following Javascript object:</p>
@@ -276,17 +289,22 @@ role=Architect
     job: {
         title: 'Senior Principal Software Engineer',
         role: 'Architect'
+    },
+    projects: {
+        haraka: undefined,
+        qpsmtpd: undefined,
+        spamassassin: undefined,
     }
 }
-</code>
-The key point there is that items before any [section] marker go in the "main"
-section.</p>
+</code></p>
 
-<p>Note that there is some auto-conversion of values on the right hand side of
+<p>Items before any [section] marker are in the implicit [main] section.</p>
+
+<p>There is some auto-conversion of values on the right hand side of
 the equals: integers are converted to integers, floats are converted to
 floats.</p>
 
-<p>The key=value pairs also support continuation lines using the
+<p>The key=value pairs support continuation lines using the
 backslash "\" character.</p>
 
 <p>The <code>options</code> object allows you to specify which keys are boolean:</p>
@@ -294,8 +312,8 @@ backslash "\" character.</p>
 <pre><code>{ booleans: ['reject','some_true_value'] }
 </code></pre>
 
-<p>The key names should be in the format section.key, if the key name does not
-specify a section name then it will be presumed to be 'main'.</p>
+<p>On the options declarations, key names are formatted as section.key.
+If the key name does not specify a section, it is presumed to be [main].</p>
 
 <p>This ensures these values are converted to true Javascript booleans when parsed,
 and supports the following options for boolean values:</p>
@@ -305,8 +323,8 @@ and supports the following options for boolean values:</p>
 
 <p>Anything else is treated as false.</p>
 
-<p>If you wish to default the boolean to true (e.g. when the key is undefined or
-the config file is missing) then prefix the key with +:</p>
+<p>To default a boolean as true (when the key is undefined or the config file is
+missing), prefix the key with +:</p>
 
 <pre><code>{ booleans: [ '+reject' ] }
 </code></pre>

@@ -7,7 +7,7 @@
     <meta name="description" content="">
     <meta name="author" content="">
 
-    <title>Haraka Manual &raquo; Writing Haraka Plugins</title>
+    <title>Haraka Manual &raquo; Plugins</title>
     
     <!-- Bootstrap core CSS -->
     <link href="/css/bootstrap.css" rel="stylesheet">
@@ -63,7 +63,7 @@
         <!-- Docs page layout -->
         <div class="bs-header" id="content">
           <div class="container">
-            <h1>Writing Haraka Plugins</h1>
+            <h1>Plugins</h1>
           </div>
         </div>
         
@@ -93,7 +93,7 @@
 <li><a href='/manual/Logging_API.html'>Logging API</a></li>
 <li><a href='/manual/Net_Utils.html'>Net_Utils</a></li>
 <li><a href='/manual/Outbound.html'>Outbound Mail with Haraka</a></li>
-<li class="active"><a href='/manual/Plugins.html'>Writing Haraka Plugins</a></li>
+<li class="active"><a href='/manual/Plugins.html'>Plugins</a></li>
 <li><a href='/manual/Results.html'>Results</a></li>
 <li><a href='/manual/Transaction.html'>Transaction Object</a></li>
 </ul></li>
@@ -122,10 +122,11 @@
 <li><a href='/manual/plugins/aliases.html'>aliases</a></li>
 <li><a href='/manual/plugins/attachment.html'>attachment</a></li>
 <li><a href='/manual/plugins/avg.html'>avg - Anti-Virus scanner</a></li>
+<li><a href='/manual/plugins/backscatterer.html'>backscatterer</a></li>
 <li><a href='/manual/plugins/block_me.html'>block_me</a></li>
-<li><a href='/manual/plugins/bounces.html'>bounce</a></li>
+<li><a href='/manual/plugins/bounce.html'>bounce</a></li>
 <li><a href='/manual/plugins/clamd.html'>clamd</a></li>
-<li><a href='/manual/plugins/connect.asn.html'>connect.asn</a></li>
+<li><a href='/manual/plugins/connect.asn.html'>connect.asn - get AS number of remote</a></li>
 <li><a href='/manual/plugins/connect.fcrdns.html'>connect.fcrdns - Forward Confirmed Reverse DNS</a></li>
 <li><a href='/manual/plugins/connect.geoip.html'>geoip</a></li>
 <li><a href='/manual/plugins/connect.p0f.html'>connect.p0f - TCP Fingerprinting</a></li>
@@ -134,15 +135,19 @@
 <li><a href='/manual/plugins/data.headers.html'>data.headers</a></li>
 <li><a href='/manual/plugins/data.signatures.html'>data.signatures</a></li>
 <li><a href='/manual/plugins/data.uribl.html'>data.uribl</a></li>
+<li><a href='/manual/plugins/dcc.html'>Haraka</a></li>
 <li><a href='/manual/plugins/delay_deny.html'>delay_deny</a></li>
 <li><a href='/manual/plugins/dkim_sign.html'>Haraka</a></li>
 <li><a href='/manual/plugins/dkim_verify.html'>dkim_verify</a></li>
 <li><a href='/manual/plugins/dnsbl.html'>dnsbl</a></li>
 <li><a href='/manual/plugins/dnswl.html'>dnswl</a></li>
 <li><a href='/manual/plugins/early_talker.html'>early_talker</a></li>
+<li><a href='/manual/plugins/esets.html'>Haraka</a></li>
 <li><a href='/manual/plugins/graph.html'>graph</a></li>
 <li><a href='/manual/plugins/helo.checks.html'>helo.checks</a></li>
 <li><a href='/manual/plugins/karma.html'>karma - a scoring engine</a></li>
+<li><a href='/manual/plugins/limit.html'>limit</a></li>
+<li><a href='/manual/plugins/log.elasticsearch.html'>log.elasticsearch</a></li>
 <li><a href='/manual/plugins/log.syslog.html'>log.syslog</a></li>
 <li><a href='/manual/plugins/mail_from.access.html'>mail_from.access</a></li>
 <li><a href='/manual/plugins/mail_from.is_resolvable.html'>mail_from.is_resolvable</a></li>
@@ -158,16 +163,19 @@
 <li><a href='/manual/plugins/rcpt_to.qmail_deliverable.html'>rcpt_to.qmail_deliverable</a></li>
 <li><a href='/manual/plugins/rcpt_to.routes.html'>Haraka</a></li>
 <li><a href='/manual/plugins/record_envelope_addresses.html'>record</a></li>
+<li><a href='/manual/plugins/redis.html'>redis</a></li>
 <li><a href='/manual/plugins/relay.html'>relay</a></li>
 <li><a href='/manual/plugins/relay_acl.html'>relay_acl</a></li>
 <li><a href='/manual/plugins/relay_all.html'>relay_all</a></li>
 <li><a href='/manual/plugins/relay_force_routing.html'>relay_force_routing.js</a></li>
 <li><a href='/manual/plugins/reseed_rng.html'>reseed_rng</a></li>
+<li><a href='/manual/plugins/rspamd.html'>rspamd</a></li>
 <li><a href='/manual/plugins/spamassassin.html'>spamassassin</a></li>
 <li><a href='/manual/plugins/spf.html'>spf</a></li>
 <li><a href='/manual/plugins/tarpit.html'>tarpit</a></li>
 <li><a href='/manual/plugins/tls.html'>tls</a></li>
 <li><a href='/manual/plugins/toobusy.html'>toobusy</a></li>
+<li><a href='/manual/plugins/watch.html'>watch - smtp connections in HTTP browser</a></li>
 <li><a href='/manual/plugins/xclient.html'>xclient</a></li>
 </ul></li></ul>
 
@@ -176,59 +184,264 @@
             
             <div class="col-md-9" role="main">
               <div class="bs-docs-section">
-                <h1>Writing Haraka Plugins</h1>
+                <h1>Plugins</h1>
 
-<p>All aspects of receiving an email in Haraka are controlled via plugins, to the
-extent that no mail will even be received unless you have a minimum of a 'rcpt'
-plugin and a 'queue' plugin.</p>
+<p>All aspects of receiving an email in Haraka are controlled via plugins. No
+mail can even be received unless at least a 'rcpt' and 'queue' plugin are
+enabled.</p>
 
-<p>The 'rcpt' plugin is used to determine if a particular recipient should be
-allowed to be relayed or received for. The 'queue' plugin queue's the email
-somewhere - perhaps to disk, or perhaps to an onward SMTP server.</p>
+<p>Recipient (<em>rcpt</em>) plugins determine if a particular recipient is allowed to be relayed or received for. A <em>queue</em> plugin queue's the message somewhere - normally to disk or to an another SMTP server.</p>
 
-<p>You can get a list of built-in plugins by running:</p>
+<p>Get a list of built-in plugins by running:</p>
 
 <p><code>haraka -l -c /path/to/config</code></p>
 
-<p>and display the help text for a plugin by running:</p>
+<p>Display the help text for a plugin by running:</p>
 
 <p><code>haraka -h &lt;name&gt; -c /path/to/config</code></p>
 
-<p>You can omit the <code>-c /path/to/config</code> if you want to only see the plugins 
-supplied with Haraka and not your own local plugins in your <code>config</code> directory.</p>
+<p>Omit the <code>-c /path/to/config</code> to see only the plugins supplied with Haraka
+(not your local plugins in your <code>config</code> directory).</p>
+
+<h1>Writing Haraka Plugins</h1>
 
 <h2>Anatomy of a Plugin</h2>
 
-<p>Plugins in Haraka are simply Javascript files in the plugins/ directory.</p>
+<p>Plugins in Haraka are Javascript files or modules in the plugins/ directory.</p>
 
-<p>To enable a plugin, simply add its name to <code>config/plugins</code>.</p>
+<p>To enable a plugin, add its name to <code>config/plugins</code>.</p>
 
-<p>In order to hook into the "rcpt" event, simply create a method in exports
-to hook it:</p>
+<h2>Register a Hook</h2>
 
-<pre><code>exports.hook_rcpt = function (next, connection, params) {
-    // email address is in params[0]
-    // do something with the address... then call:
+<p>There are two ways for plugins to register hooks. Both examples register a function on the <em>rcpt</em> hook:</p>
+
+<ol>
+<li><p>The <code>register_hook</code> function in register():</p>
+
+<p>exports.register = function() {
+    this.register<em>hook('rcpt', 'my</em>rcpt_validate');
+};</p>
+
+<p>exports.my<em>rcpt</em>validate = function (next, connection, params) {
+    // do processing
     next();
+};</p></li>
+<li><p>The hook_[$name] syntax:</p>
+
+<p>exports.hook_rcpt = function (next, connection, params) {
+    // do processing
+    next();
+};</p></li>
+</ol>
+
+<h3>Register a Hook Multiple Times</h3>
+
+<p>To register the same hook more than once, call <code>register_hook()</code> multiple times with the same hook name:</p>
+
+<pre><code>exports.register = function() {
+    this.register_hook('queue', 'try_queue_my_way');
+    this.register_hook('queue', 'try_queue_highway');
 };
 </code></pre>
 
-<p>We've introduced a couple of new concepts here, so let's go through them:</p>
+<p>When <code>try_queue_my_way()</code> calls <code>next()</code>, the next function registered on hook <em>queue</em> will be called, in this case, <code>try_queue_highway()</code>.</p>
+
+<h4>Determine hook name</h4>
+
+<p>When a single function runs on multiple hooks, the function can check the
+<em>hook</em> property of the <em>connection</em> or <em>hmail</em> argument to determine which hook it is running on:</p>
+
+<pre><code>exports.register = function() {
+    this.register_hook('rcpt',    'my_rcpt');
+    this.register_hook('rcpt_ok', 'my_rcpt');
+};
+
+exports.my_rcpt = function (next, connection, params) {
+    var hook_name = connection.hook; // rcpt or rcpt_ok
+    // email address is in params[0]
+    // do processing
+}
+</code></pre>
+
+<h3>Next()</h3>
+
+<p>After registering a hook, functions are called with that hooks arguments (see <strong>Available Hooks</strong> below. The first argument is a callback function, conventionally named <code>next</code>. When the function is completed, it calls <code>next()</code> and the connection continues. Failing to call <code>next()</code> will result in the connection hanging until that plugin's timer expires.</p>
+
+<p><code>next([code, msg])</code> accepts two optional parameters:</p>
+
+<ol>
+<li><code>code</code> is one of the listed return codes.</li>
+<li><code>msg</code> is a string to send to the client in case of a failure. Use an array to send a multi-line message. <code>msg</code> should NOT contain the code number - that is handled by Haraka.</li>
+</ol>
+
+<h4>Next() Return Codes</h4>
+
+<p>These constants are in your plugin when it is loaded, you do not
+need to define them:</p>
 
 <ul>
-<li>next - we need to call this when we are done processing or Haraka will
-hang.</li>
-<li>exports - the plugin acts as an object (with access to "this" if you need it)
-but methods go directly into exports.</li>
+<li><p>CONT</p>
+
+<p>Continue and let other plugins handle this particular hook. This is the
+default. These are identical: <code>next()</code> and <code>next(CONT)</code>;</p></li>
+<li><p>DENY - Reject with a 5xx error.</p></li>
+<li><p>DENYSOFT - Reject with a 4xx error.</p></li>
+<li><p>DENYDISCONNECT - Reject with a 5xx error and immediately disconnect.</p></li>
+<li><p>DISCONNECT - Immediately disconnect</p></li>
+<li><p>OK</p>
+
+<p>Required by <code>rcpt</code> plugins to accept a recipient and <code>queue</code> plugins when the queue was successful.</p>
+
+<p>After a plugin calls <code>next(OK)</code>, no further plugins on that hook will run.</p>
+
+<p>Exceptions to next(OK):</p>
+
+<ul>
+<li><p>connect_init and disconnect hooks are <strong>always called</strong>.</p></li>
+<li><p>On the deny hook, <code>next(OK)</code> overrides the default CONT.</p></li>
+</ul></li>
+<li><p>HOOK_NEXT</p>
+
+<p>HOOK_NEXT is only available on the <code>unrecognized_command</code> hook. It instructs Haraka to run a different plugin hook. The <code>msg</code> argument must be set to the name of the hook to be run. Ex: <code>next(HOOK_NEXT, 'rcpt_ok');</code></p></li>
 </ul>
 
-<p>The next() method is the most critical thing here - since Haraka is an event based
-SMTP server, we may need to go off and fetch network information before we
-can return a result. We can do that asynchronously and simply run next()
-when we are done, which allows Haraka to go on processing other clients while
-we fetch our information.</p>
+<h2>Available Hooks</h2>
 
-<p>See "The Next Function" below for more details.</p>
+<p>These are the hook and their parameters (next excluded):</p>
+
+<ul>
+<li>init_master - called when the main (master) process is started</li>
+<li>init_child - in cluster, called when a child process is started</li>
+<li>init_http - called when Haraka is started.</li>
+<li>init<em>wss - called after init</em>http</li>
+<li>connect_init - used to init data structures, called for <em>every</em> connection</li>
+<li>lookup_rdns - called to look up the rDNS - return the rDNS via <code>next(OK, rdns)</code></li>
+<li>connect - called after we got rDNS</li>
+<li>capabilities - called to get the ESMTP capabilities (such as STARTTLS)</li>
+<li>unrecognized_command - called when the remote end sends a command we don't recognise</li>
+<li>disconnect - called upon disconnect</li>
+<li>helo (hostname)</li>
+<li>ehlo (hostname)</li>
+<li>quit</li>
+<li>vrfy</li>
+<li>noop</li>
+<li>rset</li>
+<li>mail ([from, esmtp_params])</li>
+<li>rcpt ([to,   esmtp_params])</li>
+<li>rcpt_ok (to)</li>
+<li>data - called at the DATA command</li>
+<li>data_post - called at the end-of-data marker</li>
+<li>max_data_exceeded - called when the message exceeds connection.max_bytes</li>
+<li>queue - called to queue the mail</li>
+<li>queue_outbound - called to queue the mail when connection.relaying is set</li>
+<li>queue_ok - called when a mail has been queued successfully</li>
+<li>reset_transaction - called before the transaction is reset (via RSET, or MAIL)</li>
+<li>deny - called when a plugin returns DENY, DENYSOFT or DENYDISCONNECT</li>
+<li>get_mx (hmail, domain) - called by outbound to resolve the MX record</li>
+<li>deferred (hmail, params) - called when an outbound message is deferred</li>
+<li>bounce (hmail, err) - called when an outbound message bounces</li>
+<li>delivered (hmail, [host, ip, response, delay, port, mode, ok_recips, secured, authenticated]) - called when outbound mail is delivered</li>
+<li>send_email (hmail) - called when outbound is about to be sent</li>
+</ul>
+
+<h3>rcpt</h3>
+
+<p>The <em>rcpt</em> hook is slightly special.</p>
+
+<p>When <strong>connection.relaying == false</strong> (the default, to avoid being an open relay), a rcpt plugin MUST return <code>next(OK)</code> or the sender will receive the error message "I cannot deliver for that user". The default <em>rcpt</em> plugin  is <strong>rcpt<em>to.in</em>host_list</strong>, which lists the domains for which to accept email.</p>
+
+<p>After a <em>rcpt</em> plugin calls <code>next(OK)</code>, the <em>rcpt_ok</em> hook is run.</p>
+
+<p>If a plugin prior to the <em>rcpt</em> hook sets <strong>connection.relaying = true</strong>, then it is not necessary for a rcpt plugin to call <code>next(OK)</code>.</p>
+
+<h3>connect_init</h3>
+
+<p>The <code>connect_init</code> hook is unique in that all return codes are ignored. This is so that plugins that need to do initialization for every connection can be assured they will run. Return values are ignored.</p>
+
+<h3>hook<em>init</em>http (next, Server)</h3>
+
+<p>If http listeners are are enabled in http.ini and the express module loaded, the express library will be located at Server.http.express. More importantly, the express <a href="http://expressjs.com/4x/api.html#app">app / instance</a> will be located at Server.http.app. Plugins can register routes on the app just as they would with any <a href="http://expressjs.com/">Express.js</a> app.</p>
+
+<h3>hook<em>init</em>wss (next, Server)</h3>
+
+<p>If express loaded, an attempt is made to load <a href="https://www.npmjs.com/package/ws">ws</a>, the websocket server. If it succeeds, the wss server will be located at Server.http.wss. Because of how websockets work, only one websocket plugin will work at a time. One plugin using wss is <a href="https://github.com/baudehlo/Haraka/tree/master/plugins/watch">watch</a>.</p>
+
+<h2>Hook Order</h2>
+
+<p>The ordering of hooks is determined by the SMTP protocol. Knowledge of <a href="http://tools.ietf.org/html/rfc5321">RFC 5321</a> is beneficial.</p>
+
+<h5>Typical Inbound Connection</h5>
+
+<ul>
+<li>hook<em>connect</em>init</li>
+<li>hook<em>lookup</em>rdns</li>
+<li>hook_connect</li>
+<li>hook<em>helo <strong>OR</strong> hook</em>ehlo (EHLO is sent when ESMTP is desired which allows extensions
+such as STARTTLS, AUTH, SIZE etc.)
+<ul>
+<li>hook<em>helo</li>
+<li>hook<em>ehlo
+<ul>
+<li>hook</em>capabilities</li>
+<li><em>hook<em>unrecognized</em>command</em> is run for each ESMTP extension the client requests
+e.g. STARTTLS, AUTH etc.)</li>
+</ul></li>
+<li>hook</em>mail</li>
+<li>hook<em>rcpt (once per-recipient)</li>
+<li>hook<em>rcpt</em>ok (for every recipient that hook</em>rcpt returned <code>next(OK)</code> for)</li>
+<li>hook<em>data</li>
+<li><em>[attachment hooks]</em></li>
+<li>hook<em>data</em>post</li>
+<li>hook<em>queue <strong>OR</strong> hook</em>queue</em>outbound</li>
+<li>hook<em>queue</em>ok (called if hook<em>queue or hook</em>queue_outbound returns <code>next(OK)</code>)</li>
+</ul></li>
+<li>hook<em>quit <strong>OR</strong> hook</em>rset <strong>OR</strong> hook<em>helo <strong>OR</strong> hook</em>ehlo (after a message has been sent or rejected, the client can disconnect or start a new transaction with RSET, EHLO or HELO)
+<ul>
+<li>hook<em>reset</em>transaction</li>
+</ul></li>
+<li>hook_disconnect</li>
+</ul>
+
+<h5>Typical Outbound mail</h5>
+
+<p>By 'outbound' we mean messages using Haraka's built-in queue and delivery
+mechanism. The Outbound queue is used when <code>connection.relaying = true</code> is set during the  transaction and <code>hook_queue_outbound</code> is called to queue the message.</p>
+
+<p>The Outbound hook ordering mirrors the Inbound hook order above until after <code>hook_queue_outbound</code>, which is followed by:</p>
+
+<ul>
+<li>hook<em>send</em>email</li>
+<li>hook<em>get</em>mx</li>
+<li>at least one of:
+<ul>
+<li>hook<em>delivered  (once per delivery domain with at least one successfull recipient)</li>
+<li>hook</em>deferred  (once per delivery domain where at least one recipient or connection was deferred)</li>
+<li>hook_bounce  (once per delivery domain where the recipient(s) or message was rejected by the destination)</li>
+</ul></li>
+</ul>
+
+<h1>Plugin Run Order</h1>
+
+<p>Plugins are run on each hook in the order that they are specified in <code>config/plugins</code>. When a plugin returns anything other than <code>next()</code> on a hook, all subsequent plugins due to run on that hook are skipped (exceptions: connect_init, disconnect).</p>
+
+<p>This is important as some plugins might rely on <code>results</code> or <code>notes</code> that have been set by plugins that need to run before them. This should be noted in the plugins documentation. Make sure to read it.</p>
+
+<p>If you are writing a complex plugin, you may have to split it into multiple plugins to run in a specific order e.g. you want hook<em>deny to run last after all other plugins and hook</em>lookup_rdns to run first, then you can explicitly register your hooks and provide a <code>priority</code> value which is an integer between -100 (highest priority) to 100 (lowest priority) which defaults to 0 (zero) if not supplied.  You can apply a priority to your hook in the following way:</p>
+
+<p><code>
+exports.register = function() {
+    var plugin = this;
+    plugin.register_hook('connect',  'hook_connect', -100);
+}
+</code></p>
+
+<p>This would ensure that your hook_connect function will run before any other
+plugins registered on the <code>connect</code> hook, regardless of the order it was
+specified in <code>config/plugins</code>.</p>
+
+<p>Check the order that the plugins will run on each hook by running:</p>
+
+<p><code>haraka -o -c /path/to/config</code></p>
 
 <h2>Logging</h2>
 
@@ -246,201 +459,10 @@ we fetch our information.</p>
 <li>logemerg</li>
 </ul>
 
-<p>It should also be noted that if plugins throw an exception directly when in a
-hook the exception will be caught and generate a logcrit level error. However
-they will not be caught quite as gracefully if you are in async code within
-your plugin. Use error codes for that, log the error, and run your next()
-function appropriately.</p>
-
-<h2>Multiple Hooks</h2>
-
-<p>You can hook the same event multipe times, to do that provide a register()
-method and hook it:</p>
-
-<pre><code>exports.register = function() {
-    this.register_hook('queue', 'try_queue_my_way');
-    this.register_hook('queue', 'try_queue_highway');
-};
-</code></pre>
-
-<p>Then when the earlier hook calls <code>next()</code> (without parameters) it continues on
-to the next hook you registered to try that one.</p>
-
-<h1>The Next Function</h1>
-
-<p>The next() function takes two optional parameters: <code>code</code> and <code>msg</code></p>
-
-<p>The code is one of the below listed return values. The msg corresponds with
-the string to send to the client in case of a failure. Use an Array if you need
-to send back a multi-line response. The msg should NOT contain the code number
-- that is taken care of by the Haraka internals.</p>
-
-<h2>Return Values</h2>
-
-<p>These constants are compiled into your plugin when it is loaded, you do not
-need to define them:</p>
-
-<ul>
-<li><p>CONT</p>
-
-<p>Continue and let other plugins handle this particular hook. This is the
-default if no parameters are given.</p></li>
-<li><p>DENY</p>
-
-<p>Reject the mail with a 5xx error.</p></li>
-<li><p>DENYSOFT</p>
-
-<p>Reject the mail with a 4xx error.</p></li>
-<li><p>DENYDISCONNECT</p>
-
-<p>Reject the mail with a 5xx error and immediately disconnect.</p></li>
-<li><p>DISCONNECT</p>
-
-<p>Simply immediately disconnect</p></li>
-<li><p>OK</p>
-
-<p>Required by rcpt and queue plugins if we are to allow the email to be
-accepted, or the queue was successful, respectively. </p>
-
-<p>This also has a special meaning when used on deny hook.  Returning OK
-on the deny hook will override the result to CONT.</p>
-
-<p>Once a plugin calls next(OK) no further plugins on the same hook will 
-run after it.</p></li>
-<li><p>HOOK_NEXT</p>
-
-<p>This is a special return value that is currently only available on the
-<code>unrecognized_command</code> hook.  It instructs Haraka to run a different plugin
-hook instead of responding normally.  The <code>msg</code> argument is required and
-must be set to the name of the hook that is to be run.</p></li>
-</ul>
-
-<h2>Available Hooks</h2>
-
-<p>These are just the name of the hook, with any parameter sent to it:</p>
-
-<ul>
-<li>init_master - called when the main (master) process is started</li>
-<li>init_child - called whenever a child process is started when using multiple "nodes"</li>
-<li>lookup_rdns - called to look up the rDNS - return the rDNS via <code>next(OK, rdns)</code></li>
-<li>connect - called after we got rDNS</li>
-<li>capabilities - called to get the ESMTP capabilities (such as STARTTLS)</li>
-<li>unrecognized_command - called when the remote end sends a command we don't recognise</li>
-<li>disconnect - called upon disconnect</li>
-<li>helo (hostname)</li>
-<li>ehlo (hostname)</li>
-<li>quit</li>
-<li>vrfy</li>
-<li>noop</li>
-<li>rset</li>
-<li>mail ([from, esmtp_params])</li>
-<li>rcpt ([to,   esmtp_params])</li>
-<li>rcpt_ok (to)</li>
-<li>data - called at the DATA command</li>
-<li>data_post - called at the end-of-data marker</li>
-<li>max_data_exceeded - called if the message is bigger than connection.max_bytes</li>
-<li>queue - called to queue the mail</li>
-<li>queue_outbound - called to queue the mail when connection.relaying is set</li>
-<li>queue_ok - called when a mail has been queued successfully</li>
-<li>reset_transaction - called before the transaction is reset (via RSET, or MAIL)</li>
-<li>deny - called if a plugin returns one of DENY, DENYSOFT or DENYDISCONNECT</li>
-<li>get_mx (hmail, domain) - called when sending outbound mail to lookup the MX record</li>
-<li>deferred (hmail, params) - called when sending outbound mail if the mail was deferred</li>
-<li>bounce (hmail, err) - called when sending outbound mail if the mail would bounce</li>
-<li>delivered (hmail, [host, ip, response, delay, port, mode, ok_recips, secured, authenticated]) - 
-called when outbound mail is delivered to the destination</li>
-<li>send_email (hmail) - called when outbound is about to be sent</li>
-</ul>
-
-<p>The <code>rcpt</code> hook is slightly special. If we have a plugin (prior to rcpt) that
-sets the <code>connection.relaying = true</code> flag, then we do not need any rcpt
-hooks, or if we do, none of them need call <code>next(OK)</code>. However if
-<code>connection.relaying</code> remains <code>false</code> (as is the default - you don't want an
-open relay!), then one rcpt plugin MUST return <code>next(OK)</code> or your sender
-will receive the error message "I cannot deliver for that user". The most
-obvious choice for this activity is the <code>rcpt_to.in_host_list</code> plugin, which
-lists the domains for which you wish to receive email.</p>
-
-<p>If a rcpt plugin DOES call <code>next(OK)</code> then the <code>rcpt_ok</code> hook is run. This
-is primarily used by the <code>queue/smtp_proxy</code> plugin which needs to run after
-all rcpt hooks.</p>
-
-<h2>Hook Run Order</h2>
-
-<p>The ordering of hooks is determined by the SMTP protocol, some knowledge of
-RFC5321 is required.</p>
-
-<h5>Typical Inbound mail</h5>
-
-<ul>
-<li>hook<em>lookup</em>rdns</li>
-<li>hook_connect</li>
-<li>hook<em>helo <strong>OR</strong> hook</em>ehlo (EHLO is sent when ESMTP is desired which allows extensions
-such as STARTTLS, AUTH, SIZE etc.)
-<ul>
-<li>hook<em>helo</li>
-<li>hook<em>ehlo
-<ul>
-<li>hook</em>capabilities</li>
-<li><em>hook<em>unrecognized</em>command</em> will run for each ESMTP extension the client requests 
-e.g. STARTTLS, AUTH etc.)</li>
-</ul></li>
-<li>hook</em>mail</li>
-<li>hook<em>rcpt (this will run once per-recipient)</li>
-<li>hook<em>rcpt</em>ok (this will run for every recipient that hook</em>rcpt returned <code>next(OK)</code> for)</li>
-<li>hook<em>data</li>
-<li><em>[attachment hooks]</em></li>
-<li>hook<em>data</em>post</li>
-<li>hook<em>queue <strong>OR</strong> hook</em>queue</em>outbound</li>
-<li>hook<em>queue</em>ok (called if hook<em>queue or hook</em>queue_outbound returns <code>next(OK)</code>)</li>
-</ul></li>
-<li>hook<em>quit <strong>OR</strong> hook</em>rset <strong>OR</strong> hook<em>helo <strong>OR</strong> hook</em>ehlo (the client can either 
-disconnect once a message has been sent or it can start a new transaction by sending RSET, EHLO
-or HELO to reset the transaction and then start a new transaction by starting with MAIL again)
-<ul>
-<li>hook<em>reset</em>transaction</li>
-</ul></li>
-<li>hook_disconnect</li>
-</ul>
-
-<h5>Typical Outbound mail</h5>
-
-<p>When we say outbound here - we mean messages that use Haraka built-in queueing and delivery
-mechanisms which are used when <code>connection.relaying = true</code> is set during the message transaction
-and <code>hook_queue_outbound</code> is called to queue the message.</p>
-
-<p>The Outbound ordering will be the mirror the Inbound mail order above until <code>hook_queue_outbound</code>
-is reached, after that the order is:</p>
-
-<ul>
-<li>hook<em>send</em>email</li>
-<li>hook<em>get</em>mx</li>
-<li>hook<em>delivered <strong>OR</strong> hook</em>deferred <strong>OR</strong> hook<em>bounce
-<ul>
-<li>hook</em>delivered  (called once per delivery domain with at least one successfull recipient)</li>
-<li>hook<em>deferred  (called once per delivery domain where at least one recipient or connection was deferred)</li>
-<li>hook</em>bounce  (called once per delivery domain where the recipient(s) or message was rejected by the destination)</li>
-</ul></li>
-</ul>
-
-<h2>Plugin Run Order</h2>
-
-<p>Plugins will be run on each hook in the order that they are specified on 
-<code>config/plugins</code>.  If a plugin returns anything other than <code>next()</code> on a hook, 
-then all subsequent plugins due to run on that hook will be skipped.</p>
-
-<p>This is important as some plugins might rely on <code>results</code> or <code>notes</code> that have
-been set by plugins that need to run before them.   This should be noted in the
-plugins documentation though, so you should make sure that you read it.</p>
-
-<p>If you are writing complex plugins of your own, you may find that you have to 
-split your plugins into multiple plugins if you require your hooks to run in a 
-specific order e.g. you want hook<em>deny to run last after all other plugins and
-hook</em>lookup_rdns to run first, then you'd need two plugins to achieve this.</p>
-
-<p>You can check the order that the plugins will run on each hook by running:</p>
-
-<p><code>haraka -o -c /path/to/config</code></p>
+<p>If plugins throw an exception when in a hook, the exception will be caught
+and generate a logcrit level error. However, exceptions will not be caught
+as gracefully when plugins are running async code. Use error codes for that,
+log the error, and run your next() function appropriately.</p>
 
 <h2>Sharing State</h2>
 
@@ -471,19 +493,26 @@ through until a message is received or the connection is reset).
 Typical uses for notes at this level would be to store information
 on things like greylisting which uses client, sender and recipient
 information etc.</p></li>
+<li><p>hmail.todo.notes</p>
+
+<p>Available on any outbound hook that passes <code>hmail</code> as a function parameter.
+This is the same object as 'connection.transaction.notes', so anything
+you store in the transaction notes is automatically available in the
+outbound functions here.</p></li>
 </ul>
 
-<p>All of these notes are simply a Javascript object underneath - so you use
-them like a simple key/value store e.g.</p>
+<p>All of these notes are Javascript objects - use them as simple key/value store e.g.</p>
 
 <pre><code>connection.transaction.notes.test = 'testing';
 </code></pre>
 
+<h2>See also, <a href="Results.md">Results</a></h2>
+
 <h2>Further Reading</h2>
 
-<p>Now you want to read about the Connection object.</p>
+<p>Read about the <a href="Connection.md">Connection</a> object.</p>
 
-<p>Outbound hooks are documented in Outbound.md.</p>
+<p>Outbound hooks are <a href="Outbound.md">also documented</a>.</p>
 
               </div>
             </div>
