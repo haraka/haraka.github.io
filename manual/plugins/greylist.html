@@ -7,7 +7,7 @@
     <meta name="description" content="">
     <meta name="author" content="">
 
-    <title>Haraka Manual &raquo; spamassassin</title>
+    <title>Haraka Manual &raquo; Greylist</title>
     
     <!-- Bootstrap core CSS -->
     <link href="/css/bootstrap.css" rel="stylesheet">
@@ -63,7 +63,7 @@
         <!-- Docs page layout -->
         <div class="bs-header" id="content">
           <div class="container">
-            <h1>spamassassin</h1>
+            <h1>Greylist</h1>
           </div>
         </div>
         
@@ -144,7 +144,7 @@
 <li><a href='/manual/plugins/early_talker.html'>early_talker</a></li>
 <li><a href='/manual/plugins/esets.html'>Haraka</a></li>
 <li><a href='/manual/plugins/graph.html'>graph</a></li>
-<li><a href='/manual/plugins/greylist.html'>Greylist</a></li>
+<li class="active"><a href='/manual/plugins/greylist.html'>Greylist</a></li>
 <li><a href='/manual/plugins/helo.checks.html'>helo.checks</a></li>
 <li><a href='/manual/plugins/karma.html'>karma - a scoring engine</a></li>
 <li><a href='/manual/plugins/limit.html'>limit</a></li>
@@ -171,7 +171,7 @@
 <li><a href='/manual/plugins/relay_force_routing.html'>relay_force_routing.js</a></li>
 <li><a href='/manual/plugins/reseed_rng.html'>reseed_rng</a></li>
 <li><a href='/manual/plugins/rspamd.html'>rspamd</a></li>
-<li class="active"><a href='/manual/plugins/spamassassin.html'>spamassassin</a></li>
+<li><a href='/manual/plugins/spamassassin.html'>spamassassin</a></li>
 <li><a href='/manual/plugins/spf.html'>spf</a></li>
 <li><a href='/manual/plugins/tarpit.html'>tarpit</a></li>
 <li><a href='/manual/plugins/tls.html'>tls</a></li>
@@ -185,119 +185,123 @@
             
             <div class="col-md-9" role="main">
               <div class="bs-docs-section">
-                <h1>spamassassin</h1>
+                <h1>Greylist</h1>
 
-<p>This plugin implements the spamd protocol and will send messages to
-spamd for scoring.</p>
+<p>Basic greylisting plugin that follows common practices found on internets.</p>
 
-<h2>Configuration</h2>
+<h2>Principles of work</h2>
 
-<p>spamassassin.ini</p>
+<h3>Notation</h3>
+
+<p>The so-called <em>tuple</em> consists of the following:</p>
 
 <ul>
-<li><p>spamd_socket = [host:port | /path/to/socket]  <em>optional</em></p>
-
-<p>Default: localhost:783</p>
-
-<p>Host or path to socket where spamd is running.</p></li>
-<li><p>spamd_user = [user]   <em>optional</em></p>
-
-<p>Default: default</p>
-
-<p>Username to pass to spamd.  This is useful when you are running
-spamd with virtual users.</p>
-
-<p>You can also pass this value in dynamically by setting:</p>
-
-<ol>
-<li><p><code>connection.transaction.notes.spamd_user</code> in another plugin.</p></li>
-<li><p>The special username: <em>first-recipient</em>. The first envelope recipient
-will be used as the username.</p></li>
-<li><p>the special username <em>all-recipients</em> may eventually be supported. See
-the get<em>spamd</em>username function in the plugin.</p></li>
-</ol></li>
-<li><p>max_size = N  <em>optional</em></p>
-
-<p>Default: 500000</p>
-
-<p>Maximum size of messages (in bytes) to send to spamd.
-Messages over this size will be skipped.</p></li>
-<li><p>reject_threshold = N   <em>optional</em></p>
-
-<p>Default: none (do not reject any mail)</p>
-
-<p>SpamAssassin score at which the mail should be rejected.</p></li>
-<li><p>relay_reject_threshold = N  <em>optional</em></p>
-
-<p>Default: none</p>
-
-<p>As above, except this threshold only applies to connections
-that are relays (e.g. AUTH) where connection.relaying = true.
-This is used to set a <em>lower</em> thresold at which to reject mail
-from these hosts to prevent sending outbound spam.</p>
-
-<p>If this is not set, then the <code>reject_thresold</code> value is used.</p></li>
-<li><p>munge_subject_threshold = N  <em>optional</em></p>
-
-<p>Default: none (do not munge the subject)</p>
-
-<p>Score at which the subject should be munged (prefixed).</p></li>
-<li><p>subject_prefix = [prefix]   <em>optional</em></p>
-
-<p>Default: <strong>* SPAM *</strong></p>
-
-<p>Prefix to use when munging the subject.</p></li>
-<li><p>old_headers_action = [rename | drop | keep]   <em>optional</em></p>
-
-<p>Default: rename</p>
-
-<p>If old X-Spam-* headers are in the email, what do we do with them?</p>
-
-<p><code>rename</code> them to X-Old-Spam-*.</p>
-
-<p><code>drop</code> will delete them.</p>
-
-<p><code>keep</code> will keep them (new X-Spam-* headers appear lower down in
-the headers then).</p></li>
-<li><p>connect_timeout = N  <em>optional</em></p>
-
-<p>Default: 30</p>
-
-<p>Time in seconds to wait for a connection to spamd</p></li>
-<li><p>results_timeout = N  <em>optional</em></p>
-
-<p>Default: 300</p>
-
-<p>Time in seconds to wait for results from spamd</p></li>
+<li>First subdomain of rDNS is stripped off (but no shorter than the domain boundary). This is considered a <em>hostid</em>.</li>
+<li>Envelope sender is the <em>sender</em>.</li>
+<li>RCPT TO would supply the <em>recipient</em>.</li>
 </ul>
 
-<h1>Extras</h1>
+<p><em>hostid</em> in above notation is chosen unless:</p>
 
-<p>A SpamAssassin plugin can be found in the <code>contrib</code> directory.
-The <code>Haraka.\[pm|cf\]</code> files should be placed in the SpamAssassin local
-site rules directory (/etc/mail/spamassassin on Linux), spamd should be
-restarted and the plugin will make spamd output the Haraka UUID as part
-of its log output to aid debugging when searching the mail logs.</p>
+<ol>
+<li>The connecting host has no PTR record, a.k.a. reverse DNS (rDNS). [gl]</li>
+<li>The rDNS record contains the first two or last two octets of the IP address. [fcrdns]</li>
+<li>The rDNS record contains the ‘short’, decimal, or hex representation of the full IP address. [fcrdns] [gl]</li>
+<li>Multiple rDNS records are returned. [gl]</li>
+<li>The rDNS record cannot be verified by forward confirmation (e.g. FCrDNS). [fcrdns]</li>
+<li>The top-level-domain (TLD) used is not valid. [gl]</li>
+</ol>
 
-<h2>Changes</h2>
+<p>In other cases, it's set to be the remote party's IP address.</p>
 
-<p>This plugin now passes the X-Spam-* headers generated by SA through
-unaltered. You can control the presence and appearance of X-Spam-*
-headers by editing your SpamAssassin config.</p>
+<p>We define the following time periods:</p>
 
-<p>The default headers added by SpamAssassin are:</p>
+<ul>
+<li><em>black</em>:  between first connect and start of <em>gray</em>. Defer.</li>
+<li><em>gray</em>:   between <em>black</em> and start of <em>white</em>. Allow. Host must re-try within this window.</li>
+<li><em>white</em>:  comes after <em>gray</em>. Allow up until the end of period, then let the record expire in case no connections were made.</li>
+</ul>
 
-<pre><code>add_header all Checker-Version SpamAssassin _VERSION_ (_SUBVERSION_) on _HOSTNAME_
-add_header spam Flag _YESNOCAPS_
-add_header all Level _STARS(\*)_
-add_header all Status "_YESNO_, score=_SCORE_ required=_REQD_ tests=_TESTS_ autolearn=_AUTOLEARN_ version=_VERSION_"
+<h3>Algorithm</h3>
+
+<p>The greylist algo is as following:</p>
+
+<ul>
+<li>Party connects. All FcrDNS &amp; DNSWL checks are run by earlier plugins.</li>
+<li>Party sends <em>recipient</em>
+<ul>
+<li>If not already whitelisted
+<ul>
+<li>Check <em>tuple</em> color (compare current TS against record creation TS)
+<ul>
+<li><em>black</em>?
+<ul>
+<li>Create if no record exists. Defer.</li>
+</ul></li>
+<li><em>gray</em>?
+<ul>
+<li>Allow. Promote record to <em>white</em> status.</li>
+</ul></li>
+<li><em>white</em>?
+<ul>
+<li>Allow. Update record TS.</li>
+</ul></li>
+</ul></li>
+</ul></li>
+</ul></li>
+<li>In special case, <em>data</em> hook runs above algo for all recipients. If any matched, all inherit the action.</li>
+</ul>
+
+<h3>DB schema</h3>
+
+<p>We store in Redis.</p>
+
+<p>Key format for greylisting entries:</p>
+
+<ul>
+<li>grey:${hostid}:${sender}:${recipient} - grey record</li>
+<li>white:${hostid} - white record</li>
+</ul>
+
+<p>For <em>white</em>:</p>
+
+<pre><code>{ first_connect: TS, whitelisted: TS, updated: TS, lifetime: TTL, tried: Integer, tried_when_greylisted: Integer }
 </code></pre>
 
-<p>Other headers options you might find interesting or useful are:</p>
+<p>Where
+    <em>first</em>connect<em>: TS of first connection (sender)
+    _whitelisted</em>: basically the TS of this entry creation
+    <em>updated</em>: last update TS
+    <em>lifetime</em>: seconds for this entry to exist (== TTL)
+    <em>tried</em>: number of checks against this entry
+    <em>tried</em>when<em>greylisted</em>: number of checks while the host was +grey+ (sender).</p>
 
-<pre><code>add_header all DCC _DCCB_: _DCCR_
-add_header all Tests _TESTS_
+<p>For <em>grey</em>:</p>
+
+<pre><code>{ created: TS, updated: TS, lifetime: TTL, tried: Integer }
 </code></pre>
+
+<p>Where
+    <em>created</em>: TS of first connection (copied to <em>first</em>connect_ of <em>white</em> after promotion)
+    <em>updated</em>: last update TS
+    <em>lifetime</em>: seconds for this entry to exist (== TTL)
+    <em>tried</em>: number of checks against this entry (copied to <em>tried</em>when<em>greylisted</em> of <em>white</em> after promotion)</p>
+
+<h3>Whitelisting</h3>
+
+<p>It's possible to whitelist hosts using the following section in greylist.ini config file:</p>
+
+<ul>
+<li>ip_whitelist               IP or subnet (prefix notation)</li>
+<li>envelope_whitelist         MAIL FROM (email or domain)</li>
+<li>recipient_whitelist        RCPT TO  (email or domain)</li>
+</ul>
+
+<p>List of known dynamic hosts, to use the IP instead of the domain:</p>
+
+<ul>
+<li>special_dynamic_domains    Domain</li>
+</ul>
 
               </div>
             </div>

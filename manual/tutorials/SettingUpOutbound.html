@@ -144,6 +144,7 @@
 <li><a href='/manual/plugins/early_talker.html'>early_talker</a></li>
 <li><a href='/manual/plugins/esets.html'>Haraka</a></li>
 <li><a href='/manual/plugins/graph.html'>graph</a></li>
+<li><a href='/manual/plugins/greylist.html'>Greylist</a></li>
 <li><a href='/manual/plugins/helo.checks.html'>helo.checks</a></li>
 <li><a href='/manual/plugins/karma.html'>karma - a scoring engine</a></li>
 <li><a href='/manual/plugins/limit.html'>limit</a></li>
@@ -228,9 +229,10 @@ cd haraka-outbound
 
 <p>Now edit config/smtp.ini - change the port to 587.</p>
 
-<p>Next we setup our plugins - all we need is the auth plugin:</p>
+<p>Next we setup our plugins - all we need is the tls and auth plugin. AUTH capability is only advertised after TLS/SSL negotiation (except for connections from the local host):</p>
 
-<pre><code>echo "auth/flat_file" &gt; config/plugins
+<pre><code>echo "tls
+auth/flat_file" &gt; config/plugins
 </code></pre>
 
 <p>Now edit the flat file password file, and put in an appropriate username
