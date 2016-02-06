@@ -73,7 +73,7 @@
               <div id="chapternav" class="bs-sidebar hidden-print" role="complementary">
                 <ul class="nav bs-sidenav"><li><a class="submenu" data-toggle="collapse" data-target="#core" data-parent="#chapternav" href="javascript:void(null);">Core</a>
 <ul id='core' class='nav'>
-<li><a href='/README.html'>Haraka</a></li>
+<li><a href='/UPGRADE.html'>2016.01.21</a></li>
 <li><a href='/manual/Address.html'>Address Object</a></li>
 <li><a href='/manual/Body.html'>Body Object</a></li>
 <li><a href='/manual/Config.html'>Config Files</a></li>
@@ -100,6 +100,7 @@
 <li><a class="submenu" data-toggle="collapse" data-target="#tutorials" data-parent="#chapternav" href="javascript:void(null);">Tutorials</a>
 <ul id='tutorials' class='nav'>
 <li><a href='/manual/Tutorial.html'>Writing Haraka Plugins</a></li>
+<li><a href='/README.html'>Haraka</a></li>
 <li><a href='/manual/tutorials/Migrating_from_v1_to_v2.html'>Migrating from Haraka v1.x to v2.x</a></li>
 <li><a href='/manual/tutorials/SettingUpOutbound.html'>Configuring Haraka For Outbound Email</a></li>
 </ul></li>
@@ -192,16 +193,24 @@ connection handle at <code>server.notes.redis</code>. </p>
 
 <h2>Config</h2>
 
-<p>The <code>redis.ini</code> file has two sections (defaults shown):</p>
+<p>The <code>redis.ini</code> file has the following sections (defaults shown):</p>
 
 <h3>[server]</h3>
 
-<pre><code>host=127.0.0.1
+<pre><code>; host=127.0.0.1
 ; port=6379
 ; db=0
 </code></pre>
 
-<h3>[redisOpts]</h3>
+<h3>[pubsub]</h3>
+
+<pre><code>; host=127.0.0.1
+; port=6379
+</code></pre>
+
+<p>Publish &amp; Subscribe are DB agnostic and thus have no db setting. If host and port and not defined, they default to the same as [server] settings.</p>
+
+<h3>[opts]</h3>
 
 <pre><code>; see https://www.npmjs.com/package/redis#overloading
 </code></pre>
@@ -212,8 +221,26 @@ connection handle at <code>server.notes.redis</code>. </p>
 
 <pre><code>if (server.notes.redis) {
     server.notes.redis.hgetall(...);
-    server.notes.redis.publish(...);
         // or any other redis command
+}
+</code></pre>
+
+<h2>Publish/Subscribe Usage</h2>
+
+<p>In your plugin:</p>
+
+<pre><code>exports.results_init = function (next, connection) {
+    var plugin = this;
+    plugin.redis_subscribe(connection, function () {
+        connection.notes.redis.on('pmessage', function (pattern, channel, message) {
+            plugin.do_something_with_message(message, ...);
+        });
+        next();
+    });
+}
+// be nice to redis and disconnect
+exports.hook_disconnect = function (next, connection) {
+    this.redis_unsubscribe(connection);
 }
 </code></pre>
 

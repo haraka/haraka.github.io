@@ -7,7 +7,7 @@
     <meta name="description" content="">
     <meta name="author" content="">
 
-    <title>Haraka Manual &raquo; queue/lmtp</title>
+    <title>Haraka Manual &raquo; 2016.01.21</title>
     
     <!-- Bootstrap core CSS -->
     <link href="/css/bootstrap.css" rel="stylesheet">
@@ -63,7 +63,7 @@
         <!-- Docs page layout -->
         <div class="bs-header" id="content">
           <div class="container">
-            <h1>queue/lmtp</h1>
+            <h1>2016.01.21</h1>
           </div>
         </div>
         
@@ -73,7 +73,7 @@
               <div id="chapternav" class="bs-sidebar hidden-print" role="complementary">
                 <ul class="nav bs-sidenav"><li><a class="submenu" data-toggle="collapse" data-target="#core" data-parent="#chapternav" href="javascript:void(null);">Core</a>
 <ul id='core' class='nav'>
-<li><a href='/UPGRADE.html'>2016.01.21</a></li>
+<li class="active"><a href='/UPGRADE.html'>2016.01.21</a></li>
 <li><a href='/manual/Address.html'>Address Object</a></li>
 <li><a href='/manual/Body.html'>Body Object</a></li>
 <li><a href='/manual/Config.html'>Config Files</a></li>
@@ -112,7 +112,7 @@
 <li><a href='/manual/plugins/auth/flat_file.html'>auth/flat_file</a></li>
 <li><a href='/manual/plugins/queue/deliver.html'>queue/deliver</a></li>
 <li><a href='/manual/plugins/queue/discard.html'>discard</a></li>
-<li class="active"><a href='/manual/plugins/queue/lmtp.html'>queue/lmtp</a></li>
+<li><a href='/manual/plugins/queue/lmtp.html'>queue/lmtp</a></li>
 <li><a href='/manual/plugins/queue/qmail-queue.html'>queue/qmail-queue</a></li>
 <li><a href='/manual/plugins/queue/quarantine.html'>quarantine</a></li>
 <li><a href='/manual/plugins/queue/rabbitmq.html'>queue/rabbitmq</a></li>
@@ -186,27 +186,23 @@
             
             <div class="col-md-9" role="main">
               <div class="bs-docs-section">
-                <h1>queue/lmtp</h1>
-
-<p>This plugin delivers mails to inbound domains via LMTP.</p>
-
-<h2>Configuration</h2>
+                <h1>2016.01.21</h1>
 
 <ul>
-<li><p><code>config/lmtp.ini</code>
-This config file provides server address and port of LMTP server to deliver for different inbound domains.
-Syntax is equal to that used in the config of the queue/smtp_forward plugin.</p>
+<li>smtp_proxy &amp; qmail-queue: default to enabled for outbound deliveries
+(previously used Outbound), to better matches user expectations. To get
+previous behavior, add a config file with <code>enable_outbound=false</code>. </li>
+</ul>
 
-<p>Example:</p>
+<h1>2013.12.27</h1>
 
-<p>; defaults
-host=localhost
-port=24</p>
-
-<p>[example.com]
-; Goes elsewhere
-host=10.1.1.1
-port=2400</p></li>
+<ul>
+<li>new plugin: data.headers
+<ul>
+<li>deprecates data.rfc5322<em>header</em>checks.js</li>
+<li>deprecates data.noreceived.js</li>
+<li>deprecates data.nomsgid.js</li>
+</ul></li>
 </ul>
 
               </div>

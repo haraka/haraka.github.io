@@ -73,7 +73,7 @@
               <div id="chapternav" class="bs-sidebar hidden-print" role="complementary">
                 <ul class="nav bs-sidenav"><li><a class="submenu" data-toggle="collapse" data-target="#core" data-parent="#chapternav" href="javascript:void(null);">Core</a>
 <ul id='core' class='nav'>
-<li><a href='/README.html'>Haraka</a></li>
+<li><a href='/UPGRADE.html'>2016.01.21</a></li>
 <li><a href='/manual/Address.html'>Address Object</a></li>
 <li><a href='/manual/Body.html'>Body Object</a></li>
 <li><a href='/manual/Config.html'>Config Files</a></li>
@@ -100,6 +100,7 @@
 <li><a class="submenu" data-toggle="collapse" data-target="#tutorials" data-parent="#chapternav" href="javascript:void(null);">Tutorials</a>
 <ul id='tutorials' class='nav'>
 <li><a href='/manual/Tutorial.html'>Writing Haraka Plugins</a></li>
+<li><a href='/README.html'>Haraka</a></li>
 <li><a href='/manual/tutorials/Migrating_from_v1_to_v2.html'>Migrating from Haraka v1.x to v2.x</a></li>
 <li><a href='/manual/tutorials/SettingUpOutbound.html'>Configuring Haraka For Outbound Email</a></li>
 </ul></li>
@@ -378,7 +379,7 @@ human_html output, prefix the name of the key with an underscore.</p>
 <p>Example:</p>
 
 <p><code>js
-connection.results.add(plugin, { _hidden: "some data' });
+connection.results.add(plugin, { _hidden: 'some data' });
 </code></p>
 
 <h2>Redis Pub/Sub</h2>
@@ -392,32 +393,28 @@ connection UUID.</p>
 <p>This is from the karma plugin, subscribing on the <code>connect_init</code> hook.</p>
 
 <p><code>js
-var redis = {
-    patt: 'result-' + connection.uuid + '*',
-    conn: require('redis').createClient(),
-};
-redis.conn.on('psubscribe', function (pattern, count) {
-    connection.loginfo(plugin, 'psubscribed to ' + pattern);
-    next();
-});
-redis.conn.on('pmessage', function (pattern, channel, message) {
-    // do fun stuff with messages that look like this
-    // {"plugin":"karma","result":{"fail":"spamassassin.hits"}}
-    // {"plugin":"connect.geoip","result":{"country":"CN"}}
-}); 
-redis.conn.on('punsubscribe', function (pattern, count) {
-    connection.loginfo(plugin, 'unsubsubscribed from ' + pattern);
-});
-redis.conn.psubscribe(redis.patt);
-connection.redis = redis;
+exports.register = function (next, server) {
+    this.inherits('redis');
+}
+exports.hook_connect_init = function (next, connection) {
+    var plugin = this;
+    plugin.redis_subscribe(connection, function () {
+        connection.notes.redis.on('pmessage', function (pattern, channel, message) {
+            // do fun stuff with messages that look like this
+            // {"plugin":"karma","result":{"fail":"spamassassin.hits"}}
+            // {"plugin":"connect.geoip","result":{"country":"CN"}}
+        });
+        next();
+    });
+}
 </code></p>
 
 <p>It's also wise to unsubscribe. It's easy to do on the <code>disconnect</code> hook:</p>
 
 <p><code>js
-if (connection.redis) {
-    connection.redis.conn.punsubscribe(connection.redis.patt);
-}
+    exports.hook_disconnect = function (next, connection) {
+        this.redis_unsubscribe(connection);
+    }
 </code></p>
 
               </div>
