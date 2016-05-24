@@ -73,8 +73,10 @@
               <div id="chapternav" class="bs-sidebar hidden-print" role="complementary">
                 <ul class="nav bs-sidenav"><li><a class="submenu" data-toggle="collapse" data-target="#core" data-parent="#chapternav" href="javascript:void(null);">Core</a>
 <ul id='core' class='nav'>
-<li><a href='/UPGRADE.html'>2016.01.21</a></li>
-<li><a href='/manual/Address.html'>Address Object</a></li>
+<li><a href='/UPGRADE.html'>2016.02.13</a></li>
+<li><a href='/.github/CONTRIBUTING.html'>Haraka</a></li>
+<li><a href='/.github/ISSUE_TEMPLATE.html'>Haraka</a></li>
+<li><a href='/.github/PULL_REQUEST_TEMPLATE.html'>Haraka</a></li>
 <li><a href='/manual/Body.html'>Body Object</a></li>
 <li><a href='/manual/Config.html'>Config Files</a></li>
 <li><a href='/manual/Connection.html'>Connection Object</a></li>
@@ -106,6 +108,7 @@
 </ul></li>
 <li><a class="submenu" data-toggle="collapse" data-target="#plugins" data-parent="#chapternav" href="javascript:void(null);">Plugins</a>
 <ul id='plugins' class='nav'>
+<li><a href='/manual/plugins/auth/auth_bridge.html'>auth/auth_bridge</a></li>
 <li><a href='/manual/plugins/auth/auth_ldap.html'>auth/auth_ldap</a></li>
 <li><a href='/manual/plugins/auth/auth_proxy.html'>auth/auth_proxy</a></li>
 <li><a href='/manual/plugins/auth/auth_vpopmaild.html'>auth/auth_vpopmaild</a></li>
@@ -117,6 +120,7 @@
 <li><a href='/manual/plugins/queue/quarantine.html'>quarantine</a></li>
 <li><a href='/manual/plugins/queue/rabbitmq.html'>queue/rabbitmq</a></li>
 <li><a href='/manual/plugins/queue/rabbitmq_amqplib.html'>queue/rabbitmq_amqplib</a></li>
+<li><a href='/manual/plugins/queue/smtp_bridge.html'>queue/smtp_bridge</a></li>
 <li><a href='/manual/plugins/queue/smtp_forward.html'>queue/smtp_forward</a></li>
 <li><a href='/manual/plugins/queue/smtp_proxy.html'>queue/smtp_proxy</a></li>
 <li><a href='/manual/plugins/access.html'>access - ACLs</a></li>
@@ -267,6 +271,16 @@ about the following options.</p>
 
 <pre><code>`rejectUnauthorized=[true|false]`  (default: false)
 </code></pre>
+
+<h2>Inbound Specific Configuration</h2>
+
+<p>By default the above options are shared with outbound mail (either
+using <code>smtp_forward</code>, <code>smtp_proxy</code> or plain outbound mail heading to
+an external destination). To make these options specific to inbound
+mail, put them under an <code>[inbound]</code> parameter group. Outbound options
+can go under an <code>[outbound]</code> parameter group, and plugins that use
+SMTP tls for queueing such as <code>smtp_proxy</code> and <code>smtp_forward</code> can
+use that plugin name for plugin specific options.</p>
 
               </div>
             </div>

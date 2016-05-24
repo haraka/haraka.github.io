@@ -73,8 +73,10 @@
               <div id="chapternav" class="bs-sidebar hidden-print" role="complementary">
                 <ul class="nav bs-sidenav"><li><a class="submenu" data-toggle="collapse" data-target="#core" data-parent="#chapternav" href="javascript:void(null);">Core</a>
 <ul id='core' class='nav'>
-<li><a href='/UPGRADE.html'>2016.01.21</a></li>
-<li><a href='/manual/Address.html'>Address Object</a></li>
+<li><a href='/UPGRADE.html'>2016.02.13</a></li>
+<li><a href='/.github/CONTRIBUTING.html'>Haraka</a></li>
+<li><a href='/.github/ISSUE_TEMPLATE.html'>Haraka</a></li>
+<li><a href='/.github/PULL_REQUEST_TEMPLATE.html'>Haraka</a></li>
 <li><a href='/manual/Body.html'>Body Object</a></li>
 <li class="active"><a href='/manual/Config.html'>Config Files</a></li>
 <li><a href='/manual/Connection.html'>Connection Object</a></li>
@@ -106,6 +108,7 @@
 </ul></li>
 <li><a class="submenu" data-toggle="collapse" data-target="#plugins" data-parent="#chapternav" href="javascript:void(null);">Plugins</a>
 <ul id='plugins' class='nav'>
+<li><a href='/manual/plugins/auth/auth_bridge.html'>auth/auth_bridge</a></li>
 <li><a href='/manual/plugins/auth/auth_ldap.html'>auth/auth_ldap</a></li>
 <li><a href='/manual/plugins/auth/auth_proxy.html'>auth/auth_proxy</a></li>
 <li><a href='/manual/plugins/auth/auth_vpopmaild.html'>auth/auth_vpopmaild</a></li>
@@ -117,6 +120,7 @@
 <li><a href='/manual/plugins/queue/quarantine.html'>quarantine</a></li>
 <li><a href='/manual/plugins/queue/rabbitmq.html'>queue/rabbitmq</a></li>
 <li><a href='/manual/plugins/queue/rabbitmq_amqplib.html'>queue/rabbitmq_amqplib</a></li>
+<li><a href='/manual/plugins/queue/smtp_bridge.html'>queue/smtp_bridge</a></li>
 <li><a href='/manual/plugins/queue/smtp_forward.html'>queue/smtp_forward</a></li>
 <li><a href='/manual/plugins/queue/smtp_proxy.html'>queue/smtp_proxy</a></li>
 <li><a href='/manual/plugins/access.html'>access - ACLs</a></li>
@@ -196,7 +200,7 @@
 var cfg = this.config.get(name, [type], [callback], [options]);
 </code></pre>
 
-<p><code>name</code> is not a filename, but a name in the config/ directory. For example:</p>
+<p><code>name</code> is not a full path, but a filename in the config/ directory. For example:</p>
 
 <pre><code>var cfg = this.config.get('rambling.paths', 'list');
 </code></pre>
@@ -216,13 +220,13 @@ var cfg = this.config.get(name, [type], [callback], [options]);
 </ul>
 
 <p>If your ini and json files have <code>.ini</code>, <code>.json</code> or <code>.yaml</code> suffixes,
-the <code>type</code> parameter can be omitted.  </p>
+the <code>type</code> parameter can be omitted.</p>
 
 <p>See the <a href="#file_formats">File Formats</a> section below for a more detailed
 explaination of each of the formats.</p>
 
 <p><code>callback</code> is an optional callback function that will be called when
-an update is detected on the file after the configuration cache has been 
+an update is detected on the file after the configuration cache has been
 updated by re-reading the file.  You can use this to refresh configuration
 variables within your plugin if you are not calling <code>config.get</code> within
 one of the hooks (e.g. if you use the <code>register()</code> function):</p>
@@ -257,6 +261,61 @@ loop, and will slow down Haraka.</li>
 <li><code>booleans</code> (default: none) - for .ini files, this allows specifying
 boolean type keys. Default true or false can be specified.</li>
 </ul>
+
+<h1><a name="overrides">Default Config and Overrides</a></h1>
+
+<p>The config loader supports dual config files - a file containing default
+values, and overridden values installed by a user. This can be useful if
+publishing your plugin to npm (and is used by some core plugins).</p>
+
+<p>Overrides work in the following manner:</p>
+
+<ul>
+<li>For <code>json</code>, <code>ini</code> and <code>yaml</code> config, values are overridden on a deep
+key by key basis.</li>
+<li>For every other config format, an override file replaces the entire
+config.</li>
+</ul>
+
+<p>So for example, a plugin installed as a module (or a core Haraka plugin)
+that loads a <code>list</code> config from their own <code>config/plugin_name</code> file, can
+be completely overridden by a file called <code>config/plugin_name</code> in your
+local Haraka installation directory.</p>
+
+<p>Alternatively, a plugin using default config from <code>config/plugin_name.ini</code>
+can be overridden on a key-by-key basis, so for example a default
+<code>plugin_name.ini</code> might contain:</p>
+
+<p>```
+toplevel1=foo
+toplevel2=bar</p>
+
+<p>[subsection]
+sub1=something
+```</p>
+
+<p>And your local <code>plugin_name.ini</code> might contain:</p>
+
+<p>```
+toplevel2=blee</p>
+
+<p>[subsection]
+sub2=otherthing
+```</p>
+
+<p>This would be the equivalent of loading config containing:</p>
+
+<p>```
+toplevel1=foo
+toplevel2=blee</p>
+
+<p>[subsection]
+sub1=something
+sub2=otherthing
+```</p>
+
+<p>This allows plugins to provide default config, and allow users to override
+values on a key-by-key basis.</p>
 
 <h1><a name="file_formats">File Formats</a></h1>
 
@@ -334,6 +393,18 @@ missing), prefix the key with +:</p>
 <p>For completeness the inverse is also allowed:</p>
 
 <pre><code>{ booleans: [ '-reject' ] }
+</code></pre>
+
+<p>Lists are supported using this syntax:</p>
+
+<pre><code>hosts[] = first_host
+hosts[] = second_host
+hosts[] = third_host
+</code></pre>
+
+<p>which produces this javascript array:</p>
+
+<pre><code>['first_host', 'second_host', 'third_host']
 </code></pre>
 
 <h2>Flat Files</h2>

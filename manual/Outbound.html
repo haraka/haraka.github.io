@@ -73,8 +73,10 @@
               <div id="chapternav" class="bs-sidebar hidden-print" role="complementary">
                 <ul class="nav bs-sidenav"><li><a class="submenu" data-toggle="collapse" data-target="#core" data-parent="#chapternav" href="javascript:void(null);">Core</a>
 <ul id='core' class='nav'>
-<li><a href='/UPGRADE.html'>2016.01.21</a></li>
-<li><a href='/manual/Address.html'>Address Object</a></li>
+<li><a href='/UPGRADE.html'>2016.02.13</a></li>
+<li><a href='/.github/CONTRIBUTING.html'>Haraka</a></li>
+<li><a href='/.github/ISSUE_TEMPLATE.html'>Haraka</a></li>
+<li><a href='/.github/PULL_REQUEST_TEMPLATE.html'>Haraka</a></li>
 <li><a href='/manual/Body.html'>Body Object</a></li>
 <li><a href='/manual/Config.html'>Config Files</a></li>
 <li><a href='/manual/Connection.html'>Connection Object</a></li>
@@ -106,6 +108,7 @@
 </ul></li>
 <li><a class="submenu" data-toggle="collapse" data-target="#plugins" data-parent="#chapternav" href="javascript:void(null);">Plugins</a>
 <ul id='plugins' class='nav'>
+<li><a href='/manual/plugins/auth/auth_bridge.html'>auth/auth_bridge</a></li>
 <li><a href='/manual/plugins/auth/auth_ldap.html'>auth/auth_ldap</a></li>
 <li><a href='/manual/plugins/auth/auth_proxy.html'>auth/auth_proxy</a></li>
 <li><a href='/manual/plugins/auth/auth_vpopmaild.html'>auth/auth_vpopmaild</a></li>
@@ -117,6 +120,7 @@
 <li><a href='/manual/plugins/queue/quarantine.html'>quarantine</a></li>
 <li><a href='/manual/plugins/queue/rabbitmq.html'>queue/rabbitmq</a></li>
 <li><a href='/manual/plugins/queue/rabbitmq_amqplib.html'>queue/rabbitmq_amqplib</a></li>
+<li><a href='/manual/plugins/queue/smtp_bridge.html'>queue/smtp_bridge</a></li>
 <li><a href='/manual/plugins/queue/smtp_forward.html'>queue/smtp_forward</a></li>
 <li><a href='/manual/plugins/queue/smtp_proxy.html'>queue/smtp_proxy</a></li>
 <li><a href='/manual/plugins/access.html'>access - ACLs</a></li>
@@ -232,9 +236,18 @@ of CPUs that you have.</p>
 remote end is capable.</p>
 
 <p>This uses the same <code>tls_key.pem</code> and <code>tls_cert.pem</code> files that the <code>tls</code>
-plugin uses. See the <a href="http://haraka.github.io/manual/plugins/tls.html">tls plugin
+plugin uses, along with other values in <code>tls.ini</code>. See the <a href="http://haraka.github.io/manual/plugins/tls.html">tls plugin
 docs</a> for information on generating those
 files.</p>
+
+<p>Within <code>tls.ini</code> you can specify global options for the values <code>ciphers</code>,
+<code>requestCert</code> and <code>rejectUnauthorized</code>, alternatively you can provide
+separate values by putting them under a key: <code>[outbound]</code>, such as:</p>
+
+<p><code>
+[outbound]
+ciphers=!DES
+</code></p>
 
 <ul>
 <li><code>ipv6_enabled</code></li>
@@ -263,6 +276,42 @@ all outbound mail just before it is queued.</p>
 <h3>outbound.bounce_message</h3>
 
 <p>See "Bounce Messages" below for details.</p>
+
+<h2>The HMail Object</h2>
+
+<p>Many hooks (see below) pass in a <code>hmail</code> object.</p>
+
+<p>You likely won't ever need to call methods on this object, so they are left
+undocumented here.</p>
+
+<p>The attributes of an <code>hmail</code> object that may be of use are:</p>
+
+<ul>
+<li>path - the full path to the queue file</li>
+<li>filename - the filename within the queue dir</li>
+<li>num_failures - the number of times this mail has been temp failed</li>
+<li>notes - notes you can store on a hmail object (similar to <code>transaction.notes</code>)
+to allow you to pass information between outbound hooks</li>
+<li>todo - see below</li>
+</ul>
+
+<h2>The ToDo Object</h2>
+
+<p>The <code>todo</code> object contains information about how to deliver this mail. Keys
+you may be interested in are:</p>
+
+<ul>
+<li>rcpt_to - an Array of Address objects - the rfc.2821 recipients of this mail</li>
+<li>mail_from - an Address object - the rfc.2821 sender of this mail</li>
+<li>domain - the domain this mail is going to (see <code>always_split</code> above)</li>
+<li>notes - the original transaction.notes for this mail, also contains the
+following useful keys:
+<em>* outbound_ip - the IP address to bind to (note do not set this manually,
+use the <code>get_mx</code> hook)
+*</em> outbound_helo - the EHLO domain to use (again, do not set manually)</li>
+<li>queue_time - the epoch milliseconds time when this mail was queued</li>
+<li>uuid - the original transaction.uuid</li>
+</ul>
 
 <h2>Outbound Mail Hooks</h2>
 

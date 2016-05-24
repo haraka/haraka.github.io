@@ -73,8 +73,10 @@
               <div id="chapternav" class="bs-sidebar hidden-print" role="complementary">
                 <ul class="nav bs-sidenav"><li><a class="submenu" data-toggle="collapse" data-target="#core" data-parent="#chapternav" href="javascript:void(null);">Core</a>
 <ul id='core' class='nav'>
-<li><a href='/UPGRADE.html'>2016.01.21</a></li>
-<li><a href='/manual/Address.html'>Address Object</a></li>
+<li><a href='/UPGRADE.html'>2016.02.13</a></li>
+<li><a href='/.github/CONTRIBUTING.html'>Haraka</a></li>
+<li><a href='/.github/ISSUE_TEMPLATE.html'>Haraka</a></li>
+<li><a href='/.github/PULL_REQUEST_TEMPLATE.html'>Haraka</a></li>
 <li><a href='/manual/Body.html'>Body Object</a></li>
 <li><a href='/manual/Config.html'>Config Files</a></li>
 <li><a href='/manual/Connection.html'>Connection Object</a></li>
@@ -106,6 +108,7 @@
 </ul></li>
 <li><a class="submenu" data-toggle="collapse" data-target="#plugins" data-parent="#chapternav" href="javascript:void(null);">Plugins</a>
 <ul id='plugins' class='nav'>
+<li><a href='/manual/plugins/auth/auth_bridge.html'>auth/auth_bridge</a></li>
 <li><a href='/manual/plugins/auth/auth_ldap.html'>auth/auth_ldap</a></li>
 <li><a href='/manual/plugins/auth/auth_proxy.html'>auth/auth_proxy</a></li>
 <li><a href='/manual/plugins/auth/auth_vpopmaild.html'>auth/auth_vpopmaild</a></li>
@@ -117,6 +120,7 @@
 <li><a href='/manual/plugins/queue/quarantine.html'>quarantine</a></li>
 <li><a href='/manual/plugins/queue/rabbitmq.html'>queue/rabbitmq</a></li>
 <li><a href='/manual/plugins/queue/rabbitmq_amqplib.html'>queue/rabbitmq_amqplib</a></li>
+<li><a href='/manual/plugins/queue/smtp_bridge.html'>queue/smtp_bridge</a></li>
 <li class="active"><a href='/manual/plugins/queue/smtp_forward.html'>queue/smtp_forward</a></li>
 <li><a href='/manual/plugins/queue/smtp_proxy.html'>queue/smtp_proxy</a></li>
 <li><a href='/manual/plugins/access.html'>access - ACLs</a></li>
@@ -249,7 +253,8 @@ timeout, which should in turn be less than the connection timeout.</p>
 <li>enable_tls=[true]</li>
 </ul>
 
-<p>Enable TLS with the forward host (if supported)</p>
+<p>Enable TLS with the forward host (if supported). TLS uses options
+from the tls plugin.</p>
 
 <ul>
 <li>auth_type=[plain|login]</li>

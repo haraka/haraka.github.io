@@ -7,7 +7,7 @@
     <meta name="description" content="">
     <meta name="author" content="">
 
-    <title>Haraka Manual &raquo; auth/auth_ldap</title>
+    <title>Haraka Manual &raquo; queue/smtp_bridge</title>
     
     <!-- Bootstrap core CSS -->
     <link href="/css/bootstrap.css" rel="stylesheet">
@@ -63,7 +63,7 @@
         <!-- Docs page layout -->
         <div class="bs-header" id="content">
           <div class="container">
-            <h1>auth/auth_ldap</h1>
+            <h1>queue/smtp_bridge</h1>
           </div>
         </div>
         
@@ -109,7 +109,7 @@
 <li><a class="submenu" data-toggle="collapse" data-target="#plugins" data-parent="#chapternav" href="javascript:void(null);">Plugins</a>
 <ul id='plugins' class='nav'>
 <li><a href='/manual/plugins/auth/auth_bridge.html'>auth/auth_bridge</a></li>
-<li class="active"><a href='/manual/plugins/auth/auth_ldap.html'>auth/auth_ldap</a></li>
+<li><a href='/manual/plugins/auth/auth_ldap.html'>auth/auth_ldap</a></li>
 <li><a href='/manual/plugins/auth/auth_proxy.html'>auth/auth_proxy</a></li>
 <li><a href='/manual/plugins/auth/auth_vpopmaild.html'>auth/auth_vpopmaild</a></li>
 <li><a href='/manual/plugins/auth/flat_file.html'>auth/flat_file</a></li>
@@ -120,7 +120,7 @@
 <li><a href='/manual/plugins/queue/quarantine.html'>quarantine</a></li>
 <li><a href='/manual/plugins/queue/rabbitmq.html'>queue/rabbitmq</a></li>
 <li><a href='/manual/plugins/queue/rabbitmq_amqplib.html'>queue/rabbitmq_amqplib</a></li>
-<li><a href='/manual/plugins/queue/smtp_bridge.html'>queue/smtp_bridge</a></li>
+<li class="active"><a href='/manual/plugins/queue/smtp_bridge.html'>queue/smtp_bridge</a></li>
 <li><a href='/manual/plugins/queue/smtp_forward.html'>queue/smtp_forward</a></li>
 <li><a href='/manual/plugins/queue/smtp_proxy.html'>queue/smtp_proxy</a></li>
 <li><a href='/manual/plugins/access.html'>access - ACLs</a></li>
@@ -190,50 +190,43 @@
             
             <div class="col-md-9" role="main">
               <div class="bs-docs-section">
-                <h1>auth/auth_ldap</h1>
+                <h1>queue/smtp_bridge</h1>
 
-<p>The <code>auth/auth_ldap</code> plugin uses an LDAP bind to authenticate a user. Currently
-only one server and multiple DNs can be configured. If any of the DN binds succeed, 
-the user is authenticated. </p>
+<p>This plugin delivers to another SMTP server, bridging the authentication
+details and post data from the initial connection.</p>
+
+<p>This plugin is meant to be used with the plugin <code>auth/auth_bridge</code>.</p>
+
+<p>It is different than <code>queue/smtp_proxy</code> or <code>queue/smpt_forward</code> because
+it doesn't use the AUTH details from a configuration file. This plugins
+simply post the data from the original connection to the remote SMTP server
+using the original AUTH details.</p>
 
 <h2>Configuration</h2>
 
-<p>Configuration is stored in <code>config/auth_ldap.ini</code> and uses the INI
-style formatting. </p>
+<p>Configuration is stored in <code>config/smtp_bridge.ini</code> and uses the INI
+style formatting.</p>
 
-<p>Only the <code>LOGIN</code> authentication method is supported assuming that passwords in the
-LDAP database are not stored in cleartext (which would allow for CRAM-MD5). Note
-that this means passwords will be sent in the clear to the LDAP server unless
-an <code>ldaps://</code> conection is used. </p>
+<p>The configuration of this plugin is simple:</p>
 
-<p>Current configuration options in <code>[core]</code> are:</p>
-
-<pre><code>server - the url of the LDAP server (ldap:// or ldaps://)
-timeout - time in miliseconds to wait for the server resonse before giving up
-rejectUnauthorized - boolean (true or false) as to whether to reject connections
-    not verified against a CA. Meaning, a "false" allows non-verified.
+<pre><code>host=localhost
+#port=
+#auth_type=
+#priority=10
 </code></pre>
 
-<p>Example:</p>
+<ul>
+<li>host: the host where you will be authenticating and posting,
+for example <code>smtp.host.tld</code>. This is the only setting required.</li>
+</ul>
 
-<pre><code>[core]
-server=ldaps://ldap.opoet.com
-timeout=5000
-rejectUnauthorized=false
-</code></pre>
+<p>If needed you can also set</p>
 
-<p>The <code>[dns]</code> section (that is plural DN and not domain name system), is a list of DNs to use
-to bind. The <code>%u</code> in the strings is substituted with the user name used in the SMTP 
-authentication. Note that the keys have no meaning and the DNs are tried in series until
-the first successful bind. The LDAP RFC does not allow for parallel binds on a connection,
-so it is suggested that the most commonly used DN be placed earlier in the list. </p>
-
-<p>Example:</p>
-
-<pre><code>[dns]
-dn1=uid=%u,ou=Users,dc=opoet,dc=com
-dn2=uid=%u,ou=people,dc=opoet,dc=com
-</code></pre>
+<ul>
+<li>port: default to empty and Haraka will use 25.</li>
+<li>auth_type: default to empty and Haraka will try to pick an appropriate method.</li>
+<li>priority: default to 10.</li>
+</ul>
 
               </div>
             </div>

@@ -7,7 +7,7 @@
     <meta name="description" content="">
     <meta name="author" content="">
 
-    <title>Haraka Manual &raquo; auth/auth_ldap</title>
+    <title>Haraka Manual &raquo; auth/auth_bridge</title>
     
     <!-- Bootstrap core CSS -->
     <link href="/css/bootstrap.css" rel="stylesheet">
@@ -63,7 +63,7 @@
         <!-- Docs page layout -->
         <div class="bs-header" id="content">
           <div class="container">
-            <h1>auth/auth_ldap</h1>
+            <h1>auth/auth_bridge</h1>
           </div>
         </div>
         
@@ -108,8 +108,8 @@
 </ul></li>
 <li><a class="submenu" data-toggle="collapse" data-target="#plugins" data-parent="#chapternav" href="javascript:void(null);">Plugins</a>
 <ul id='plugins' class='nav'>
-<li><a href='/manual/plugins/auth/auth_bridge.html'>auth/auth_bridge</a></li>
-<li class="active"><a href='/manual/plugins/auth/auth_ldap.html'>auth/auth_ldap</a></li>
+<li class="active"><a href='/manual/plugins/auth/auth_bridge.html'>auth/auth_bridge</a></li>
+<li><a href='/manual/plugins/auth/auth_ldap.html'>auth/auth_ldap</a></li>
 <li><a href='/manual/plugins/auth/auth_proxy.html'>auth/auth_proxy</a></li>
 <li><a href='/manual/plugins/auth/auth_vpopmaild.html'>auth/auth_vpopmaild</a></li>
 <li><a href='/manual/plugins/auth/flat_file.html'>auth/flat_file</a></li>
@@ -190,50 +190,45 @@
             
             <div class="col-md-9" role="main">
               <div class="bs-docs-section">
-                <h1>auth/auth_ldap</h1>
+                <h1>auth/auth_bridge</h1>
 
-<p>The <code>auth/auth_ldap</code> plugin uses an LDAP bind to authenticate a user. Currently
-only one server and multiple DNs can be configured. If any of the DN binds succeed, 
-the user is authenticated. </p>
+<p>This plugin allows you to authenticate users to remote SMTP servers
+bridging the original user and password to the remote server,
+and proxy the result back to authenticate the client.</p>
+
+<p>This plugin is meant to be used with the plugin <code>queue/smtp_bridge</code>.</p>
+
+<p>It is different than <code>auth/auth_proxy</code> because it doesn't require
+the AUTH user in user@domain.com format, and it doesn't check that
+the domain is the configuration file. This plugins simply takes
+the original user and password and tries to authenticate it in the
+remote SMTP server.</p>
 
 <h2>Configuration</h2>
 
-<p>Configuration is stored in <code>config/auth_ldap.ini</code> and uses the INI
-style formatting. </p>
+<p>Configuration is stored in <code>config/smtp_bridge.ini</code> and uses the INI
+style formatting.</p>
 
-<p>Only the <code>LOGIN</code> authentication method is supported assuming that passwords in the
-LDAP database are not stored in cleartext (which would allow for CRAM-MD5). Note
-that this means passwords will be sent in the clear to the LDAP server unless
-an <code>ldaps://</code> conection is used. </p>
+<p>The configuration of this plugin is simple:</p>
 
-<p>Current configuration options in <code>[core]</code> are:</p>
-
-<pre><code>server - the url of the LDAP server (ldap:// or ldaps://)
-timeout - time in miliseconds to wait for the server resonse before giving up
-rejectUnauthorized - boolean (true or false) as to whether to reject connections
-    not verified against a CA. Meaning, a "false" allows non-verified.
+<pre><code>host=localhost
+#port=
+#auth_type=
+#priority=10
 </code></pre>
 
-<p>Example:</p>
+<ul>
+<li>host: the host where you will be authenticating and posting,
+for example <code>smtp.host.tld</code>. This is the only setting required.</li>
+</ul>
 
-<pre><code>[core]
-server=ldaps://ldap.opoet.com
-timeout=5000
-rejectUnauthorized=false
-</code></pre>
+<p>If needed you can also set</p>
 
-<p>The <code>[dns]</code> section (that is plural DN and not domain name system), is a list of DNs to use
-to bind. The <code>%u</code> in the strings is substituted with the user name used in the SMTP 
-authentication. Note that the keys have no meaning and the DNs are tried in series until
-the first successful bind. The LDAP RFC does not allow for parallel binds on a connection,
-so it is suggested that the most commonly used DN be placed earlier in the list. </p>
+<ul>
+<li>port: default to empty and Haraka will use 25.</li>
+</ul>
 
-<p>Example:</p>
-
-<pre><code>[dns]
-dn1=uid=%u,ou=Users,dc=opoet,dc=com
-dn2=uid=%u,ou=people,dc=opoet,dc=com
-</code></pre>
+<p>The options <code>auth_type</code> and <code>priority</code> will be used by <code>queue/smtp_bridge</code></p>
 
               </div>
             </div>

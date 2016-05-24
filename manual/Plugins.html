@@ -73,8 +73,10 @@
               <div id="chapternav" class="bs-sidebar hidden-print" role="complementary">
                 <ul class="nav bs-sidenav"><li><a class="submenu" data-toggle="collapse" data-target="#core" data-parent="#chapternav" href="javascript:void(null);">Core</a>
 <ul id='core' class='nav'>
-<li><a href='/UPGRADE.html'>2016.01.21</a></li>
-<li><a href='/manual/Address.html'>Address Object</a></li>
+<li><a href='/UPGRADE.html'>2016.02.13</a></li>
+<li><a href='/.github/CONTRIBUTING.html'>Haraka</a></li>
+<li><a href='/.github/ISSUE_TEMPLATE.html'>Haraka</a></li>
+<li><a href='/.github/PULL_REQUEST_TEMPLATE.html'>Haraka</a></li>
 <li><a href='/manual/Body.html'>Body Object</a></li>
 <li><a href='/manual/Config.html'>Config Files</a></li>
 <li><a href='/manual/Connection.html'>Connection Object</a></li>
@@ -106,6 +108,7 @@
 </ul></li>
 <li><a class="submenu" data-toggle="collapse" data-target="#plugins" data-parent="#chapternav" href="javascript:void(null);">Plugins</a>
 <ul id='plugins' class='nav'>
+<li><a href='/manual/plugins/auth/auth_bridge.html'>auth/auth_bridge</a></li>
 <li><a href='/manual/plugins/auth/auth_ldap.html'>auth/auth_ldap</a></li>
 <li><a href='/manual/plugins/auth/auth_proxy.html'>auth/auth_proxy</a></li>
 <li><a href='/manual/plugins/auth/auth_vpopmaild.html'>auth/auth_vpopmaild</a></li>
@@ -117,6 +120,7 @@
 <li><a href='/manual/plugins/queue/quarantine.html'>quarantine</a></li>
 <li><a href='/manual/plugins/queue/rabbitmq.html'>queue/rabbitmq</a></li>
 <li><a href='/manual/plugins/queue/rabbitmq_amqplib.html'>queue/rabbitmq_amqplib</a></li>
+<li><a href='/manual/plugins/queue/smtp_bridge.html'>queue/smtp_bridge</a></li>
 <li><a href='/manual/plugins/queue/smtp_forward.html'>queue/smtp_forward</a></li>
 <li><a href='/manual/plugins/queue/smtp_proxy.html'>queue/smtp_proxy</a></li>
 <li><a href='/manual/plugins/access.html'>access - ACLs</a></li>
@@ -209,7 +213,10 @@ enabled.</p>
 
 <h2>Anatomy of a Plugin</h2>
 
-<p>Plugins in Haraka are Javascript files or modules in the plugins/ directory.</p>
+<p>Plugins in Haraka are Javascript files or modules in the plugins/ directory.
+Alternatively they can be npm-style node<em>modules in either the core node</em>modules
+folder, or the folder you gave to <code>haraka -i &lt;folder&gt;</code>. See "Plugins as Modules"
+below for more information on this.</p>
 
 <p>To enable a plugin, add its name to <code>config/plugins</code>.</p>
 
@@ -507,6 +514,31 @@ outbound functions here.</p></li>
 
 <pre><code>connection.transaction.notes.test = 'testing';
 </code></pre>
+
+<h2>Plugins as Modules</h2>
+
+<p>Plugins loaded as modules behave slightly differently to plugins loaded from
+<code>plugins/</code> as plain javascript files.</p>
+
+<p>Plain javascript plugins have a customized version of <code>require()</code> which allows
+you to load core Haraka modules via specifying <code>require('./name')</code> (note the
+<code>./</code> prefix). Although the core modules aren't in the same folder, we intercept
+this and look for core modules. Note that if there is a module in your plugins
+folder of the same name that will not take preference, so avoid using names
+similar to core modules.</p>
+
+<p>Plugins loaded as modules do not have this special <code>require()</code>. In order to load
+a core Haraka module you will have to use <code>this.core_require('name')</code>. Note that
+this should be preferred anyway for plain javascript plugins anyway, as the
+<code>./</code> hack is likely to go away in the future.</p>
+
+<p>Plugins loaded as modules also are not compiled inside the Haraka plugin sandbox,
+which provides some security benefits, but also blocks access to certain globals,
+and provides a global <code>server</code> object. To access the <code>server</code> object, use
+<code>connection.server</code> instead.</p>
+
+<p>Module plugins support default config in their local <code>config</code> directory. See the
+"Default Config and Overrides" section in <a href="Config.md">Config</a>.</p>
 
 <h2>See also, <a href="Results.md">Results</a></h2>
 

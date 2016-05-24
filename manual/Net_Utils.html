@@ -73,8 +73,10 @@
               <div id="chapternav" class="bs-sidebar hidden-print" role="complementary">
                 <ul class="nav bs-sidenav"><li><a class="submenu" data-toggle="collapse" data-target="#core" data-parent="#chapternav" href="javascript:void(null);">Core</a>
 <ul id='core' class='nav'>
-<li><a href='/UPGRADE.html'>2016.01.21</a></li>
-<li><a href='/manual/Address.html'>Address Object</a></li>
+<li><a href='/UPGRADE.html'>2016.02.13</a></li>
+<li><a href='/.github/CONTRIBUTING.html'>Haraka</a></li>
+<li><a href='/.github/ISSUE_TEMPLATE.html'>Haraka</a></li>
+<li><a href='/.github/PULL_REQUEST_TEMPLATE.html'>Haraka</a></li>
 <li><a href='/manual/Body.html'>Body Object</a></li>
 <li><a href='/manual/Config.html'>Config Files</a></li>
 <li><a href='/manual/Connection.html'>Connection Object</a></li>
@@ -106,6 +108,7 @@
 </ul></li>
 <li><a class="submenu" data-toggle="collapse" data-target="#plugins" data-parent="#chapternav" href="javascript:void(null);">Plugins</a>
 <ul id='plugins' class='nav'>
+<li><a href='/manual/plugins/auth/auth_bridge.html'>auth/auth_bridge</a></li>
 <li><a href='/manual/plugins/auth/auth_ldap.html'>auth/auth_ldap</a></li>
 <li><a href='/manual/plugins/auth/auth_proxy.html'>auth/auth_proxy</a></li>
 <li><a href='/manual/plugins/auth/auth_vpopmaild.html'>auth/auth_vpopmaild</a></li>
@@ -117,6 +120,7 @@
 <li><a href='/manual/plugins/queue/quarantine.html'>quarantine</a></li>
 <li><a href='/manual/plugins/queue/rabbitmq.html'>queue/rabbitmq</a></li>
 <li><a href='/manual/plugins/queue/rabbitmq_amqplib.html'>queue/rabbitmq_amqplib</a></li>
+<li><a href='/manual/plugins/queue/smtp_bridge.html'>queue/smtp_bridge</a></li>
 <li><a href='/manual/plugins/queue/smtp_forward.html'>queue/smtp_forward</a></li>
 <li><a href='/manual/plugins/queue/smtp_proxy.html'>queue/smtp_proxy</a></li>
 <li><a href='/manual/plugins/access.html'>access - ACLs</a></li>
@@ -190,94 +194,9 @@
 
 <p>This module provides network utility functions.</p>
 
-<h2>Files</h2>
-
-<p>Portions of this module depend on the following files to function:</p>
-
-<ul>
-<li><p>public-suffix-list</p>
-
-<p>Contains a list of all Public Suffixes (the parts of a domain name exactly
-one level below the registrar). Includes punycoded international domains, is
-maintained by the Mozilla project, and accomplishes roughly the same task
-as the *-tlds files.</p></li>
-<li><p>top-level-tlds</p>
-
-<p>Contains the list of TLDs valid on the internet.
-Updates to this list can be found at:
-http://data.iana.org/TLD/tlds-alpha-by-domain.txt</p></li>
-<li><p>two-level-tlds</p>
-
-<p>Contains the list of 2nd level TLDs.
-Updates to this list can be found at:
-http://george.surbl.org/two-level-tlds</p></li>
-<li><p>three-level-tlds</p>
-
-<p>Contains a list of 3rd level TLDs.
-Updates to this list can be found at:
-http://www.surbl.org/tld/three-level-tlds</p></li>
-<li><p>extra-tlds</p>
-
-<p>This allows for additional 2nd and 3rd level TLDs to be
-from a single file.  Used for site customizations or
-for the URIBL hosters.txt that can be updated from:
-http://rss.uribl.com/hosters/hosters.txt</p></li>
-</ul>
-
 <h2>Usage</h2>
 
 <pre><code>var net_utils = require('./net_utils');
-
-// net_utils.top_level_tlds[key]
-// net_utils.two_level_tlds[key]
-// net_utils.three_level_tlds[key]
-
-// Check for a TLD
-if (net_utils.top_level_tlds['com']) {
-    // true 
-}
-if (net_utils.is_public_suffix('com')) {
-    // true
-}
-if (net_utils.is_public_suffix('wikipedia.org')) {
-    // false
-}
-</code></pre>
-
-<h3>get<em>organizational</em>domain</h3>
-
-<pre><code>// reduces a hostname to an Organizational Domain
-// The O.D. is the portion of a domain name immediately delegated by a registrar
-//   and the portion that is no longer 'Public'
-//
-// com               &lt;-- TLD (or Public Suffix)
-// example.com       &lt;-- Organizational Domain
-// mail.example.com  &lt;-- hostmame
-//
-// 'example.com' === net_utils.get_organizational_domain('mail.example.com');
-// 
-// usage example:
-var from_dom = net_utils.get_organizational_domain(connection.transaction.mail_from.host);
-var tog_dom = net_utils.get_organizational_domain(connection.transaction.rcpt_to.host);
-if (from_dom == to_dom) {
-    // the envelope sender domain matches the envelope receiver domain
-    // eg: root@mail.example.com would match sysadmin@example.com
-}
-</code></pre>
-
-<h3>split_hostname</h3>
-
-<pre><code>// Split FQDN to host and domain
-var split = net_utils.split_hostname('host.sub1.sub2.domain.com');
-// split[0] = 'host.sub1.sub2';
-// split[1] = 'domain.com';
-
-// Does all or part of an IP address appear within a string?
-// This tests for the 1st and 2nd or 3rd and 4th octets of the IP
-// Ot the entire IP address in hex within the string
-if (net_utils.is_ip_in_str('11.22.33.44', '3344.rev.hoster.com')) {
-    // true
-}
 </code></pre>
 
 <h3>ip<em>to</em>long</h3>
