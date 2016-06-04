@@ -429,7 +429,7 @@ mechanism. The Outbound queue is used when <code>connection.relaying = true</cod
 </ul></li>
 </ul>
 
-<h1>Plugin Run Order</h1>
+<h2>Plugin Run Order</h2>
 
 <p>Plugins are run on each hook in the order that they are specified in <code>config/plugins</code>. When a plugin returns anything other than <code>next()</code> on a hook, all subsequent plugins due to run on that hook are skipped (exceptions: connect_init, disconnect).</p>
 
@@ -539,6 +539,26 @@ and provides a global <code>server</code> object. To access the <code>server</co
 
 <p>Module plugins support default config in their local <code>config</code> directory. See the
 "Default Config and Overrides" section in <a href="Config.md">Config</a>.</p>
+
+<h2>Shutdown</h2>
+
+<p>On shutdown and graceful reload, Haraka will call a plugin's <code>shutdown</code> method.</p>
+
+<p>This is so you can clear any timers or intervals, or shut down any connections
+to remote servers.</p>
+
+<p>e.g.</p>
+
+<pre><code>exports.shutdown = function () {
+    clearInterval(this._interval);
+}
+</code></pre>
+
+<p>If you don't implement this in your plugin and have a connection open or a
+timer running then Haraka will take 30 seconds to shut down and have to
+forcibly kill your process.</p>
+
+<p>Note: This only applies when running with a <code>nodes=...</code> value in smtp.ini.</p>
 
 <h2>See also, <a href="Results.md">Results</a></h2>
 

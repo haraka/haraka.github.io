@@ -239,11 +239,12 @@ be the same as the contents of your <code>config/me</code> file.</p>
 
 <h3><code>no_tls_hosts</code></h3>
 
-<p>If needed, add this section to the tls.ini file and list any IPs that have
+<p>If needed, add this section to the tls.ini file and list any IP ranges that have
 broken TLS. Ex:</p>
 
 <pre><code>[no_tls_hosts]
-192.168.1.3=true
+192.168.1.3
+172.16.0.0/16
 </code></pre>
 
 <p>The <a href="http://nodejs.org/api/tls.html">Node.js TLS</a> page has additional information

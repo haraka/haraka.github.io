@@ -273,6 +273,24 @@ enables more flexibility in mail delivery and bounce handling.</p>
 <p>Default: "Haraka outbound". This text is attached as a <code>Received</code> header to
 all outbound mail just before it is queued.</p>
 
+<ul>
+<li><code>connect_timeout</code></li>
+</ul>
+
+<p>Timeout for connecting to remote servers. Default: 30s</p>
+
+<ul>
+<li><code>pool_timeout</code></li>
+</ul>
+
+<p>Outbound mail uses "pooled" connections. An unused pool connection will send
+a QUIT after this time. Default: 300s</p>
+
+<p>Pooled connections means that a mail to a particular IP address will hold that
+connection open and use it the next time it is requested. This helps with
+large scale outbound mail. If you don't send lots of mail it is advised to
+lower the <code>pool_timeout</code> value since it may upset receiving mail servers.</p>
+
 <h3>outbound.bounce_message</h3>
 
 <p>See "Bounce Messages" below for details.</p>
@@ -512,7 +530,7 @@ var outnext = function (code, msg) {
         case OK:    plugin.loginfo("mail sent");
                     next();
                     break;
-        default:    plugin.logerror("Unrecognised return code from sending email: " + msg);
+        default:    plugin.logerror("Unrecognized return code from sending email: " + msg);
                     next();
     }
 };
