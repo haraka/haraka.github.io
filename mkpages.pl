@@ -104,7 +104,7 @@ sub process {
         $core_sent++;
         $chapter_out .= "<li><a class=\"submenu\" data-toggle=\"collapse\" data-target=\"#core\" data-parent=\"#chapternav\" href=\"javascript:void(null);\">Core</a>\n<ul id='core' class='nav'>\n";
     }
-    
+
     my $html_out = $out;
     $html_out =~ s/\.md$/.html/;
 
@@ -124,9 +124,9 @@ close($outfh);
 
 for my $out (keys %outputs) {
     print "Writing: $out\n";
-    
+
     open(my $outfh, ">", $out);
-    
+
     print $outfh <<END;
 ---
 layout: default
@@ -135,16 +135,7 @@ menuid: $outputs{$out}{menuid}
 ---
 $outputs{$out}{src}
 END
-    
-    
-    # my $template = $wrapper;
-    # my $chap = $chapter_out;
-    # $chap =~ s/<li><a href='\/$out'/<li class="active"><a href='\/$out'/;
-    # $template =~ s/<\%=\s*title\s*\%>/$outputs{$out}{title}/g;
-    # $template =~ s/<\%=\s*content\s*\%>/$outputs{$out}{content}/g;
-    # $template =~ s/<\%=\s*navbar\s*\%>/$chap/g;
-    
-    # print $outfh $template;
+
     close($outfh);
 }
 
