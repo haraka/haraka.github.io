@@ -1,0 +1,100 @@
+<ul class="nav bs-sidenav"><li><a class="submenu" data-toggle="collapse" data-target="#core" data-parent="#chapternav" href="javascript:void(null);">Core</a>
+<ul id='core' class='nav'>
+<li {% if page.menuid == 1 %} class='active'{% endif %}><a href='/README.html'>Haraka</a></li>
+<li {% if page.menuid == 2 %} class='active'{% endif %}><a href='/manual/Address.html'>Address Object</a></li>
+<li {% if page.menuid == 3 %} class='active'{% endif %}><a href='/manual/Body.html'>Body Object</a></li>
+<li {% if page.menuid == 4 %} class='active'{% endif %}><a href='/manual/Config.html'>Config Files</a></li>
+<li {% if page.menuid == 5 %} class='active'{% endif %}><a href='/manual/Connection.html'>Connection Object</a></li>
+<li {% if page.menuid == 6 %} class='active'{% endif %}><a href='/manual/CoreConfig.html'>Core Configuration Files</a></li>
+<li {% if page.menuid == 7 %} class='active'{% endif %}><a href='/manual/CustomReturnCodes.html'>Custom Return Codes</a></li>
+<li {% if page.menuid == 8 %} class='active'{% endif %}><a href='/manual/HAProxy.html'>HAProxy PROXY protocol extension support</a></li>
+<li {% if page.menuid == 9 %} class='active'{% endif %}><a href='/manual/Header.html'>Header Object</a></li>
+<li {% if page.menuid == 10 %} class='active'{% endif %}><a href='/manual/Logging_API.html'>Logging API</a></li>
+<li {% if page.menuid == 11 %} class='active'{% endif %}><a href='/manual/Net_Utils.html'>Net_Utils</a></li>
+<li {% if page.menuid == 12 %} class='active'{% endif %}><a href='/manual/Outbound.html'>Outbound Mail with Haraka</a></li>
+<li {% if page.menuid == 13 %} class='active'{% endif %}><a href='/manual/Plugins.html'>Plugins</a></li>
+<li {% if page.menuid == 14 %} class='active'{% endif %}><a href='/manual/Results.html'>Results</a></li>
+<li {% if page.menuid == 15 %} class='active'{% endif %}><a href='/manual/Transaction.html'>Transaction Object</a></li>
+</ul></li>
+<li><a class="submenu" data-toggle="collapse" data-target="#tutorials" data-parent="#chapternav" href="javascript:void(null);">Tutorials</a>
+<ul id='tutorials' class='nav'>
+<li {% if page.menuid == 16 %} class='active'{% endif %}><a href='/manual/Tutorial.html'>Writing Haraka Plugins</a></li>
+<li {% if page.menuid == 17 %} class='active'{% endif %}><a href='/manual/tutorials/Migrating_from_v1_to_v2.html'>Migrating from Haraka v1.x to v2.x</a></li>
+<li {% if page.menuid == 18 %} class='active'{% endif %}><a href='/manual/tutorials/SettingUpOutbound.html'>Configuring Haraka For Outbound Email</a></li>
+</ul></li>
+<li><a class="submenu" data-toggle="collapse" data-target="#plugins" data-parent="#chapternav" href="javascript:void(null);">Plugins</a>
+<ul id='plugins' class='nav'>
+<li {% if page.menuid == 19 %} class='active'{% endif %}><a href='/manual/plugins/auth/auth_ldap.html'>auth/auth_ldap</a></li>
+<li {% if page.menuid == 20 %} class='active'{% endif %}><a href='/manual/plugins/auth/auth_proxy.html'>auth/auth_proxy</a></li>
+<li {% if page.menuid == 21 %} class='active'{% endif %}><a href='/manual/plugins/auth/auth_vpopmaild.html'>auth/auth_vpopmaild</a></li>
+<li {% if page.menuid == 22 %} class='active'{% endif %}><a href='/manual/plugins/auth/flat_file.html'>auth/flat_file</a></li>
+<li {% if page.menuid == 23 %} class='active'{% endif %}><a href='/manual/plugins/queue/deliver.html'>queue/deliver</a></li>
+<li {% if page.menuid == 24 %} class='active'{% endif %}><a href='/manual/plugins/queue/discard.html'>discard</a></li>
+<li {% if page.menuid == 25 %} class='active'{% endif %}><a href='/manual/plugins/queue/lmtp.html'>queue/lmtp</a></li>
+<li {% if page.menuid == 26 %} class='active'{% endif %}><a href='/manual/plugins/queue/qmail-queue.html'>queue/qmail-queue</a></li>
+<li {% if page.menuid == 27 %} class='active'{% endif %}><a href='/manual/plugins/queue/quarantine.html'>quarantine</a></li>
+<li {% if page.menuid == 28 %} class='active'{% endif %}><a href='/manual/plugins/queue/rabbitmq.html'>queue/rabbitmq</a></li>
+<li {% if page.menuid == 29 %} class='active'{% endif %}><a href='/manual/plugins/queue/rabbitmq_amqplib.html'>queue/rabbitmq_amqplib</a></li>
+<li {% if page.menuid == 30 %} class='active'{% endif %}><a href='/manual/plugins/queue/smtp_forward.html'>queue/smtp_forward</a></li>
+<li {% if page.menuid == 31 %} class='active'{% endif %}><a href='/manual/plugins/queue/smtp_proxy.html'>queue/smtp_proxy</a></li>
+<li {% if page.menuid == 32 %} class='active'{% endif %}><a href='/manual/plugins/access.html'>access - ACLs</a></li>
+<li {% if page.menuid == 33 %} class='active'{% endif %}><a href='/manual/plugins/aliases.html'>aliases</a></li>
+<li {% if page.menuid == 34 %} class='active'{% endif %}><a href='/manual/plugins/attachment.html'>attachment</a></li>
+<li {% if page.menuid == 35 %} class='active'{% endif %}><a href='/manual/plugins/avg.html'>avg - Anti-Virus scanner</a></li>
+<li {% if page.menuid == 36 %} class='active'{% endif %}><a href='/manual/plugins/backscatterer.html'>backscatterer</a></li>
+<li {% if page.menuid == 37 %} class='active'{% endif %}><a href='/manual/plugins/block_me.html'>block_me</a></li>
+<li {% if page.menuid == 38 %} class='active'{% endif %}><a href='/manual/plugins/bounce.html'>bounce</a></li>
+<li {% if page.menuid == 39 %} class='active'{% endif %}><a href='/manual/plugins/clamd.html'>clamd</a></li>
+<li {% if page.menuid == 40 %} class='active'{% endif %}><a href='/manual/plugins/connect.asn.html'>connect.asn - get AS number of remote</a></li>
+<li {% if page.menuid == 41 %} class='active'{% endif %}><a href='/manual/plugins/connect.fcrdns.html'>connect.fcrdns - Forward Confirmed Reverse DNS</a></li>
+<li {% if page.menuid == 42 %} class='active'{% endif %}><a href='/manual/plugins/connect.geoip.html'>geoip</a></li>
+<li {% if page.menuid == 43 %} class='active'{% endif %}><a href='/manual/plugins/connect.p0f.html'>connect.p0f - TCP Fingerprinting</a></li>
+<li {% if page.menuid == 44 %} class='active'{% endif %}><a href='/manual/plugins/connect.rdns_access.html'>connect.rdns_access</a></li>
+<li {% if page.menuid == 45 %} class='active'{% endif %}><a href='/manual/plugins/daemonize.html'>daemonize</a></li>
+<li {% if page.menuid == 46 %} class='active'{% endif %}><a href='/manual/plugins/data.headers.html'>data.headers</a></li>
+<li {% if page.menuid == 47 %} class='active'{% endif %}><a href='/manual/plugins/data.signatures.html'>data.signatures</a></li>
+<li {% if page.menuid == 48 %} class='active'{% endif %}><a href='/manual/plugins/data.uribl.html'>data.uribl</a></li>
+<li {% if page.menuid == 49 %} class='active'{% endif %}><a href='/manual/plugins/dcc.html'>Haraka</a></li>
+<li {% if page.menuid == 50 %} class='active'{% endif %}><a href='/manual/plugins/delay_deny.html'>delay_deny</a></li>
+<li {% if page.menuid == 51 %} class='active'{% endif %}><a href='/manual/plugins/dkim_sign.html'>Haraka</a></li>
+<li {% if page.menuid == 52 %} class='active'{% endif %}><a href='/manual/plugins/dkim_verify.html'>dkim_verify</a></li>
+<li {% if page.menuid == 53 %} class='active'{% endif %}><a href='/manual/plugins/dnsbl.html'>dnsbl</a></li>
+<li {% if page.menuid == 54 %} class='active'{% endif %}><a href='/manual/plugins/dnswl.html'>dnswl</a></li>
+<li {% if page.menuid == 55 %} class='active'{% endif %}><a href='/manual/plugins/early_talker.html'>early_talker</a></li>
+<li {% if page.menuid == 56 %} class='active'{% endif %}><a href='/manual/plugins/esets.html'>Haraka</a></li>
+<li {% if page.menuid == 57 %} class='active'{% endif %}><a href='/manual/plugins/graph.html'>graph</a></li>
+<li {% if page.menuid == 58 %} class='active'{% endif %}><a href='/manual/plugins/greylist.html'>Greylist</a></li>
+<li {% if page.menuid == 59 %} class='active'{% endif %}><a href='/manual/plugins/helo.checks.html'>helo.checks</a></li>
+<li {% if page.menuid == 60 %} class='active'{% endif %}><a href='/manual/plugins/karma.html'>karma - a scoring engine</a></li>
+<li {% if page.menuid == 61 %} class='active'{% endif %}><a href='/manual/plugins/limit.html'>limit</a></li>
+<li {% if page.menuid == 62 %} class='active'{% endif %}><a href='/manual/plugins/log.elasticsearch.html'>log.elasticsearch</a></li>
+<li {% if page.menuid == 63 %} class='active'{% endif %}><a href='/manual/plugins/log.syslog.html'>log.syslog</a></li>
+<li {% if page.menuid == 64 %} class='active'{% endif %}><a href='/manual/plugins/mail_from.access.html'>mail_from.access</a></li>
+<li {% if page.menuid == 65 %} class='active'{% endif %}><a href='/manual/plugins/mail_from.is_resolvable.html'>mail_from.is_resolvable</a></li>
+<li {% if page.menuid == 66 %} class='active'{% endif %}><a href='/manual/plugins/max_unrecognized_commands.html'>max_unrecognized_commands</a></li>
+<li {% if page.menuid == 67 %} class='active'{% endif %}><a href='/manual/plugins/messagesniffer.html'>messagesniffer</a></li>
+<li {% if page.menuid == 68 %} class='active'{% endif %}><a href='/manual/plugins/prevent_credential_leaks.html'>prevent_credential_leaks</a></li>
+<li {% if page.menuid == 69 %} class='active'{% endif %}><a href='/manual/plugins/process_title.html'>process_title</a></li>
+<li {% if page.menuid == 70 %} class='active'{% endif %}><a href='/manual/plugins/rate_limit.html'>rate_limit</a></li>
+<li {% if page.menuid == 71 %} class='active'{% endif %}><a href='/manual/plugins/rcpt_to.access.html'>rcpt_to.access</a></li>
+<li {% if page.menuid == 72 %} class='active'{% endif %}><a href='/manual/plugins/rcpt_to.in_host_list.html'>rcpt_to.in_host_list</a></li>
+<li {% if page.menuid == 73 %} class='active'{% endif %}><a href='/manual/plugins/rcpt_to.ldap.html'>Haraka</a></li>
+<li {% if page.menuid == 74 %} class='active'{% endif %}><a href='/manual/plugins/rcpt_to.max_count.html'>rcpt_to.max_count</a></li>
+<li {% if page.menuid == 75 %} class='active'{% endif %}><a href='/manual/plugins/rcpt_to.qmail_deliverable.html'>rcpt_to.qmail_deliverable</a></li>
+<li {% if page.menuid == 76 %} class='active'{% endif %}><a href='/manual/plugins/rcpt_to.routes.html'>Haraka</a></li>
+<li {% if page.menuid == 77 %} class='active'{% endif %}><a href='/manual/plugins/record_envelope_addresses.html'>record</a></li>
+<li {% if page.menuid == 78 %} class='active'{% endif %}><a href='/manual/plugins/redis.html'>redis</a></li>
+<li {% if page.menuid == 79 %} class='active'{% endif %}><a href='/manual/plugins/relay.html'>relay</a></li>
+<li {% if page.menuid == 80 %} class='active'{% endif %}><a href='/manual/plugins/relay_acl.html'>relay_acl</a></li>
+<li {% if page.menuid == 81 %} class='active'{% endif %}><a href='/manual/plugins/relay_all.html'>relay_all</a></li>
+<li {% if page.menuid == 82 %} class='active'{% endif %}><a href='/manual/plugins/relay_force_routing.html'>relay_force_routing.js</a></li>
+<li {% if page.menuid == 83 %} class='active'{% endif %}><a href='/manual/plugins/reseed_rng.html'>reseed_rng</a></li>
+<li {% if page.menuid == 84 %} class='active'{% endif %}><a href='/manual/plugins/rspamd.html'>rspamd</a></li>
+<li {% if page.menuid == 85 %} class='active'{% endif %}><a href='/manual/plugins/spamassassin.html'>spamassassin</a></li>
+<li {% if page.menuid == 86 %} class='active'{% endif %}><a href='/manual/plugins/spf.html'>spf</a></li>
+<li {% if page.menuid == 87 %} class='active'{% endif %}><a href='/manual/plugins/tarpit.html'>tarpit</a></li>
+<li {% if page.menuid == 88 %} class='active'{% endif %}><a href='/manual/plugins/tls.html'>tls</a></li>
+<li {% if page.menuid == 89 %} class='active'{% endif %}><a href='/manual/plugins/toobusy.html'>toobusy</a></li>
+<li {% if page.menuid == 90 %} class='active'{% endif %}><a href='/manual/plugins/watch.html'>watch - smtp connections in HTTP browser</a></li>
+<li {% if page.menuid == 91 %} class='active'{% endif %}><a href='/manual/plugins/xclient.html'>xclient</a></li>
+</ul></li></ul>

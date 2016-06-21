@@ -1,6 +1,6 @@
 #!/usr/bin/perl -w
 
-my @files = `find ../Haraka-publish -type f -name \\*.md`;
+my @files = `find ../Haraka-publish -type f -name \\*.md | grep -v .github | grep -v deprecated`;
 chomp(@files);
 
 my @plugins;
@@ -37,7 +37,7 @@ sub output {
     my $in = shift;
     $in =~ s/.*\/docs/manual/;
     $in =~ s/.*Haraka-publish\///;
-    $in =~ s/\.md$/.html/;
+    # $in =~ s/\.md$/.html/;
     return $in;
 }
 
@@ -76,7 +76,9 @@ for my $file (@plugins) {
     process($file);
 }
 
+my $id = 0;
 sub process {
+    $id++;
     my $file = shift;
     my $out = output($file);
     print "Processing $file => $out\n";
@@ -88,7 +90,7 @@ sub process {
     $title ||= "Haraka";
     # $title .= " plugin" if $out =~ /plugin/;
 
-    $outputs{$out} = { content => $output, title => $title };
+    $outputs{$out} = { content => $output, title => $title, src => scalar(`cat $file`), menuid => $id };
 
     if (!$plugins_sent && $out =~ /plugin/) {
         $plugins_sent++;
@@ -102,19 +104,22 @@ sub process {
         $core_sent++;
         $chapter_out .= "<li><a class=\"submenu\" data-toggle=\"collapse\" data-target=\"#core\" data-parent=\"#chapternav\" href=\"javascript:void(null);\">Core</a>\n<ul id='core' class='nav'>\n";
     }
+    
+    my $html_out = $out;
+    $html_out =~ s/\.md$/.html/;
 
-    $chapter_out .= "<li><a href='/$out'>$title</a></li>\n";
+    $chapter_out .= "<li {% if page.menuid == $id %} class='active'{% endif %}><a href='/$html_out'>$title</a></li>\n";
 }
 
 $chapter_out .= "</ul></li></ul>\n";
 
 my $chapter_template = `cat chapter-index-template.html`;
 
-open(my $outfh, ">", "manual/chapter-index.html") || die $!;
+open(my $outfh, ">", "_includes/chapter-index.html") || die $!;
 
 $chapter_template =~ s/<\%=\s*content\s*\%>/$chapter_out/g;
 
-print $outfh $chapter_template;
+print $outfh $chapter_out;
 close($outfh);
 
 for my $out (keys %outputs) {
@@ -122,15 +127,25 @@ for my $out (keys %outputs) {
     
     open(my $outfh, ">", $out);
     
-    my $template = $wrapper;
-    my $chap = $chapter_out;
-    $chap =~ s/<li><a href='\/$out'/<li class="active"><a href='\/$out'/;
-    $template =~ s/<\%=\s*title\s*\%>/$outputs{$out}{title}/g;
-    $template =~ s/<\%=\s*content\s*\%>/$outputs{$out}{content}/g;
-    $template =~ s/<\%=\s*navbar\s*\%>/$chap/g;
+    print $outfh <<END;
+---
+layout: default
+title: $outputs{$out}{title}
+menuid: $outputs{$out}{menuid}
+---
+$outputs{$out}{src}
+END
     
-    print $outfh $template;
+    
+    # my $template = $wrapper;
+    # my $chap = $chapter_out;
+    # $chap =~ s/<li><a href='\/$out'/<li class="active"><a href='\/$out'/;
+    # $template =~ s/<\%=\s*title\s*\%>/$outputs{$out}{title}/g;
+    # $template =~ s/<\%=\s*content\s*\%>/$outputs{$out}{content}/g;
+    # $template =~ s/<\%=\s*navbar\s*\%>/$chap/g;
+    
+    # print $outfh $template;
     close($outfh);
 }
 
-system("cp README.html manual.html");
+system("cp ../Haraka-publish/README.md manual.md");
