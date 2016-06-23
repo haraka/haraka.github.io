@@ -1,7 +1,7 @@
 ---
 layout: default
 title: rcpt_to.in_host_list
-menuid: 72
+menuid: 74
 ---
 rcpt\_to.in\_host\_list
 =====================

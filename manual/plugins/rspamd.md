@@ -1,7 +1,7 @@
 ---
 layout: default
 title: rspamd
-menuid: 84
+menuid: 86
 ---
 rspamd
 ======
@@ -54,7 +54,8 @@ rspamd.ini
 
     Default: false
 
-    If true, messages from private IPs will not be scanned by Rspamd.
+    If false, messages from private IPs will not be scanned by Rspamd.
+    If true, messages from private IPs will be scanned by Rspamd.
 
 - always\_add\_headers
 

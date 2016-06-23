@@ -1,7 +1,7 @@
 ---
 layout: default
 title: rate_limit
-menuid: 70
+menuid: 72
 ---
 rate\_limit
 ==========

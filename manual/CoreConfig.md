@@ -1,7 +1,7 @@
 ---
 layout: default
 title: Core Configuration Files
-menuid: 6
+menuid: 5
 ---
 Core Configuration Files
 ========================

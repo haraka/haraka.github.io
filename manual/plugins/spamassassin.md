@@ -1,7 +1,7 @@
 ---
 layout: default
 title: spamassassin
-menuid: 85
+menuid: 87
 ---
 spamassassin
 ============

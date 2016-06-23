@@ -1,7 +1,7 @@
 ---
 layout: default
 title: HAProxy PROXY protocol extension support
-menuid: 8
+menuid: 7
 ---
 HAProxy PROXY protocol extension support
 ========================================
