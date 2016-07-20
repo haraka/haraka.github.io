@@ -1,7 +1,7 @@
 ---
 layout: default
 title: rcpt_to.access
-menuid: 73
+menuid: 72
 ---
 ## DEPRECATION NOTICE
 

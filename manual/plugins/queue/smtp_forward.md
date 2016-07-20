@@ -1,7 +1,7 @@
 ---
 layout: default
 title: queue/smtp_forward
-menuid: 32
+menuid: 31
 ---
 queue/smtp\_forward
 ==================

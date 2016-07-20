@@ -1,7 +1,7 @@
 ---
 layout: default
 title: queue/rabbitmq
-menuid: 29
+menuid: 28
 ---
 queue/rabbitmq
 ========

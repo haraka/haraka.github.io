@@ -1,7 +1,7 @@
 ---
 layout: default
 title: Migrating from Haraka v1.x to v2.x
-menuid: 17
+menuid: 16
 ---
 Migrating from Haraka v1.x to v2.x
 ==================================

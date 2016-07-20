@@ -1,7 +1,7 @@
 ---
 layout: default
 title: mail_from.is_resolvable
-menuid: 67
+menuid: 66
 ---
 mail\_from.is\_resolvable
 =======================

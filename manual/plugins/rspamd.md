@@ -1,7 +1,7 @@
 ---
 layout: default
 title: rspamd
-menuid: 86
+menuid: 85
 ---
 rspamd
 ======

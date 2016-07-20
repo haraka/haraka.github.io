@@ -1,7 +1,7 @@
 ---
 layout: default
 title: queue/rabbitmq_amqplib
-menuid: 30
+menuid: 29
 ---
 queue/rabbitmq_amqplib
 ======================

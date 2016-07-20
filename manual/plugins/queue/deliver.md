@@ -1,7 +1,7 @@
 ---
 layout: default
 title: queue/deliver
-menuid: 24
+menuid: 23
 ---
 queue/deliver
 =============
