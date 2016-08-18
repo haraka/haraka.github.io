@@ -1,7 +1,7 @@
 ---
 layout: default
 title: xclient
-menuid: 92
+menuid: 93
 ---
 xclient
 =======
@@ -10,8 +10,7 @@ Implements the [XCLIENT](http://www.postfix.org/XCLIENT_README.html) protocol.
 
 ## configuration
 
-* xclient.hosts
+* xclient.hosts.ini
 
-    A list of IP addresses, one per line that should be allowed to use the 
-    XCLIENT protocol.  Localhost (127.0.0.1 or ::1) is allowed implicitly.
+    A list of IP addresses that should be allowed to use the XCLIENT protocol.
 

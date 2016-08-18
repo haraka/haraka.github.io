@@ -1,7 +1,7 @@
 ---
 layout: default
 title: connect.asn - get AS number of remote
-menuid: 41
+menuid: 42
 ---
 # connect.asn - get AS number of remote
 

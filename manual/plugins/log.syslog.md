@@ -1,7 +1,7 @@
 ---
 layout: default
 title: log.syslog
-menuid: 64
+menuid: 65
 ---
 log.syslog
 ==========

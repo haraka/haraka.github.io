@@ -1,7 +1,7 @@
 ---
 layout: default
 title: max_unrecognized_commands
-menuid: 67
+menuid: 68
 ---
 max\_unrecognized\_commands
 =========================
@@ -23,6 +23,6 @@ Configuration
 
 * max\_unrecognized\_commands
 
-  Specifies the number of unrecognized commands to allow before disconnecting.
+  Specifies the number of unrecognised commands to allow before disconnecting.
   Default: 10.
 
