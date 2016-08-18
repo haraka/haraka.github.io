@@ -1,6 +1,6 @@
 ---
 layout: default
-title: <code>rcpt_to.ldap.js</code>
+title: rcpt_to.ldap.js
 menuid: 75
 ---
 # `rcpt_to.ldap.js`

@@ -1,6 +1,6 @@
 ---
 layout: default
-title: record<em>envelope</em>addresses
+title: recordenvelopeaddresses
 menuid: 79
 ---
 record_envelope_addresses

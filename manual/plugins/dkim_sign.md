@@ -1,6 +1,6 @@
 ---
 layout: default
-title: <code>dkim_sign</code>
+title: dkim_sign
 menuid: 53
 ---
 # `dkim_sign`

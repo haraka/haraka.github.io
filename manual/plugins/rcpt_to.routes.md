@@ -1,6 +1,6 @@
 ---
 layout: default
-title: <code>rcpt_to.routes</code>
+title: rcpt_to.routes
 menuid: 78
 ---
 # `rcpt_to.routes`

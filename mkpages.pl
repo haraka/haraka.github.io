@@ -87,7 +87,7 @@ sub process {
     my $output = convert($file);
 
     my ($title) = ($output =~ /<h1>(.+?)<\/h1>/);
-    $title =~ s/<[^>+]>//g; # shitty strip HTML regexp
+    $title =~ s/<[^>]+>//g; # shitty strip HTML regexp
     if (!$title) {
         ($title) = ($file =~ /.*\/(.*?)\.md$/);
     }
