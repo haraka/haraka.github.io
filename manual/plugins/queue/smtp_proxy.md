@@ -1,7 +1,7 @@
 ---
 layout: default
 title: queue/smtp_proxy
-menuid: 33
+menuid: 32
 ---
 queue/smtp\_proxy
 ================

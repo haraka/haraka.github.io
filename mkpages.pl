@@ -86,13 +86,17 @@ sub process {
 
     my $output = convert($file);
 
-    my ($title) = ($output =~ /<h1>(.+?)<\/h1>/);
+    my ($title) = ($output =~ /<h1>(.+?)<\/h1>/i);
     $title =~ s/<[^>]+>//g; # shitty strip HTML regexp
     if (!$title) {
         ($title) = ($file =~ /.*\/(.*?)\.md$/);
+        print "Title from filename for $file\n";
+    }
+    else {
+        print "Title from H1: $title\n";
     }
     $title ||= "Haraka";
-    # $title .= " plugin" if $out =~ /plugin/;
+    print "Plugin title: $title\n" if $out =~ /plugin/;
 
     $outputs{$out} = { content => $output, title => $title, src => scalar(`cat $file`), menuid => $id };
 

@@ -1,7 +1,7 @@
 ---
 layout: default
 title: queue/smtp_bridge
-menuid: 31
+menuid: 30
 ---
 queue/smtp\_bridge
 ===============

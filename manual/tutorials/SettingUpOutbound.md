@@ -1,7 +1,7 @@
 ---
 layout: default
 title: Configuring Haraka For Outbound Email
-menuid: 18
+menuid: 17
 ---
 Configuring Haraka For Outbound Email
 =====================================

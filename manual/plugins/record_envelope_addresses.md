@@ -1,9 +1,9 @@
 ---
 layout: default
-title: recordenvelopeaddresses
-menuid: 79
+title: record_envelope_addresses
+menuid: 78
 ---
-record_envelope_addresses
+record\_envelope\_addresses
 =========================
 
 This plugin adds two new header lines.

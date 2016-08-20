@@ -1,7 +1,7 @@
 ---
 layout: default
 title: mail_from.access
-menuid: 66
+menuid: 65
 ---
 ## DEPRECATION NOTICE
 

@@ -1,7 +1,7 @@
 ---
 layout: default
 title: early_talker
-menuid: 57
+menuid: 56
 ---
 early\_talker
 ============
@@ -23,4 +23,6 @@ The config file early\_talker.ini has two options:
 - pause: the delay in seconds before each SMTP command. Default is no pause.
 
 - reject: whether or not to reject for early talkers. Default is true;
+
+- [ip_whitelist]: list of IP addresses and/or subnets to whitelist
 

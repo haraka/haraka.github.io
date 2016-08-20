@@ -1,7 +1,7 @@
 ---
 layout: default
 title: rcpt_to.qmail_deliverable
-menuid: 77
+menuid: 76
 ---
 rcpt\_to.qmail\_deliverable
 ===========================

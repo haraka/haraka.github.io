@@ -1,7 +1,7 @@
 ---
 layout: default
 title: rcpt_to.routes
-menuid: 78
+menuid: 77
 ---
 # `rcpt_to.routes`
 

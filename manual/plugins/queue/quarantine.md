@@ -1,7 +1,7 @@
 ---
 layout: default
 title: quarantine
-menuid: 28
+menuid: 27
 ---
 quarantine
 ==========
