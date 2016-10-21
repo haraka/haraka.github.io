@@ -1,7 +1,7 @@
 ---
 layout: default
 title: Results
-menuid: 13
+menuid: 12
 ---
 # Results
 
@@ -125,7 +125,7 @@ called internally by `add()` after each update.
 Retrieve the stored results as an object. The only argument is the name of the
 plugin whose results are desired.
 
-    var geoip = connection.results.get('connect.geoip');
+    var geoip = connection.results.get('geoip');
     if (geoip && geoip.distance && geoip.distance > 2000) {
         ....
     }
@@ -208,7 +208,7 @@ exports.hook_connect_init = function (next, connection) {
         connection.notes.redis.on('pmessage', function (pattern, channel, message) {
             // do fun stuff with messages that look like this
             // {"plugin":"karma","result":{"fail":"spamassassin.hits"}}
-            // {"plugin":"connect.geoip","result":{"country":"CN"}}
+            // {"plugin":"geoip","result":{"country":"CN"}}
         });
         next();
     });

@@ -1,7 +1,7 @@
 ---
 layout: default
 title: redis
-menuid: 79
+menuid: 76
 ---
 # redis
 

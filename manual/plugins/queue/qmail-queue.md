@@ -1,7 +1,7 @@
 ---
 layout: default
 title: queue/qmail-queue
-menuid: 26
+menuid: 25
 ---
 queue/qmail-queue
 =================

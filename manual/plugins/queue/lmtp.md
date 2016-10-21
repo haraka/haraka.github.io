@@ -1,7 +1,7 @@
 ---
 layout: default
 title: queue/lmtp
-menuid: 25
+menuid: 24
 ---
 queue/lmtp
 ========

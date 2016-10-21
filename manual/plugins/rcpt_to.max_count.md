@@ -1,7 +1,7 @@
 ---
 layout: default
 title: rcpt_to.max_count
-menuid: 75
+menuid: 72
 ---
 rcpt\_to.max\_count
 =================

@@ -1,9 +1,9 @@
 ---
 layout: default
 title: rcpt_to.routes
-menuid: 77
+menuid: 74
 ---
-# `rcpt_to.routes`
+# rcpt_to.routes
 
 Recipient Routes does two things: recipient validation and MX routing.
 
@@ -64,6 +64,11 @@ The [routes] section can include routes for domains and email addresses:
     example.com=mail.example.com:225
     matt@example.com=some.where.com
     spam@example.com=honeybucket.where.com:26
+
+You may also use URI format to specify SMTP vs LMTP:
+    [routes]
+    aaron@example.com=lmtp://mail.example.com:2525
+    matt@example.com=smtp://127.0.0.1:4242
 
 # Performance
 

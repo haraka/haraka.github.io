@@ -1,7 +1,7 @@
 ---
 layout: default
 title: max_unrecognized_commands
-menuid: 67
+menuid: 64
 ---
 max\_unrecognized\_commands
 =========================

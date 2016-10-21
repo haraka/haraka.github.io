@@ -1,7 +1,7 @@
 ---
 layout: default
 title: log.elasticsearch
-menuid: 63
+menuid: 60
 ---
 # log.elasticsearch
 
@@ -137,7 +137,7 @@ curl -XPUT localhost:9200/_template/haraka_results -d '
                         "geoip" : {
                             "properties" : {
                                 "org"      : { "type" : "string", "index" : "not_analyzed" },
-                                "ll"       : { "type" : "geo_point" },
+                                "geo"      : { "type" : "geo_point" },
                                 "distance" : { "type" : "float" }
                             }
                         },

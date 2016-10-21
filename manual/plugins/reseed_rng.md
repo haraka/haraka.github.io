@@ -1,7 +1,7 @@
 ---
 layout: default
 title: reseed_rng
-menuid: 84
+menuid: 81
 ---
 reseed\_rng
 ==========
