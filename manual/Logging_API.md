@@ -11,7 +11,7 @@ Logging conventions within Haraka
 
 See also
 ------------------
-[https://github.com/haraka/Haraka/pull/119]()
+[https://github.com/haraka/Haraka/pull/119](https://github.com/haraka/Haraka/pull/119)
 
 logline will always always be in the form:
 
