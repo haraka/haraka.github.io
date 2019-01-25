@@ -40,7 +40,7 @@ will not include a timestamp.
   
   * port - the port to use (default: 25)
   * listen\_address - default: 0.0.0.0 (i.e. all addresses)
-  * inactivity\_time - how long to let clients idle in seconds (default: 300)
+  * inactivity\_timeout - how long to let clients idle in seconds (default: 300)
   * nodes - if [cluster][1] is available, specifies how
     many processes to fork off. Can be the string "cpus" to fork off as many
     children as there are CPUs (default: 0, which disables cluster mode)
