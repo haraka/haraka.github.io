@@ -7,8 +7,26 @@
     <meta name="description" content="">
     <meta name="author" content="">
 
-    <title>Haraka Manual &raquo; <%= title %></title>
-    
+    <link rel="apple-touch-icon" sizes="57x57" href="/apple-icon-57x57.png">
+    <link rel="apple-touch-icon" sizes="60x60" href="/apple-icon-60x60.png">
+    <link rel="apple-touch-icon" sizes="72x72" href="/apple-icon-72x72.png">
+    <link rel="apple-touch-icon" sizes="76x76" href="/apple-icon-76x76.png">
+    <link rel="apple-touch-icon" sizes="114x114" href="/apple-icon-114x114.png">
+    <link rel="apple-touch-icon" sizes="120x120" href="/apple-icon-120x120.png">
+    <link rel="apple-touch-icon" sizes="144x144" href="/apple-icon-144x144.png">
+    <link rel="apple-touch-icon" sizes="152x152" href="/apple-icon-152x152.png">
+    <link rel="apple-touch-icon" sizes="180x180" href="/apple-icon-180x180.png">
+    <link rel="icon" type="image/png" sizes="192x192"  href="/android-icon-192x192.png">
+    <link rel="icon" type="image/png" sizes="32x32" href="/favicon-32x32.png">
+    <link rel="icon" type="image/png" sizes="96x96" href="/favicon-96x96.png">
+    <link rel="icon" type="image/png" sizes="16x16" href="/favicon-16x16.png">
+    <link rel="manifest" href="/manifest.json">
+    <meta name="msapplication-TileColor" content="#ffffff">
+    <meta name="msapplication-TileImage" content="/ms-icon-144x144.png">
+    <meta name="theme-color" content="#ffffff">
+
+    <title>{% if page.layout == "default" %}Haraka Manual &raquo; {% endif %}{{ page.title }}</title>
+
     <!-- Bootstrap core CSS -->
     <link href="/css/bootstrap.css" rel="stylesheet">
 
@@ -23,7 +41,7 @@
     <![endif]-->
 
     </head>
-      <body class="bs-docs-home">
+      <body class="bs-docs-home"{{ page.body-attrs }}>
         <a class="sr-only" href="#content">Skip navigation</a>
 
         <!-- Docs master nav -->
@@ -40,48 +58,27 @@
             </div>
             <nav class="collapse navbar-collapse bs-navbar-collapse" role="navigation">
               <ul class="nav navbar-nav">
-                <li>
+                <li{% if page.url == "/about.html" %} class="active"{% endif %}>
                   <a href="/about.html">About</a>
                 </li>
-                <li>
+                <li{% if page.url == "/community.html" %} class="active"{% endif %}>
                   <a href="/community.html">Community</a>
                 </li>
-                <li>
+                <li{% if page.url == "/users.html" %} class="active"{% endif %}>
                   <a href="/users.html">Known Users</a>
                 </li>
                 <li>
                   <a href="https://github.com/haraka/Haraka">Source on Github</a>
                 </li>
-                <li class="active">
+                <li {% if page.url == "/README.html" %} class="active"{% endif %}>
                   <a href="/README.html">Manual</a>
                 </li>
               </ul>
             </nav>
           </div>
         </header>
-        
-        <!-- Docs page layout -->
-        <div class="bs-header" id="content">
-          <div class="container">
-            <h1><%= title %></h1>
-          </div>
-        </div>
-        
-        <div class="container bs-docs-container">
-          <div class="row">
-            <div class="col-md-3">
-              <div id="chapternav" class="bs-sidebar hidden-print" role="complementary">
-                <%= navbar %>
-              </div>
-            </div>
-            
-            <div class="col-md-9" role="main">
-              <div class="bs-docs-section">
-                <%= content %>
-              </div>
-            </div>
-          </div>
-        </div>
+
+        {{ content }}
 
         <footer class="container" role="contentinfo">
             <ul class="bs-masthead-links">
@@ -96,7 +93,7 @@
             </li>
             </ul>
         </footer>
-        
+
         <!-- Placed at the end of the document so the pages load faster -->
         <script src="/js/jquery.js"></script>
         <script src="/js/bootstrap.js"></script>
