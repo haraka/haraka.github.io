@@ -1,6 +1,6 @@
 ---
 layout: default
-title: If the second command gives "nobody" errors, uncomment &amp; run the next command
+title: Haraka - a Node.js Mail Server
 menuid: 1
 ---
 
