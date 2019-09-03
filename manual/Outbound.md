@@ -1,7 +1,7 @@
 ---
 layout: default
 title: Outbound Mail with Haraka
-menuid: 10
+menuid: 12
 ---
 Outbound Mail with Haraka
 =========================
@@ -41,8 +41,7 @@ of CPUs that you have.
 
 * `enable_tls`
 
-Default: false. Switch to true to enable TLS for outbound mail when the
-remote end is capable.
+Default: true. Switch to false to disable TLS for outbound mail.
 
 This uses the same `tls_key.pem` and `tls_cert.pem` files that the `tls`
 plugin uses, along with other values in `tls.ini`. See the [tls plugin
@@ -73,8 +72,8 @@ enables more flexibility in mail delivery and bounce handling.
 
 * `received_header`
 
-Default: "Haraka outbound". This text is attached as a `Received` header to
-all outbound mail just before it is queued.
+Default: "Haraka outbound". If this text is any string except *disabled*, the
+string is attached as a `Received` header to all outbound mail just before it is queued.
 
 * `connect_timeout`
 
@@ -93,6 +92,13 @@ lower the `pool_timeout` value since it may upset receiving mail servers.
 Setting this value to `0` will effectively disable the use of pools. You may
 wish to set this if you have a `get_mx` hook that picks outbound servers on
 a per-email basis (rather than per-domain).
+
+* `pool_concurrency_max`
+
+Set this to `0` to completely disable the pooling code.
+
+This value determines how many concurrent connections can be made to a single
+IP address (destination) in the pool. Default: 10 connections.
 
 ### outbound.bounce\_message
 
@@ -121,8 +127,8 @@ The ToDo Object
 The `todo` object contains information about how to deliver this mail. Keys
 you may be interested in are:
 
-* rcpt_to - an Array of Address objects - the rfc.2821 recipients of this mail
-* mail_from - an Address object - the rfc.2821 sender of this mail
+* rcpt_to - an Array of `Address`[1] objects - the rfc.2821 recipients of this mail
+* mail_from - an `Address`[1] object - the rfc.2821 sender of this mail
 * domain - the domain this mail is going to (see `always_split` above)
 * notes - the original transaction.notes for this mail, also contains the
   following useful keys:
@@ -232,7 +238,7 @@ that received the message and will typically contain the remote queue ID and
 message being delivered.
 * `port` - Port number that the message was delivered to.
 * `mode` - Shows whether SMTP or LMTP was used to deliver the mail.
-* `ok_recips` - an Address array containing all of the recipients that were
+* `ok_recips` - an `Address`[1] array containing all of the recipients that were
 successfully delivered to.
 * `secured` - A boolean denoting if the connection used TLS or not.
 
@@ -270,7 +276,7 @@ then you can use the `get_mx` hook documented above to do this by supplying
 both `auth_user` and `auth_pass` properties in an MX object.
 
 If AUTH properties are supplied and the remote end does not offer AUTH or there
-are no compatible AUTH methods, then the message with be sent without AUTH and
+are no compatible AUTH methods, then the message will be sent without AUTH and
 a warning will be logged.
 
 
@@ -281,6 +287,10 @@ The contents of the bounce message are configured by a file called
 `config/outbound.bounce_message`. If you look at this file you will see it
 contains several template entries wrapped in curly brackets. These will be
 populated as follows:
+
+Optional: Possibility to add HTML code (with optional image) to the bounce message is possible 
+by adding the files `config/outbound.bounce_message_html`. An image can be attached 
+to the mail by using `config/outbound.bounce_message_image`.
 
 * pid - the current process id
 * date - the current date when the bounce occurred
@@ -342,17 +352,22 @@ should queueing to disk fail e.g:
 
     outbound.send_email(from, to, contents);
 
+You can pass various options to `outbound.send_email` like so:
 
-In case you are passing your content dot-stuffed (a dot at the start of a line
-is doubled, like it is in SMTP conversation, 
-see https://tools.ietf.org/html/rfc2821#section-4.5.2), you should pass the
-```dot_stuffed: true``` option, like so:
-    
-    outbound.send_email(from, to, contents, outnext, { dot_stuffed: true });
+    outbound.send_email(from, to, contents, outnext, options);
 
+Where `options` is a Object that may contain the following keys:
 
-In case you need notes in the new transaction that `send_email()` creates, you should pass the
-```notes``` option, like so:
+| Key/Value              | Description                                                                               |
+|------------------------|--------------------------------------------------------------------------------------------
+| `dot_stuffed: true`    | Use this if you are passing your content dot-stuffed (a dot at the start of a line is doubled, like it is in SMTP conversation, see [RFC 2821](https://tools.ietf.org/html/rfc2821#section-4.5.2).|
+| `notes: { key: value}` | In case you need notes in the new transaction that `send_email()` creates. |
+| `remove_msgid: true`   | Remove any Message-Id header found in the message.  If you are reading a message in from the filesystem and you want to ensure that a generated Message-Id header is used in preference over the original.  This is useful if you are releasing mail from a quarantine. |
+| `remove_date: true`    | Remove any Date header found in the message.  If you are reading a message in from the filesystem and you want to ensure that a generated Date header is used in preference over the original.  This is useful if you are releasing mail from a quarantine. |
+| `origin: Object`       | Adds object as argument to logger.log calls inside outbound.send_email. Useful for tracking which Plugin/Connection/HMailItem object generated email. | 
+
 
     outbound.send_email(from, to, contents, outnext, { notes: transaction.notes });
+
+[1]: `Address` objects are [address-rfc2821 objects](https://github.com/haraka/node-address-rfc2821).
 

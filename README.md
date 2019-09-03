@@ -1,6 +1,6 @@
 ---
 layout: default
-title: README
+title: If the second command gives "nobody" errors, uncomment &amp; run the next command
 menuid: 1
 ---
 
@@ -10,12 +10,13 @@ Haraka - a Node.js Mail Server
 [![Build Status][ci-img]][ci-url]
 [![Coverage Status][cov-img]][cov-url]
 [![Windows Status][ci-win-img]][ci-win-url]
+[![Greenkeeper badge](https://badges.greenkeeper.io/haraka/Haraka.svg)](https://greenkeeper.io/)
 
 
 Haraka is a highly scalable [node.js][1] email server with a modular
 plugin architecture. Haraka can serve thousands of concurrent connections
 and deliver thousands of messages per second. Haraka and plugins are written
-in asyncronous JS and are very fast.
+in asynchronous JS and are very fast.
 
 Haraka has very good spam protection (see [plugins][4]) and works
 well as a filtering [MTA][3]. It also works well as a [MSA][5] running on
@@ -42,7 +43,7 @@ queued for outbound delivery.
 
 ### Why Use Haraka?
 
-Haraka's plugin architecure provides an easily extensible MTA that
+Haraka's plugin architecture provides an easily extensible MTA that
 complements traditional MTAs that excel at managing mail stores but do
 not have sufficient filtering.
 
@@ -61,10 +62,12 @@ Plugins are provided for running mail through [SpamAssassin][9], validating
 Haraka requires [node.js][1] to run. Install Haraka with [npm][2]:
 
 ```sh
+# If the second command gives "nobody" errors, uncomment & run the next command
+# npm -g config set user root
 npm install -g Haraka
 ```
 
-After installion, use the `haraka` binary to set up the service.
+After installation, use the `haraka` binary to set up the service.
 
 ### Running Haraka
 
@@ -140,7 +143,7 @@ SpamAssassin and a hacker on [Qpsmtpd][13].
 [1]: http://nodejs.org/
 [2]: http://youtu.be/6twKXMAsPsw
 [3]: http://en.wikipedia.org/wiki/Message_transfer_agent
-[4]: https://haraka.github.io/manual.html
+[4]: https://github.com/haraka/Haraka/blob/master/Plugins.md
 [5]: http://en.wikipedia.org/wiki/Mail_submission_agent
 [6]: https://github.com/haraka/Haraka/blob/master/docs/plugins/dkim_sign.md
 [7]: https://en.wikipedia.org/wiki/Mail_delivery_agent

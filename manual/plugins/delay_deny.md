@@ -1,7 +1,7 @@
 ---
 layout: default
 title: delay_deny
-menuid: 48
+menuid: 47
 ---
 # delay\_deny
 

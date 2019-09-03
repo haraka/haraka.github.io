@@ -1,7 +1,7 @@
 ---
 layout: default
 title: auth/auth_proxy
-menuid: 19
+menuid: 22
 ---
 auth/auth\_proxy
 ===============

@@ -1,7 +1,7 @@
 ---
 layout: default
 title: Connection Object
-menuid: 4
+menuid: 6
 ---
 Connection Object
 =================
@@ -20,6 +20,7 @@ A unique UUID for this connection.
     * ip   - remote IP address
     * host - reverse DNS of the remote hosts IP
     * is_private - true if the remote IP is from a private (loopback, RFC 1918, link local, etc.) IP address.
+    * is_local - true if the remote IP is localhost (loopback, link local)
 
 * connection.local - info about the host that is running Haraka
 
@@ -38,7 +39,7 @@ A unique UUID for this connection.
 
 * connection.notes
 
-An object which persists during the lifetime of the connection. It is used to store connection-specific properties. See also, connection.results.
+An object which persists during the lifetime of the connection. It is used to store connection-specific properties. See also, connection.results and [haraka-notes](https://github.com/haraka/haraka-notes).
 
 * connection.transaction
 

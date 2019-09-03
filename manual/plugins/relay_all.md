@@ -1,7 +1,7 @@
 ---
 layout: default
 title: relay_all
-menuid: 79
+menuid: 69
 ---
 relay\_all
 =========

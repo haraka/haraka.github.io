@@ -1,7 +1,7 @@
 ---
 layout: default
 title: Writing Haraka Plugins
-menuid: 14
+menuid: 16
 ---
 Writing Haraka Plugins
 ======================

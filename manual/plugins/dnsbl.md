@@ -1,7 +1,7 @@
 ---
 layout: default
 title: dnsbl
-menuid: 51
+menuid: 50
 ---
 dnsbl
 =====

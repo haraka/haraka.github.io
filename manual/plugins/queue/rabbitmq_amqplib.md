@@ -1,7 +1,7 @@
 ---
 layout: default
 title: queue/rabbitmq_amqplib
-menuid: 28
+menuid: 31
 ---
 queue/rabbitmq_amqplib
 ======================
@@ -15,15 +15,20 @@ Dependency
 Configuration
 -------------
 
-* `config/rabbitmq_amqplib.ini` - Connection, exchange and queue settings
+* `config/rabbitmq.ini` - Connection, exchange and queue settings
     
     Example:
 
     
         [rabbitmq]
         ; Connection
+		; Protocol. Either "amqp" or "amqps"
+		protocol = amqp
 		host = localhost
 		port = 5672
+		;Virtual Host. Start with "/". Leave blank or not use if you don't want to use virtual hosts.
+		vhost = /haraka
+		;Credentials
 		user = guest
 		password = guest
 		; Exchange
@@ -38,3 +43,4 @@ Configuration
 
     
  More information about RabbitMQ can be found at https://www.rabbitmq.com/
+

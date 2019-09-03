@@ -1,7 +1,7 @@
 ---
 layout: default
 title: spf
-menuid: 84
+menuid: 73
 ---
 spf
 ===
@@ -29,11 +29,32 @@ desirable to evaluate SPF from the context of Haraka's public IP(s), in the
 same fashion the next mail server will evaluate it when we send to them.
 In that use case, Haraka should use context=myself.
 
-    * context=sender    evaluate SPF based on the sender (connection.remote\_ip)
+    * context=sender    evaluate SPF based on the sender (connection.remote.ip)
     * context=myself    evaluate SPF based on Haraka's public IP
 
 The rest of the optional settings (disabled by default) permit deferring or
 denying mail from senders whose SPF fails the checks.
+
+Additional settings allow you to control the small things (defaults are shown):
+
+    ; The lookup timeout, in seconds. Better set it to something much lower than this.
+    lookup_timeout = 29
+
+    ; bypass hosts that match these conditions
+    [skip]
+    ; hosts that relay through us
+    relaying = false
+    ; hosts that are SMTP AUTH'ed
+    auth = false
+
+There's a special setting that would allow the plugin to emit a funny explanation text on SPF DENY, essentially meant to be visible to end-users that will receive the bounce. The text is `http://www.openspf.org/Why?s=${scope}&id=${sender_id}&ip=${connection.remote.ip}` and is enabled by:
+
+    [deny]
+    openspf_text = true
+    
+    ; in case you DENY on failing SPF on hosts that are relaying (but why?)
+    [deny_relay]
+    openspf_text = true
 
 ### Things to Know
 
@@ -64,13 +85,17 @@ denying mail from senders whose SPF fails the checks.
     mfrom_temperror
 
     [deny]
+    helo_none
     helo_softfail
     helo_fail
     helo_permerror
 
+    mfrom_none
     mfrom_softfail
     mfrom_fail
     mfrom_permerror
+    
+    openspf_text
 
     ; SPF settings used when connection.relaying=true
     [defer_relay]
@@ -78,14 +103,17 @@ denying mail from senders whose SPF fails the checks.
     mfrom_temperror
 
     [deny_relay]
+    helo_none
     helo_softfail
     helo_fail
     helo_permerror
 
+    mfrom_none
     mfrom_softfail
     mfrom_fail
     mfrom_permerror
-
+    
+    openspf_text
 
 
 Testing

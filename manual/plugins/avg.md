@@ -1,7 +1,7 @@
 ---
 layout: default
 title: avg - Anti-Virus scanner
-menuid: 35
+menuid: 38
 ---
 # avg - Anti-Virus scanner
 

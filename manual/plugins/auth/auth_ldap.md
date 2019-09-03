@@ -1,7 +1,7 @@
 ---
 layout: default
 title: auth/auth_ldap
-menuid: 18
+menuid: 21
 ---
 auth/auth\_ldap
 ==============

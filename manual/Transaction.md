@@ -1,7 +1,7 @@
 ---
 layout: default
 title: Transaction Object
-menuid: 13
+menuid: 15
 ---
 Transaction Object
 ==================
@@ -18,15 +18,15 @@ where N increments for each transaction on this connection.
 
 * transaction.mail\_from
 
-The value of the MAIL FROM command as an `Address` object.
+The value of the MAIL FROM command as an `Address`[1] object.
 
 * transaction.rcpt\_to
 
-An Array of `Address` objects of recipients from the RCPT TO command.
+An Array of `Address`[1] objects of recipients from the RCPT TO command.
 
 * transaction.message\_stream
 
-A node.js Readable Stream object for the message. 
+A node.js Readable Stream object for the message.
 
 You use it like this:
 
@@ -60,7 +60,7 @@ for adding banners to the email.
 
 * transaction.notes
 
-A safe place to store transaction specific values.
+A safe place to store transaction specific values. See also [haraka-results](https://github.com/haraka/haraka-results) and [haraka-notes](https://github.com/haraka/haraka-notes).
 
 * transaction.add\_leading\_header(key, value)
 
@@ -105,7 +105,7 @@ the `tmp` library from npm and tells us the size of the file:
 
     exports.hook_data = function (next, connection) {
         // enable mail body parsing
-        connection.transaction.parse_body = 1;
+        connection.transaction.parse_body = true;
         connection.transaction.attachment_hooks(
             function (ct, fn, body, stream) {
                 start_att(connection, ct, fn, body, stream)
@@ -166,4 +166,6 @@ body in the same encoding.
 * transaction.results
 
 Store results of processing in a structured format. See [docs/Results](http://haraka.github.io/manual/Results.html)
+
+[1]: `Address` objects are address-rfc2821 objects. See https://github.com/haraka/node-address-rfc2821
 

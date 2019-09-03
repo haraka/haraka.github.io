@@ -1,42 +1,47 @@
 ---
 layout: default
 title: Plugins
-menuid: 11
+menuid: 13
 ---
 # Plugins
 
-All aspects of receiving an email in Haraka are controlled via plugins. No
-mail can even be received unless at least a 'rcpt' and 'queue' plugin are
+Most aspects of receiving an email in Haraka are controlled by plugins. Mail cannot even be received unless at least a 'rcpt' and 'queue' plugin are
 enabled.
 
 Recipient (*rcpt*) plugins determine if a particular recipient is allowed to be relayed or received for. A *queue* plugin queues the message somewhere - normally to disk or to an another SMTP server.
 
-Get a list of built-in plugins by running:
+## Plugin Lists
 
-`haraka -l -c /path/to/config`
+Get a list of installed plugins by running `haraka -l`. To include locally installed plugins, add the `-c /path/to/config` option.
+
+We also have a [registry of known plugins](https://github.com/haraka/Haraka/blob/master/Plugins.md).
 
 Display the help text for a plugin by running:
 
 `haraka -h <name> -c /path/to/config`
 
-Omit the `-c /path/to/config` to see only the plugins supplied with Haraka
-(not your local plugins in your `config` directory).
-
 # Writing Haraka Plugins
+
+## Overview
+
+
 
 ## Anatomy of a Plugin
 
-Plugins in Haraka are JS files in the `plugins` directory or npm
-modules in the node\_modules directory. See "Plugins as Modules" below for
-more information on this.
+Plugins in Haraka are JS files in the `plugins` directory (legacy) and npm
+modules in the node\_modules directory. See "Plugins as Modules" below.
 
 Plugins can be installed in the Haraka global directory (default:
 /$os/$specific/lib/node\_modules/Haraka) or in the Haraka install directory
 (whatever you chose when you typed `haraka -i`. Example: `haraka -i /etc/haraka`
 
-To enable a plugin, add its name to `config/plugins`.
+To enable a plugin, add its name to `config/plugins`. For npm packaged plugins, the name does not include the `haraka-plugin` prefix.
 
-## Register a Hook
+### Register
+
+Register is the only plugin function that is syncronous and receives no arguments. Its primary purpose is enabling your plugin to register SMTP hooks. It is also used for syncronous initialization tasks such as [loading a config file](https://github.com/haraka/haraka-config). For heavier initialization tasks such as establishing database connections, look to `init_master` and `init_child` instead.
+
+### Register a Hook
 
 There are two ways for plugins to register hooks. Both examples register a function on the *rcpt* hook:
 
@@ -57,6 +62,13 @@ There are two ways for plugins to register hooks. Both examples register a funct
         // do processing
         next();
     };
+
+The register_hook function within `register()` offers a few advantages:
+
+    1. register a hook multiple times (see below)
+    2. a unique function name in stack traces
+    3. [a better function name](https://google.com/search?q=programming%20good%20function%20names)
+    4. hooks can be registered conditionally (ie, based on a config setting)
 
 ### Register a Hook Multiple Times
 
@@ -233,7 +245,7 @@ The Outbound hook ordering mirrors the Inbound hook order above until after `hoo
 - hook_send_email
 - hook_get_mx
 - at least one of:
-  - hook_delivered  (once per delivery domain with at least one successfull recipient)
+  - hook_delivered  (once per delivery domain with at least one successful recipient)
   - hook_deferred  (once per delivery domain where at least one recipient or connection was deferred)
   - hook_bounce  (once per delivery domain where the recipient(s) or message was rejected by the destination)
 
@@ -339,7 +351,7 @@ folder of the same name that will not take preference, so avoid using names
 similar to core modules.
 
 Plugins loaded as modules do not have the special `require()`. To load
-a core Haraka module you must use `this.core_require('name')`. 
+a core Haraka module you must use `this.haraka_require('name')`.
 This should also be preferred for plain JS plugins, as the
 `./` hack is likely to be removed in the future.
 
@@ -352,10 +364,10 @@ Module plugins support default config in their local `config` directory. See the
 
 ## Shutdown
 
-On shutdown and graceful reload, Haraka will call a plugin's `shutdown` method.
+On graceful reload, Haraka will call a plugin's `shutdown` method.
 
 This is so you can clear any timers or intervals, or shut down any connections
-to remote servers.
+to remote servers. See [Issue 2024](https://github.com/haraka/Haraka/issues/2024).
 
 e.g.
 

@@ -1,7 +1,7 @@
 ---
 layout: default
 title: discard
-menuid: 23
+menuid: 26
 ---
 # discard
 

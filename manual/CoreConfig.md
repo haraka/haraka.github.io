@@ -1,48 +1,37 @@
 ---
 layout: default
 title: Core Configuration Files
-menuid: 5
+menuid: 7
 ---
 Core Configuration Files
 ========================
 
+See [Logging](Logging.md).
+
 The Haraka core reads some configuration files to determine a few actions:
-
-* loglevel
-
-  Can contain either a number or a string. See the top of logger.js for the
-different levels available.
 
 * smtp.yaml or smtp.json
 
-If either of these files exist then they are loaded first after loglevel.
+If either of these files exist then they are loaded first after log.ini.
 This file is designed to use the JSON/YAML file overrides documented in
 Config.md to optionally provide the entire configuration in a single file.
 
-* log_timestamps
-
-  If this contains a 1 (or other truthy value), will prepend a timestamp
-to log lines. Note this only affects log lines sent via console.log, not
-the actual content sent to log hooks, so logging via syslog for example
-will not include a timestamp.
-
 * databytes
 
-  Contains the maximum SIZE of an email that Haraka will receive.
+Contains the maximum SIZE of an email that Haraka will receive.
 
 * plugins
 
-  The list of plugins to load
+The list of plugins to load
 
 * smtp.ini
 
   Keys:
-  
-  * port - the port to use (default: 25)
-  * listen\_address - default: 0.0.0.0 (i.e. all addresses)
-  * inactivity\_timeout - how long to let clients idle in seconds (default: 300)
-  * nodes - if [cluster][1] is available, specifies how
-    many processes to fork off. Can be the string "cpus" to fork off as many
+
+  * listen\_host, port - the host and port to listen on (default: ::0 and 25)
+  * listen - (default: [::0]:25) Comma separated IP:Port addresses to listen on
+  * inactivity\_time - how long to let clients idle in seconds (default: 300)
+  * nodes - specifies how many processes to fork. The string "cpus" will fork as many
     children as there are CPUs (default: 0, which disables cluster mode)
   * user - optionally a user to drop privileges to. Can be a string or UID.
   * group - optionally a group to drop privileges to. Can be a string or GID.
@@ -55,8 +44,8 @@ will not include a timestamp.
   * spool\_dir - (default: none) directory to create temporary spool files in
   * spool\_after - (default: -1) if message exceeds this size in bytes, then spool the message to disk
     specify -1 to disable spooling completely or 0 to force all messages to be spooled to disk.
-
-[1]: http://learnboost.github.com/cluster/ or node version >= 0.8
+  * graceful\_shutdown - (default: false) enable this to wait for sockets on shutdown instead of closing them quickly
+  * force_shutdown_timeout - (default: 30) number of seconds to wait for a graceful shutdown
 
 * me
 
@@ -90,13 +79,11 @@ will not include a timestamp.
   default: 30
 
   Note also that each plugin can have a `config/<plugin_name>.timeout`
-  file specifying a per-plugin timeout.  In this file you can set a timeout of 0 
-  to mean that this plugin's hooks never time out.  Use this with care.
-  
+  file specifying a per-plugin timeout.  In this file you can set a timeout of 0 to mean that this plugin's hooks never time out.  Use this with care.
+
   If the plugin is in a sub-directory of plugins, then you must create this file
-  in the equivalent path e.g. the queue/smtp_forward would need a timeout file in
-  `config/queue/smtp_forward.timeout`
-  
+  in the equivalent path e.g. the queue/smtp_forward would need a timeout file in `config/queue/smtp_forward.timeout`
+
 * smtpgreeting
 
   The greeting line used when a client connects. This can be multiple lines
@@ -131,19 +118,18 @@ will not include a timestamp.
 
 * outbound.disabled
 
-  Put a `1` in this file to temporarily disable outbound delivery. Useful to
-  do while you're figuring out network issues, or just testing things.
+  Put a `1` in this file to temporarily disable outbound delivery. Useful 
+  while figuring out network issues or testing.
 
 * outbound.bounce\_message
 
-  The bounce message should delivery of the mail fail. See the source of. The
-  default is normally fine. Bounce messages contain a number of template
+  The bounce message if delivery of the message fails. The default is normally fine. Bounce messages contain a number of template
   replacement values which are best discovered by looking at the source code.
 
 * haproxy\_hosts
 
   A list of HAProxy hosts that Haraka should enable the PROXY protocol from.
-  See HAProxy.md
+  See [HAProxy.md](HAProxy.md)
 
 * strict\_rfc1869
 
@@ -154,4 +140,9 @@ will not include a timestamp.
   to enable:   `echo 1 > /path/to/haraka/config/strict_rfc1869`
   to disable:  `echo 0 > /path/to/haraka/config/strict_rfc1869`
 
+* max_mime_parts
+
+  Defaults to 1000. There's a potential denial of service in large numbers of
+  MIME parts in carefully crafted emails. If this limit is too low for some
+  reason you can increase it by setting a value in this file.
 
