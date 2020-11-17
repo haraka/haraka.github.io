@@ -1,2 +1,9 @@
-_site/
-Gemfile.lock
+node_modules
+*.iml
+.idea
+*.log*
+.nuxt
+.vscode
+.DS_Store
+coverage
+sw.js
