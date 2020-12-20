@@ -1,0 +1,9 @@
+{
+  "title": "Haraka SMTP Email Server",
+  "url": "http://haraka.github.io/",
+  "logo": {
+    "light": "/logo-light.svg",
+    "dark": "/logo-dark.svg"
+  },
+  "github": "haraka/haraka"
+}
