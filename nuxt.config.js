@@ -7,4 +7,7 @@ export default theme({
      */
     target: 'static',
     loading: { color: '#1e429f' },
+    router: {
+        trailingSlash: true,
+    },
 })

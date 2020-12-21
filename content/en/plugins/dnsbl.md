@@ -76,7 +76,7 @@ dnsbl.ini - INI format with options described below:
 
     Reject connections from IPs that are blacklisted. Setting this to false
     makes dnsbl informational. reject=false is best used in conjunction with
-    plugins like [karma](/manual/plugins/karma.html) that employ a scoring
+    plugins like [karma](/plugins/karma) that employ a scoring
     engine to make choices about message delivery.
 
 * search: (default: first)

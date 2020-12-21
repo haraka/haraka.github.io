@@ -19,10 +19,9 @@ Haraka is an open source SMTP server written in Node.js which provides extremely
 </form>
 
 <div class="flex space-x-4">
-    <a href="https://travis-ci.org/haraka/Haraka" rel="nofollow noopener noreferrer" target="_blank"><img  alt="Build Status" src="https://travis-ci.org/haraka/Haraka.svg?branch=master"></a>
+    <a href="#"><img alt="Tests" src="https://github.com/haraka/Haraka/workflows/Haraka%20Tests/badge.svg"></a>
+    <a href="#"><img alt="Tests - Windows" src="https://github.com/haraka/Haraka/workflows/Haraka%20Tests%20-%20Windows/badge.svg"></a>
     <a href="https://codecov.io/github/haraka/Haraka?branch=master" rel="nofollow noopener noreferrer" target="_blank"><img data-v-f58a9f50="" alt="Coverage Status" src="https://codecov.io/github/haraka/Haraka/coverage.svg"></a>
-    <a href="https://ci.appveyor.com/project/msimerson/haraka-pa8a5" rel="nofollow noopener noreferrer" target="_blank"><img data-v-f58a9f50="" alt="Windows Status" src="https://ci.appveyor.com/api/projects/status/g29l24w7qwoam47f?svg=true"></a>
-    <a href="https://greenkeeper.io/" rel="nofollow noopener noreferrer" target="_blank"><img data-v-f58a9f50="" alt="Greenkeeper badge" src="https://badges.greenkeeper.io/haraka/Haraka.svg"></a>
 </div>
 
 Haraka is a highly scalable [node.js][1] email server with a modular
@@ -45,8 +44,8 @@ queued for outbound delivery.
 ### Getting Help
 
 * [Join the mailing list][8] (implemented as a Haraka plugin)
-* Join us on IRC at `#haraka` on [freenode][14]
-* [GitHub Issues](https://github.com/haraka/Haraka/issues)
+* [Join us on Slack][14]
+* [GitHub Issues][15]
 
 
 ### Screencast
@@ -73,11 +72,43 @@ Plugins are provided for running mail through [SpamAssassin][9], validating
 
 Haraka requires [node.js][1] to run. Install Haraka with [npm][2]:
 
-```sh
-# If the second command gives "nobody" errors, uncomment & run the next command
-# npm -g config set user root
-npm install -g Haraka
-```
+# 
+
+<code-group>
+
+  <code-block label="NPM" active>
+
+  ```bash
+  npm install -g Haraka
+  ```
+
+  </code-block>
+  <code-block label="Yarn" >
+
+  ```bash
+  yarn add global Haraka
+  ```
+
+  </code-block>
+</code-group>
+
+<alert>
+
+If the command gives "nobody" errors run the next command
+
+
+</alert>
+<code-group>
+
+  <code-block label="NPM" active>
+
+  ```bash
+  npm -g config set user root
+  npm install -g Haraka
+  ```
+
+  </code-block>
+</code-group>
 
 After installation, use the `haraka` binary to set up the service.
 
@@ -130,25 +161,25 @@ following these steps:
 
 First clone the repository:
 
-    $ git clone https://github.com/haraka/Haraka.git
-    $ cd Haraka
+    git clone https://github.com/haraka/Haraka.git
+    cd Haraka
 
 Install Haraka's node.js dependencies locally:
 
-    $ npm install
+    npm install
 
 Edit `config/plugins` and `config/smtp.ini` to specify the plugins and
 config you want.
 
 Finally run Haraka:
 
-    $ node haraka.js
+    node haraka.js
 
 ### License and Author
 
-Haraka is MIT licensed - see the LICENSE file for details.
+Haraka is MIT licensed - see the [LICENSE][16] file for details.
 
-Haraka is a project started by Matt Sergeant, a 10 year veteran of the email
+Haraka is a project started by [Matt Sergeant][17], a 10 year veteran of the email
 and anti-spam world. Previous projects have been the project leader for
 SpamAssassin and a hacker on [Qpsmtpd][13].
 
@@ -165,11 +196,7 @@ SpamAssassin and a hacker on [Qpsmtpd][13].
 [11]: https://haraka.github.io/manual/plugins/dnsbl.html
 [12]: https://github.com/haraka/Haraka/tree/master/plugins
 [13]: https://github.com/smtpd/qpsmtpd/
-[14]: https://freenode.net/irc_servers.shtml
-
-[ci-img]: https://travis-ci.org/haraka/Haraka.svg?branch=master
-[ci-url]: https://travis-ci.org/haraka/Haraka
-[cov-img]: https://codecov.io/github/haraka/Haraka/coverage.svg
-[cov-url]: https://codecov.io/github/haraka/Haraka?branch=master
-[ci-win-img]: https://ci.appveyor.com/api/projects/status/g29l24w7qwoam47f?svg=true
-[ci-win-url]: https://ci.appveyor.com/project/msimerson/haraka-pa8a5
+[14]: https://communityinviter.com/apps/harakaserver/public-inviter
+[15]: https://github.com/haraka/Haraka/issues
+[16]: https://github.com/haraka/Haraka/blob/master/LICENSE
+[17]: https://github.com/baudehlo
