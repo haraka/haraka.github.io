@@ -5,5 +5,8 @@
     "light": "/logo-light.svg",
     "dark": "/logo-dark.svg"
   },
-  "github": "haraka/haraka"
+  "github": "https://github.com/haraka/haraka.github.com",
+  "githubApi": "https://api.github.com/repos/haraka/Haraka",
+  "defaultBranch": "master",
+  "defaultDir": ""
 }

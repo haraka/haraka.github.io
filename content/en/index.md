@@ -73,11 +73,43 @@ Plugins are provided for running mail through [SpamAssassin][9], validating
 
 Haraka requires [node.js][1] to run. Install Haraka with [npm][2]:
 
-```sh
-# If the second command gives "nobody" errors, uncomment & run the next command
-# npm -g config set user root
-npm install -g Haraka
-```
+# 
+
+<code-group>
+
+  <code-block label="NPM" active>
+
+  ```bash
+  npm install -g Haraka
+  ```
+
+  </code-block>
+  <code-block label="Yarn" >
+
+  ```bash
+  yarn add global Haraka
+  ```
+
+  </code-block>
+</code-group>
+
+<alert>
+
+If the command gives "nobody" errors run the next command
+
+
+</alert>
+<code-group>
+
+  <code-block label="NPM" active>
+
+  ```bash
+  npm -g config set user root
+  npm install -g Haraka
+  ```
+
+  </code-block>
+</code-group>
 
 After installation, use the `haraka` binary to set up the service.
 
@@ -130,19 +162,19 @@ following these steps:
 
 First clone the repository:
 
-    $ git clone https://github.com/haraka/Haraka.git
-    $ cd Haraka
+    git clone https://github.com/haraka/Haraka.git
+    cd Haraka
 
 Install Haraka's node.js dependencies locally:
 
-    $ npm install
+    npm install
 
 Edit `config/plugins` and `config/smtp.ini` to specify the plugins and
 config you want.
 
 Finally run Haraka:
 
-    $ node haraka.js
+    node haraka.js
 
 ### License and Author
 

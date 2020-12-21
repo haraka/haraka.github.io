@@ -191,12 +191,12 @@ Spam delivered by servers with good reputations normally pass karma's checks.
 Expect to use karma *with* content filters.
 
 
-[p0f-url]: /manual/plugins/connect.p0f.html
+[p0f-url]: http://haraka.github.io/plugins/connect.p0f
 [geoip-url]: https://github.com/haraka/haraka-plugin-geoip
-[dnsbl-url]: /manual/plugins/dnsbl.html
-[fcrdns-url]: http://haraka.github.io/manual/plugins/connect.fcrdns.html
-[uribl-url]: http://haraka.github.io/manual/plugins/data.uribl.html
-[sa-url]: http://haraka.github.io/manual/plugins/spamassassin.html
-[snf-url]: http://haraka.github.io/manual/plugins/messagesniffer.html
-[results-url]: http://haraka.github.io/manual/Results.html
+[dnsbl-url]: http://haraka.github.io/plugins/dnsbl
+[fcrdns-url]: http://haraka.github.io/plugins/connect.fcrdns
+[uribl-url]: http://haraka.github.io/plugins/data.uribl
+[sa-url]: http://haraka.github.io/plugins/spamassassin
+[snf-url]: http://haraka.github.io/plugins/messagesniffer
+[results-url]: http://haraka.github.io/core/Results
 

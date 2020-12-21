@@ -45,17 +45,17 @@ Getting Started
 
 First install Haraka via npm if you haven't already:
 
-    $ sudo npm -g install Haraka
+    sudo npm -g install Haraka
 
 Now we can create our project directory to get started with:
 
-    $ haraka -i /path/to/new_project
+    haraka -i /path/to/new_project
 
 Make sure you use a directory that doesn't exist for your project.
 
 Next, let's create a new plugin:
 
-    $ haraka -c /path/to/new_project -p rcpt_to.disposable
+    haraka -c /path/to/new_project -p rcpt_to.disposable
 
 This should output a bunch of information about files it has created:
 
@@ -113,13 +113,13 @@ All we are doing here is logging the fact that we got the recipient.
 
 Check this works. You'll need two terminal windows. In window 1:
 
-    $ echo LOGDEBUG > config/loglevel
-    $ echo myserver.com >> config/host_list
-    $ sudo haraka -c /path/to/new_project
+    echo LOGDEBUG > config/loglevel
+    echo myserver.com >> config/host_list
+    sudo haraka -c /path/to/new_project
 
 And in window 2:
 
-    $ swaks -h domain.com -t booya@myserver.com -f somewhere@example.com \
+    swaks -h domain.com -t booya@myserver.com -f somewhere@example.com \
       -s localhost -p 25
 
 In the logs you should see:
@@ -155,7 +155,7 @@ Now lets check for emails with an expire date in them and turn them into
 
 Start haraka again and pass it the following email via swaks:
 
-    $ swaks -h domain.com -t booya-20120101@myserver.com \
+    swaks -h domain.com -t booya-20120101@myserver.com \
       -f somewhere@example.com -s localhost -p 25
 
 And you should see now in the logs:
@@ -199,7 +199,7 @@ and reject expired emails. Again, this is very simple:
 
 And we can easily check that with swaks (remember to restart Haraka):
 
-    $ swaks -h foo.com -t booya-20110101@haraka.local -f somewhere@example.com \
+    swaks -h foo.com -t booya-20110101@haraka.local -f somewhere@example.com \
       -s localhost -p 25
 	=== Trying localhost:25...
 	=== Connected to localhost.
@@ -259,7 +259,7 @@ Here's how our final plugin will look:
 
 And when we test this with an unexpired address via swaks:
 
-    $ swaks -h foo.com -t booya-20120101@haraka.local \
+    swaks -h foo.com -t booya-20120101@haraka.local \
       -f somewhere@example.com -s localhost -p 25
 
 We get in the logs:

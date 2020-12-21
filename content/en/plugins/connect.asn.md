@@ -90,6 +90,6 @@ See also: [Using BGP data to find spammers](http://www.bgpmon.net/using-bgp-data
 
 ## Consumers
 
-The [karma](/manual/plugins/karma.html) plugin uses the ASN to maintain
+The [karma](/plugins/karma) plugin uses the ASN to maintain
 its network neighborhood reputation.
 

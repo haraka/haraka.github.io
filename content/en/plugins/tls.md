@@ -26,7 +26,7 @@ If the directory `config/tls` exists, each file within the directory is expected
 cat example.com.key example.com.crt ca.crt > config/tls/example.com.pem
 ```
 
-An example [acme.sh](https://acme.sh) deployment [script](https://github.com/msimerson/Mail-Toaster-6/blob/master/provision-letsencrypt.sh) demonstrates how to install [Let's Encrypt](https://letsencrypt.org) certificates to the Haraka `config/tls`directory.
+An example [acme.sh](https://acme.sh) deployment [script](https://github.com/msimerson/Mail-Toaster-6/blob/master/provision/letsencrypt.sh) demonstrates how to install [Let's Encrypt](https://letsencrypt.org) certificates to the Haraka `config/tls`directory.
 
 Haraka has [SNI](https://en.wikipedia.org/wiki/Server_Name_Indication) support. When the remote MUA/MTA presents a servername during the TLS handshake and a TLS certificate with that Common Name matches, that certificate will be presented. If no match is found, the default certificate (see Certificate Files above) is presented.
 
@@ -101,7 +101,17 @@ A list of allowable ciphers to use. Example:
 
     ciphers=EECDH+AESGCM:EDH+aRSA+AESGCM:EECDH+AES256:EDH+aRSA+AES256:EECDH+AES128:EDH+aRSA+AES128:RSA+AES:RSA+3DES
 
-See also: [Strong SSL Ciphers](http://cipherli.st) and the [SSLlabs Test Page](https://www.ssllabs.com/ssltest/index.html)
+See also: [Mozilla SSL configuration generator](https://ssl-config.mozilla.org/) and the [SSLlabs Test Page](https://www.ssllabs.com/ssltest/index.html)
+
+### minVersion
+
+Specifies minimum allowable TLS protocol version to use. Example:
+
+     minVersion=TLSv1.1 
+
+If unset, the default is node's tls.DEFAULT_MIN_VERSION constant.
+
+(**Node.js 11.4+ required**, for older instances you can use *secureProtocol* settings)
 
 ### honorCipherOrder
 
@@ -172,4 +182,14 @@ mail, put them under an `[inbound]` parameter group. Outbound options
 can go under an `[outbound]` parameter group, and plugins that use
 SMTP tls for queueing such as `smtp_proxy` and `smtp_forward` can
 use that plugin name for plugin specific options.
+
+## `[redis]` section
+
+This section is mainly used to enable so called _TLS NO-GO_ feature that essentially stops advertising/using TLS if there was a problem setting it up previously. We use `no_tls|ip.add.re.ss` key to store the flag in redis. There are a couple of settings that control the behavior:
+
+`disable_for_failed_hosts = true` to enable the feature
+
+`disable_expiry = 604800` to set for how long we disable TLS for failing host, in seconds
+
+`disable_inbound_expiry = 3600` same as above, but applies to inbound (aka STARTTLS capability) only
 
