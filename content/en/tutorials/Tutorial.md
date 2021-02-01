@@ -95,7 +95,7 @@ plugin to `test_queue`. The final file should look like this:
 	# Queue mail via qmail-queue
 	#queue/qmail-queue
 
-	test_queue
+	queue/test
 
 Remember that the ordering here is important - our new plugin has to come
 before `rcpt_to.in_host_list`.
