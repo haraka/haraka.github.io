@@ -7,7 +7,7 @@ category: ''
 
 A modern, high performance, flexible SMTP server.
           
-Haraka is an open source SMTP server written in Node.js which provides extremely high performance coupled with a flexible plugin system allowing Javascript programmers full access to change the behaviour of the server. It is used heavily in some high traffic sites - see the <nuxt-link to="/users">"Known Users"</nuxt-link> link above for testimonials.
+Haraka is an open source SMTP server written in Node.js which provides extremely high performance coupled with a flexible plugin system allowing Javascript programmers full access to change the behaviour of the server. It is used heavily in some high traffic sites - see the <nuxt-link to="/users/">"Known Users"</nuxt-link> link above for testimonials.
 
 <form action="https://www.paypal.com/cgi-bin/webscr" method="post" target="_top" class="h-10">
     <input type="hidden" name="cmd" value="_donations" />
