@@ -6,4 +6,7 @@ node_modules
 .vscode
 .DS_Store
 coverage
-sw.js
+dist
+sw.*
+.env
+.output

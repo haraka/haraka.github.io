@@ -12,15 +12,9 @@ jobs:
 
       - uses: actions/setup-node@v2.1.2
         with:
-          node-version: '12.x'
+          node-version: '14.x'
 
-      - name: cache node_modules
-        uses: actions/cache@v2
-        with:
-          path: node_modules
-          key: ${{ runner.os }}-node-v${{ runner.node }}-deps-${{ hashFiles(format('{0}{1}', github.workspace, '/yarn.lock')) }}
-
-      - run: yarn install && yarn build && yarn generate
+      - run: npm run install && npm run build && npx nuxi generate
       - name: deploy
         uses: peaceiris/actions-gh-pages@v3
         with:

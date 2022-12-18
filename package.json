@@ -1,15 +1,15 @@
 {
-  "name": "haraka.github.com",
-  "license": "MIT",
-  "version": "1.0.0",
+  "name": "haraka.github.io",
+  "version": "0.1.0",
+  "private": true,
   "scripts": {
-    "dev": "nuxt",
-    "build": "nuxt build",
-    "start": "nuxt start",
-    "generate": "nuxt generate"
+    "dev": "nuxi dev",
+    "build": "nuxi build",
+    "generate": "nuxi generate",
+    "preview": "nuxi preview"
   },
-  "dependencies": {
-    "@nuxt/content-theme-docs": "^0.8.2",
-    "nuxt": "^2.14.12"
+  "devDependencies": {
+    "@nuxt-themes/docus": "^1.1.10",
+    "nuxt": "^3.0.0"
   }
 }
