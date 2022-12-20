@@ -3,6 +3,8 @@ title: Writing Haraka Plugins
 navigation.title: Writing Plugins
 ---
 
+# Writing Haraka Plugins
+
 Part of the joy of using Haraka as your main mail server is having a strong
 plugin based system which means you control all aspects of how your mail is
 processed, accepted, and delivered.
