@@ -1,6 +1,6 @@
 ---
-title: queue/rabbitmq - Deliver mail to the local MTA
-description: Haraka queue/rabbitmq plugin - Deliver mail to the local MTA
+title: queue/rabbitmq - Deliver mail to the RabbitMQ queue
+description: Haraka queue/rabbitmq plugin - Deliver mail to the RabbitMQ queue
 navigation.title: queue/rabbitmq
 ---
 

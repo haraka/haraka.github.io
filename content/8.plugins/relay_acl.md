@@ -1,8 +1,10 @@
 ---
-title: relay_acl
-position: 68
-category: 'Plugins'
+title: relay_acl - Relay mail based on ACL
+description: Haraka relay acl plugin - Relay outbound mails using IP based ACLs and relay inbound mails using destination domains
+navigation.title: relay_acl
 ---
+
+# relay_acl plugin
 
 This plugin makes it possible to relay outbound mails using IP based ACLs
 and relay inbound mails using destination domains.

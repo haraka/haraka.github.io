@@ -1,8 +1,10 @@
 ---
-title: queue/rabbitmq_amqplib
-position: 31
-category: 'Plugins'
+title: queue/rabbitmq_amqplib - Deliver mail to the RabbitMQ queue
+description: Haraka queue/rabbitmq_amqplib plugin - Deliver mail to the RabbitMQ queue
+navigation.title: queue/rabbitmq_amqplib
 ---
+
+# queue/rabbitmq_amqplib plugin
 
 This plugin delivers emails to RabbitMQ queue for further processing. Based on `queue/rabbitmq` but using `amqplib`.
 
