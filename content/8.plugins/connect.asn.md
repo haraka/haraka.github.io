@@ -74,7 +74,7 @@ connections, and should be handled with increased scrutiny.
 
 ## Research
 
-http://www.cc.gatech.edu/~feamster/papers/snare-usenix09.pdf
+[http://www.cc.gatech.edu/~feamster/papers/snare-usenix09.pdf](http://web.archive.org/web/20090709150921/http://www.cc.gatech.edu/~feamster/papers/snare-usenix09.pdf)
 
 "Performance based on AS number only...The classifier gets a false positive
 rate of 0.76% [and] a 70% detection rate"
