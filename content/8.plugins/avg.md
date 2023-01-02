@@ -6,7 +6,7 @@ navigation.title: avg
 
 # Avg plugin
 
-Implement virus scanning with AVG's TCPD daemon, available for Linux/FreeBSD. AVG linux is [free for personal or commercial use](http://www.avg.com/gb-en/faq.pnuid-faq_v3_linux) and can be downloaded from [free.avg.com](http://free.avg.com/gb-en/download.prd-alf).
+Implement virus scanning with AVG's legacy TCPD daemon which was available for Linux/FreeBSD.
 
 Messages that AVG detects as infected are rejected. Errors will cause the plugin to return temporary failures unless the defer options are changed (see below).
 

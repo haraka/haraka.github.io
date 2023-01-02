@@ -98,7 +98,7 @@ rspamd.ini
 
     Default: true
 
-    If set to true, allow rspamd to add/remove headers to messages via [task:rmilter_set_reply()](https://rspamd.com/doc/lua/task.html#me7351).
+    If set to true, allow rspamd to add/remove headers to messages via [task:rmilter_set_reply()](https://www.rspamd.com/doc/modules/milter_headers.html).
 
 - soft\_reject.enabled
 

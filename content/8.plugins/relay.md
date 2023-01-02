@@ -14,7 +14,7 @@ This **relay** plugin provides Haraka with options for managing relay permission
 
 ## Authentication
 
-One way to enable relaying is [authentication](http://haraka.github.io/manual.html) via the auth plugins. Successful authentication enables relaying during _that_ SMTP connection. To securely offer SMTP AUTH, the [tls](http://haraka.github.io/manual/plugins/tls.html) plugin and at least one auth plugin must be enabled and properly configured. When that requirement is met, the AUTH SMTP extension will be advertised to SMTP clients.
+One way to enable relaying is [authentication](/core/Plugins) via the auth plugins. Successful authentication enables relaying during _that_ SMTP connection. To securely offer SMTP AUTH, the [tls](/plugins/tls) plugin and at least one auth plugin must be enabled and properly configured. When that requirement is met, the AUTH SMTP extension will be advertised to SMTP clients.
 
 ```
 % nc mail.example.com 587

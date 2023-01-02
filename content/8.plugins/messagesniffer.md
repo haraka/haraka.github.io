@@ -6,7 +6,7 @@ navigation.title: messagesniffer
 
 # messagesniffer plugin
 
-This plugin provides integration with the commerical Anti-Spam product [MessageSniffer](http://armresearch.com/products/sniffer.jsp) by Arm Research Labs using its XML Client interface [XCI](http://armresearch.com/support/articles/software/snfServer/xci/) over TCP.
+This plugin provides integration with the commerical Anti-Spam product [MessageSniffer](http://armresearch.com/Products/SNFforNix.jsp) by Arm Research Labs using its XML Client interface XCI over TCP.
 
 Installation
 ------------
