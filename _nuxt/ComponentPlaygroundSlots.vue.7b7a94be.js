@@ -1,0 +1,1 @@
+import{c as t,l as n,m as o,D as a,J as s}from"./runtime-core.esm-bundler.dee127ca.js";const r={class:"component-playground-data-section"},i=t({__name:"ComponentPlaygroundSlots",props:{componentData:{type:Object,required:!0}},setup(e){return(c,p)=>(n(),o("div",r,[a("pre",null,s(JSON.stringify(e.componentData,null,2)),1)]))}});export{i as _};
