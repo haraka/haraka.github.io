@@ -108,7 +108,7 @@ This plugin does not update the GeoIP databases. You may want to.
 
 MaxMind: http://www.maxmind.com/
 
-Databases: http://geolite.maxmind.com/download/geoip/database
+Databases: https://dev.maxmind.com/geoip/geolite2-free-geolocation-data
 
 
 # TODO
