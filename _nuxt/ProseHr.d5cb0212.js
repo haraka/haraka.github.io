@@ -1,1 +1,0 @@
-/* empty css                    */import{d as r}from"./Container.19d24615.js";import{l as e,m as o}from"./runtime-core.esm-bundler.dee127ca.js";import"./index.54cc9473.js";const t={};function c(a,s){return e(),o("hr")}const f=r(t,[["render",c],["__scopeId","data-v-599a1727"]]);export{f as default};

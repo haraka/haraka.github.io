@@ -1,0 +1,1 @@
+import{c as o,l as t,m as n,H as a}from"./runtime-core.esm-bundler.92c6bc06.js";const c={class:"component-playground-data-section"},m=o({__name:"ComponentPlaygroundTokens",props:{componentData:{type:Object,required:!0}},setup(e){return(s,r)=>(t(),n("div",c,a(e.componentData),1))}});export{m as _};

@@ -1,1 +1,0 @@
-import{_ as o}from"./CodeGroup.vue.57176ce7.js";import{d as r}from"./Container.19d24615.js";import"./TabsHeader.ce34a663.js";import"./runtime-core.esm-bundler.dee127ca.js";import"./index.54cc9473.js";const _=r(o,[["__scopeId","data-v-a516578b"]]);export{_ as default};

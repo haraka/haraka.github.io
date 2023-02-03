@@ -1,0 +1,1 @@
+import{d as o}from"./Container.98cf359b.js";import{l as t,m as _,N as n}from"./runtime-core.esm-bundler.92c6bc06.js";import"./index.e4010cc5.js";const r={};function c(e,s){return t(),_("code",null,[n(e.$slots,"default",{},void 0,!0)])}const u=o(r,[["render",c],["__scopeId","data-v-5bc2cd09"]]);export{u as default};
