@@ -12,9 +12,10 @@ export default defineAppConfig({
       exclude: []
     },
     github: {
-      root: 'content',
-      edit: true,
-      releases: true
+      branch: 'master',
+      repo: 'haraka.github.com',
+      owner: 'haraka',
+      edit: true
     },
     header: {
       logo: true,
@@ -23,7 +24,7 @@ export default defineAppConfig({
     },
     footer: {
       credits: {
-        icon: false,
+        icon: '',
         text: 'Haraka is a project started by Matt Sergeant and is now maintained by the Haraka community.',
         href: 'https://haraka.github.io/',
       },
