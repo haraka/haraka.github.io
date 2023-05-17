@@ -6,9 +6,6 @@ export default defineAppConfig({
     socials: {
       github: 'haraka/Haraka',
     },
-    header: {
-      logo: true,
-    },
     aside: {
       level: 0,
       collapsed: true,
