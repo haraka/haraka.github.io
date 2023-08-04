@@ -3,6 +3,7 @@ export default defineNuxtConfig({
   nitro: {
     prerender: {
       routes: [
+        '/barelf',
         '/plugins/connect.asn',
         '/plugins/connect.fcrdns',
         '/plugins/connect.geoip',
