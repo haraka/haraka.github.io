@@ -48,7 +48,7 @@ Configuration
 
     Aliases may also be exploded to multiple recipients:
 
-        { "sales@example.com": { "action: "alias", "to": ["alice@example.com", "bob@example.com"] } }
+        { "sales@example.com": { "action": "alias", "to": ["alice@example.com", "bob@example.com"] } }
 
     * wildcard notation
 
