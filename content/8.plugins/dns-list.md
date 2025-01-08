@@ -110,9 +110,5 @@ ok_helo=false
 ok_mail=false
 ```
 
-if DNSBL returns OK on the mail hook, it prevents any subsequent mail hooks in other plugins from running. This might include [SPF](haraka-plugin-spf), [known senders](https://github.com/haraka/haraka-plugin-known-senders), [karma](https://github.com/haraka/haraka-plugin-karma), recipient plugins, and any other plugins that want to do transaction initialization on `hook_mail`. It can be dangerous.
+if DNSBL returns OK on the mail hook, it prevents any subsequent mail hooks in other plugins from running. This might include [SPF](https://github.com/haraka/haraka-plugin-spf), [known senders](https://github.com/haraka/haraka-plugin-known-senders), [karma](https://github.com/haraka/haraka-plugin-karma), recipient plugins, and any other plugins that want to do transaction initialization on `hook_mail`. It can be dangerous.
 
-[ci-img]: https://github.com/haraka/haraka-plugin-dns-list/actions/workflows/ci.yml/badge.svg
-[ci-url]: https://github.com/haraka/haraka-plugin-dns-list/actions/workflows/ci.yml
-[clim-img]: https://codeclimate.com/github/haraka/haraka-plugin-dns-list/badges/gpa.svg
-[clim-url]: https://codeclimate.com/github/haraka/haraka-plugin-dns-list
