@@ -1,10 +1,10 @@
 ---
-title: data.uribl - URI Blacklists plugin for Haraka
-description: Haraka data.uribl plugin - URI Blacklists
-navigation.title: data.uribl
+title: uribl - URI Blacklists plugin for Haraka
+description: Haraka uribl plugin - URI Blacklists
+navigation.title: uribl
 ---
 
-# data.uribl plugin
+# uribl plugin
 
 This plugin extracts URIs and feeds them to RHS based blacklists such as 
 [DBL][1] and [SEM-FRESH][2] and body URI based DNS blacklists such as 
@@ -17,7 +17,7 @@ convert any URI ending in in-addr.arpa into an IP address lookup.
 Configuration
 -------------
 
-This plugin reads configuration from data.uribl.ini.
+This plugin reads configuration from uribl.ini.
 
 The main section defines global settings for all lists and the blacklists
 zones are specified as INI section headings with the configuration for 
@@ -113,7 +113,7 @@ The following are optional for each list:
 Other files
 -----------
 
-* data.uribl.excludes 
+* uribl.excludes 
 
   This contains a list of domains that should never be looked up in
   any blacklist as they are known good and will never be listed.

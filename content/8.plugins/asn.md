@@ -1,10 +1,10 @@
 ---
-title: connect.asn - get AS number of remote IP address plugin for Haraka
-description: Haraka connect.asn plugin - get AS number of remote
-navigation.title: connect.asn
+title: asn - get AS number of remote IP address plugin for Haraka
+description: Haraka asn plugin - get AS number of remote
+navigation.title: asn
 ---
 
-# connect.asn plugin
+# asn plugin
 
 * Use DNS queries to look up the ASN of the remote IP.
 * Inserts a result object with the ASN of the remote host.
@@ -21,9 +21,9 @@ If your mail server is very busy:
 
 ## Usage
 
-The AS number can be accessed by plugins that run after `connect.asn` like so:
+The AS number can be accessed by plugins that run after `asn` like so:
 
-    var asn = connection.results.get('connect.asn');
+    var asn = connection.results.get('asn');
     if (asn && asn.asn) {
         connection.loginfo(plugin, "hey look, it's ASN: " + asn.asn);
     }
@@ -31,7 +31,7 @@ The AS number can be accessed by plugins that run after `connect.asn` like so:
 
 ## Configuration
 
-The following settings can be set in config/connect.asn.ini.
+The following settings can be set in config/asn.ini.
 
 * providers: comma separated list of DNS zones that provide IP to ASN lookups
 

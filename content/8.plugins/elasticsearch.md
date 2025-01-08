@@ -1,10 +1,10 @@
 ---
-title: log.elasticsearch - Logs to Elasticsearch plugin for Haraka
-description: Haraka log.elasticsearch plugin - Logs to Elasticsearch
-navigation.title: log.elasticsearch
+title: elasticsearch - Logs to Elasticsearch plugin for Haraka
+description: Haraka elasticsearch plugin - Logs to Elasticsearch
+navigation.title: elasticsearch
 ---
 
-# log.elasticsearch plugin
+# elasticsearch plugin
 
 ## Logging
 
