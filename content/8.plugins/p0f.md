@@ -1,10 +1,10 @@
 ---
-title: connect.p0f - TCP Fingerprinting plugin for Haraka
-description: Haraka connect.p0f plugin - TCP Fingerprinting
-navigation.title: connect.p0f
+title: p0f - TCP Fingerprinting plugin for Haraka
+description: Haraka p0f plugin - TCP Fingerprinting
+navigation.title: p0f
 ---
 
-# connect.p0f plugin
+# p0f plugin
 
 Use TCP fingerprint info (remote computer OS, network distance, etc) to
 implement more sophisticated anti-spam policies.
@@ -45,10 +45,10 @@ server starts up.
 
 add an entry to config/plugins to enable p0f:
 
-    connect.p0f
+    p0f
 
 
-3. review settings in config/connect.p0f.ini
+3. review settings in config/p0f.ini
 
 
 ## Startup

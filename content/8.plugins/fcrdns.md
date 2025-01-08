@@ -1,10 +1,10 @@
 ---
-title: connect.fcrdns - Forward Confirmed Reverse DNS plugin for Haraka
-description: Haraka connect.fcrdns plugin - Forward Confirmed Reverse DNS
-navigation.title: connect.fcrdns
+title: fcrdns - Forward Confirmed Reverse DNS plugin for Haraka
+description: Haraka fcrdns plugin - Forward Confirmed Reverse DNS
+navigation.title: fcrdns
 ---
 
-# connect.fcrdns plugin
+# fcrdns plugin
 
 ## DESCRIPTION
 
@@ -17,14 +17,14 @@ See [FCrDNS at wikipedia](http://en.wikipedia.org/wiki/FCrDNS)
 
 Other plugins can use FCrDNS results like this:
 
-    var fcrdns = connection.results.get('connect.fcrdns');
+    var fcrdns = connection.results.get('fcrdns');
     if (fcrdns) {
         if (fcrdns.fcrdns) {
             // they passed, reward them
         }
 
         var fails = fcrdns.fail;
-        if (connection.results.has('connect.fcrdns', 'fail', /^is_generic/) {
+        if (connection.results.has('fcrdns', 'fail', /^is_generic/) {
             // their IP is in their hostname, unlikely to be MX, penalize
         }
     }
@@ -32,7 +32,7 @@ Other plugins can use FCrDNS results like this:
 
 ## CONFIGURATION
 
-Edit config/connect.fcrdns.ini
+Edit config/fcrdns.ini
 
 This plugin honors the whitelisting of IPs as set by the rdns\_access plugin.
 For that to work, rdns\_access needs to be listed *before* this plugin in

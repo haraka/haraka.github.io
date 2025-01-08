@@ -1,10 +1,10 @@
 ---
-title: dnsbl - DNS Blacklists plugin for Haraka
-description: Haraka dnsbl plugin - DNS Blacklists
-navigation.title: dnsbl
+title: dns-list - DNS Blacklists plugin for Haraka
+description: Haraka dns lists plugin - DNS Blacklists
+navigation.title: dns-list
 ---
 
-# dnsbl plugin
+# dns-list plugin
 
 This plugin looks up the connecting IP address in an IP blocklist. Mails
 found to be in the blocklist are rejected.
@@ -14,9 +14,7 @@ Configuration
 
 This plugins uses the following files:
 
-dnsbl.zones - Contains a list of zones to query, one per line.
-
-dnsbl.ini - INI format with options described below:
+dns-list.ini - INI format with options described below:
 
 * zones
 
