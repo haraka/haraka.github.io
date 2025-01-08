@@ -4,83 +4,115 @@ description: Haraka dns lists plugin - DNS Blacklists
 navigation.title: dns-list
 ---
 
-# dns-list plugin
+# haraka-plugin-dns-list
 
-This plugin looks up the connecting IP address in an IP blocklist. Mails
-found to be in the blocklist are rejected.
+## dns lists
 
-Configuration
--------------
+Looks up the IP address of the remote host in DNS lists. There are several types of DNS based lists:
 
-This plugins uses the following files:
+### block
 
-dns-list.ini - INI format with options described below:
+Block lists (aka: DNSBL) are designed to be used for blocking mail from any host listed in them. Block lists are the most common DNS list type and lists without a type specified are considered block lists. The default action for block lists is to reject the connection. This can be changed by setting `reject=false` in the zone's settings block.
 
-* zones
+### allow
 
-    A comma or semi-colon list of zones to query.  It will be merged with
-    any lists in dnsbl.zones.
+When the remote IP is found in an allow list, this plugin returns OK for the ehlo, helo, and mail hooks.
 
-* periodic\_checks
+IMPORTANT! The order of plugins in config/plugins is important when this feature is used. It should be listed _before_ any plugins that you wish to skip, but after any plugins that accept recipients.
 
-    If enabled, this will check all the zones every n minutes.
-    The minimum value that will be accepted here is 5.  Any value less
-    than 5 will cause the checks to be run at start-up only.
+### karma
 
-    The checks confirm that the list is responding and that it is not
-    listing the world.  If any errors are detected, then the zone is
-    disabled and will be re-checked on the next test.  If a zone
-    subsequently starts working correctly then it will be re-enabled.
+Karma lists can have different results for IPs beyond a simple block or allow. See [hostkarma.junkemailfilter.com](https://hostkarma.junkemailfilter.com) for details.
 
-* enable\_stats
+## INSTALL
 
-    To use this feature you must have installed the 'redis' module and
-    have a redis server running.
+```sh
+cd /path/to/local/haraka
+npm install haraka-plugin-dns-list
+echo "dns-list" >> config/plugins
+service haraka restart
+```
 
-    When enabled, this will record several list statistics to redis.
+## Configure
 
-    It will track the total number of queries (TOTAL) and the average
-    response time (AVG\_RT) and the return type (e.g. LISTED or ERROR)
-    to a redis hash where the key is 'dns-list-stat:zone' and the hash
-    field is the response type.
+If the default configuration is insufficient, copy the config file from the distribution into your haraka config dir and modify it:
 
-    It will also track the positive response overlap between the lists
-    in another redis hash where the key is 'dns-list-overlap:zone' and
-    the hash field is the other list names.
+```sh
+cp node_modules/haraka-plugin-dns-list/config/dns-list.ini config/dns-list.ini
+$EDITOR config/dns-list.ini
+```
 
-    Example:
-    <pre><code>redis 127.0.0.1:6379> hgetall dns-list-stat:zen.spamhaus.org
-    1) "TOTAL"
-    2) "23"
-    3) "ENOTFOUND"
-    4) "11"
-    5) "LISTED"
-    6) "12"
-    7) "AVG_RT"
-    8) "45.5"
-    redis 127.0.0.1:6379> hgetall dns-list-overlap:zen.spamhaus.org
-    1) "b.barracudacentral.org"
-    2) "1"
-    3) "bl.spamcop.net"
-    4) "1"
-    5) "TOTAL"
-    6) "1"
-    </code></pre>
+dns-lists.ini - INI format with options described below:
 
-* stats\_redis\_host
+#### [main] periodic_checks=30
 
-    In the form of `host:port` this option allows you to specify a different
-    host on which redis runs.
+Check every DNS zone every `N` minutes. When the value is less than 5, checks will only be run at start-up.
 
-* reject (default: true)
+The checks confirm that lists are responding correctly. When errors are detected, the zone is disabled and will be checked at the next interval. When a zone resumes working correctly it will be enabled.
 
-    Reject connections from IPs that are blacklisted. Setting this to false
-    makes dnsbl informational. reject=false is best used in conjunction with
-    plugins like [karma](/plugins/karma) that employ a scoring
-    engine to make choices about message delivery.
+#### [main] zones
 
-* search: (default: first)
+An array or comma separated list of zones to query.
 
-    first: consider first DNSBL response conclusive. End processing.
-    all:   process all DNSBL results
+#### [main] search: (default: all)
 
+- first: consider first DNS list response conclusive. End processing.
+- all: process all DNS list results
+
+#### [stats] enable=true
+
+This feature requires the [redis](https://github.com/haraka/haraka-plugin-redis) plugin. When enabled, this will record several list statistics to redis:
+
+- the total number of queries (TOTAL)
+- the average response time (AVG_RT)
+- the return type (e.g. LISTED or ERROR)
+
+to a redis hash where the key is `dns-list-stat:zone` and the hash field is the response type.
+
+It will also track the positive response overlap between the lists in another redis hash where the key is `dns-list-overlap:zone` and the hash field is the other list names. Example:
+
+```
+redis 127.0.0.1:6379> hgetall dns-list-stat:zen.spamhaus.org
+1) "TOTAL"
+2) "23"
+3) "ENOTFOUND"
+4) "11"
+5) "LISTED"
+6) "12"
+7) "AVG_RT"
+8) "45.5"
+
+redis 127.0.0.1:6379> hgetall dns-list-overlap:zen.spamhaus.org
+1) "b.barracudacentral.org"
+2) "1"
+3) "bl.spamcop.net"
+4) "1"
+5) "TOTAL"
+6) "1"
+```
+
+#### [stats] redis_host
+
+In the form of `host:port` this option allows you to specify a different host on which redis runs.
+
+### Per-Zone DNS list settings
+
+The exact name of the DNS zone (as specified above in main.zones) may contain settings about that DNS list.
+
+- type=[ block, allow, karma ]
+- reject=true (default: true) Reject connections from IPs on block lists. Setting this to false makes dnsbl informational. reject=false is best used in conjunction with plugins like [karma](https://github.com/haraka/haraka-plugin-karma) that employ a scoring engine to make choices about message delivery.
+- ipv6=true | false
+
+#### dnswl
+
+```ini
+ok_helo=false
+ok_mail=false
+```
+
+if DNSBL returns OK on the mail hook, it prevents any subsequent mail hooks in other plugins from running. This might include [SPF](haraka-plugin-spf), [known senders](https://github.com/haraka/haraka-plugin-known-senders), [karma](https://github.com/haraka/haraka-plugin-karma), recipient plugins, and any other plugins that want to do transaction initialization on `hook_mail`. It can be dangerous.
+
+[ci-img]: https://github.com/haraka/haraka-plugin-dns-list/actions/workflows/ci.yml/badge.svg
+[ci-url]: https://github.com/haraka/haraka-plugin-dns-list/actions/workflows/ci.yml
+[clim-img]: https://codeclimate.com/github/haraka/haraka-plugin-dns-list/badges/gpa.svg
+[clim-url]: https://codeclimate.com/github/haraka/haraka-plugin-dns-list
