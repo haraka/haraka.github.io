@@ -10,3 +10,6 @@ dist
 sw.*
 .env
 .output
+pnpm-lock.yaml
+yarn.lock
+package-lock.json
