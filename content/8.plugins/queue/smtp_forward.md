@@ -124,7 +124,7 @@ host=1.2.3.5
 host=1.2.3.6
 
 [example4.com]
-enable\_outbound=false
+enable_outbound=false
 ```
 
 # Split host forward routing
