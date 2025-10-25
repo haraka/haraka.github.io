@@ -1,1 +1,0 @@
-import{k as r,c as t,e as n,X as o}from"./BQkDd-34.js";const s={};function c(e,a){return n(),t("em",null,[o(e.$slots,"default",{},void 0,!0)])}const f=r(s,[["render",c],["__scopeId","data-v-b3b2ffd9"]]);export{f as default};
