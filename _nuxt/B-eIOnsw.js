@@ -1,1 +1,0 @@
-import{k as t,c as n,e as o,Y as c}from"./DAdlnVgL.js";const r={};function s(e,_){return o(),n("th",null,[c(e.$slots,"default",{},void 0,!0)])}const d=t(r,[["render",s],["__scopeId","data-v-40ddd69b"]]);export{d as default};
