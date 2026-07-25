@@ -48,12 +48,12 @@ data received.  If you were writing the data to a socket then you had to handle 
 `on('drain')` handlers like so:
 
 ```js
-var data_marker = 0;
-var in_data = false;
-var end_pending = true;
-var send_data = function () {
+let data_marker = 0;
+let in_data = false;
+let end_pending = true;
+const send_data = function () {
     in_data = true;
-    var wrote_all = true;
+    let wrote_all = true;
     while (wrote_all && (data_marker < connection.transaction.data_lines.length)) {
         var line = connection.transaction.data_lines[data_marker];
         data_marker++;
@@ -77,7 +77,7 @@ socket.on('drain', function () {
 In v2.x this now becomes:
 
 ```js
-connection.transaction.message_stream.pipe(socket, {dot_stuffing: true, ending_dot: true});
+connection.transaction.message_stream.pipe(socket, {ending_dot: true});
 ```
 
 This automatically chunks the data, handles backpressure and will apply any 

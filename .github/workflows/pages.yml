@@ -2,12 +2,13 @@ name: Github Pages
 
 on:
   push:
-    branches:
-      - master
+    branches: [main, master]
 
 jobs:
   deploy:
     runs-on: ubuntu-22.04
+    permissions:
+      contents: write
     steps:
       - uses: actions/checkout@v4
       - uses: actions/setup-node@v4
