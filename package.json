@@ -3,13 +3,14 @@
   "version": "0.2.0",
   "private": true,
   "scripts": {
-    "dev": "nuxi dev",
     "build": "nuxi build",
+    "dev": "nuxi dev",
     "generate": "nuxi generate",
-    "preview": "nuxi preview"
+    "preview": "nuxi preview",
+    "qlty": "qlty smells --all"
   },
   "devDependencies": {
     "@nuxt-themes/docus": "^1.15.1",
-    "nuxt": "^3.15.4"
+    "nuxt": "^3.21.9"
   }
 }
