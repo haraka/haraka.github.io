@@ -1,3 +1,6 @@
+import { cp } from 'node:fs/promises'
+import { join } from 'node:path'
+
 export default defineNuxtConfig({
   extends: ['docus'],
 
@@ -21,6 +24,14 @@ export default defineNuxtConfig({
       const body = content.body as { type?: string, value?: unknown[][] } | undefined
       if (body?.type === 'minimark' && body.value?.[0]?.[0] === 'h1') body.value.shift()
     },
+    // Pages advertise their markdown twin at /<path>.md, which a server
+    // rewrites to /raw/<path>.md. GitHub Pages can't rewrite, so copy instead.
+    'nitro:init'(nitro) {
+      nitro.hooks.hook('prerender:done', async () => {
+        const { publicDir } = nitro.options.output
+        await cp(join(publicDir, 'raw'), publicDir, { recursive: true })
+      })
+    },
   },
 
   nitro: {
@@ -30,18 +41,12 @@ export default defineNuxtConfig({
       autoSubfolderIndex: true,
       routes: [
         '/barelf',
-        '/plugins/asn',
+        // The crawler treats a dot in the last segment as a file extension
+        // and skips these pages and their markdown twins.
         '/plugins/data.signatures',
-        '/plugins/elasticsearch',
-        '/plugins/fcrdns',
-        '/plugins/geoip',
-        '/plugins/headers',
-        '/plugins/helo.checks',
-        '/plugins/p0f',
-        '/plugins/rcpt_to.ldap',
-        '/plugins/rcpt_to.routes',
-        '/plugins/syslog',
-        '/plugins/uribl',
+        '/plugins/rcpt_to.in_host_list',
+        '/raw/plugins/data.signatures.md',
+        '/raw/plugins/rcpt_to.in_host_list.md',
       ],
     },
   },
