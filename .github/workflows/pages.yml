@@ -3,9 +3,10 @@ name: Github Pages
 on:
   push:
     branches: [main, master]
+  pull_request:
 
 concurrency:
-  group: pages
+  group: pages-${{ github.ref }}
   cancel-in-progress: true
 
 jobs:
@@ -23,6 +24,7 @@ jobs:
       - run: npm run generate
 
       - name: deploy
+        if: github.event_name == 'push'
         uses: peaceiris/actions-gh-pages@v4
         with:
           github_token: ${{ secrets.GITHUB_TOKEN }}
