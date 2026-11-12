@@ -288,25 +288,13 @@ A comprehensive list of known plugins. Create a PR to add yours to these lists.
   
   <tr>
     <td>
-      <a href="https://github.com/haraka/Haraka/blob/master/docs/plugins/queue/rabbitmq.md" rel="nofollow">
+      <a href="https://github.com/haraka/haraka-plugin-queue-rabbitmq" rel="nofollow">
         rabbitmq
       </a>
     </td>
     
     <td>
       queue to RabbitMQ
-    </td>
-  </tr>
-  
-  <tr>
-    <td>
-      <a href="https://github.com/haraka/Haraka/blob/master/docs/plugins/queue/rabbitmq_amqplib.md" rel="nofollow">
-        rabbitmq_amqplib
-      </a>
-    </td>
-    
-    <td>
-      queue to RabbitMQ using amqplib
     </td>
   </tr>
   
@@ -652,7 +640,7 @@ A comprehensive list of known plugins. Create a PR to add yours to these lists.
   
   <tr>
     <td>
-      <a href="https://github.com/haraka/Haraka/blob/master/docs/plugins/early_talker.md" rel="nofollow">
+      <a href="https://github.com/haraka/haraka-plugin-early_talker" rel="nofollow">
         early_talker
       </a>
     </td>

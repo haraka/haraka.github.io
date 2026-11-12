@@ -35,8 +35,7 @@ Haraka is an open source SMTP server written in Node.js which provides extremely
 
 <div className="flex,space-x-4">
 
-[![Tests](https://github.com/haraka/Haraka/workflows/Haraka%20Tests/badge.svg)](#)
-    [![Tests - Windows](https://github.com/haraka/Haraka/workflows/Haraka%20Tests%20-%20Windows/badge.svg)](#)
+[![Tests](https://github.com/haraka/Haraka/actions/workflows/ci.yml/badge.svg)](https://github.com/haraka/Haraka/actions/workflows/ci.yml)
     [![Coverage Status](https://codecov.io/github/haraka/Haraka/coverage.svg)](https://codecov.io/github/haraka/Haraka?branch=master)
 
 </div>
@@ -48,7 +47,7 @@ in asynchronous JS and are very fast.
 
 Haraka has very good spam protection (see [plugins](https://github.com/haraka/Haraka/blob/master/Plugins.md)) and works
 well as a filtering [MTA](http://en.wikipedia.org/wiki/Message_transfer_agent). It also works well as a [MSA](http://en.wikipedia.org/wiki/Mail_submission_agent) running on
-port 587 with auth and [dkim](https://haraka.github.io/plugins/dkim/) plugins enabled.
+port 587 with auth and [dkim](https://github.com/haraka/haraka-plugin-dkim) plugins enabled.
 
 Haraka makes no attempt to be a mail store (like Exchange or Postfix/Exim/Qmail),
 a [LDA](https://en.wikipedia.org/wiki/Mail_delivery_agent), nor an IMAP server (like Dovecot or Courier). Haraka is
@@ -83,18 +82,12 @@ whereby you could receive mail as `user-anyword@domain.com`, and yet
 still have it correctly routed to `user@domain.com`. This is a few lines of
 code in Haraka.
 
-Plugins are provided for running mail through [SpamAssassin](https://haraka.github.io/plugins/spamassassin/), validating
-[HELO](https://haraka.github.io/plugins/helo.checks/) names, checking [DNS Blocklists](https://haraka.github.io/plugins/dnsbl/), and [many others](https://github.com/haraka/Haraka/tree/master/plugins).
+Plugins are provided for running mail through [SpamAssassin](https://github.com/haraka/haraka-plugin-spamassassin), validating
+[HELO](https://github.com/haraka/haraka-plugin-helo.checks) names, checking [DNS Blocklists](https://github.com/haraka/haraka-plugin-dns-list), and [many others](https://github.com/haraka/Haraka/tree/master/plugins).
 
 ### Installing Haraka
 
-Haraka requires [node.js](http://nodejs.org) to run. Install Haraka with [npm]<span>
-
-2
-
-</span>
-
-:
+Haraka requires [node.js](http://nodejs.org) to run. Install Haraka with [npm](https://www.npmjs.com/package/Haraka):
 
 <code-group>
 

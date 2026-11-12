@@ -67,91 +67,13 @@
         <loc>https://haraka.github.io/core/Transaction</loc>
     </url>
     <url>
-        <loc>https://haraka.github.io/plugins/access</loc>
-    </url>
-    <url>
-        <loc>https://haraka.github.io/plugins/aliases</loc>
-    </url>
-    <url>
-        <loc>https://haraka.github.io/plugins/asn</loc>
-    </url>
-    <url>
-        <loc>https://haraka.github.io/plugins/attachment</loc>
-    </url>
-    <url>
-        <loc>https://haraka.github.io/plugins/avg</loc>
-    </url>
-    <url>
-        <loc>https://haraka.github.io/plugins/backscatterer</loc>
-    </url>
-    <url>
         <loc>https://haraka.github.io/plugins/block_me</loc>
-    </url>
-    <url>
-        <loc>https://haraka.github.io/plugins/bounce</loc>
-    </url>
-    <url>
-        <loc>https://haraka.github.io/plugins/clamd</loc>
-    </url>
-    <url>
-        <loc>https://haraka.github.io/plugins/daemonize</loc>
     </url>
     <url>
         <loc>https://haraka.github.io/plugins/data.signatures</loc>
     </url>
     <url>
-        <loc>https://haraka.github.io/plugins/dcc</loc>
-    </url>
-    <url>
         <loc>https://haraka.github.io/plugins/delay_deny</loc>
-    </url>
-    <url>
-        <loc>https://haraka.github.io/plugins/dkim</loc>
-    </url>
-    <url>
-        <loc>https://haraka.github.io/plugins/dns-list</loc>
-    </url>
-    <url>
-        <loc>https://haraka.github.io/plugins/early_talker</loc>
-    </url>
-    <url>
-        <loc>https://haraka.github.io/plugins/elasticsearch</loc>
-    </url>
-    <url>
-        <loc>https://haraka.github.io/plugins/esets</loc>
-    </url>
-    <url>
-        <loc>https://haraka.github.io/plugins/fcrdns</loc>
-    </url>
-    <url>
-        <loc>https://haraka.github.io/plugins/geoip</loc>
-    </url>
-    <url>
-        <loc>https://haraka.github.io/plugins/graph</loc>
-    </url>
-    <url>
-        <loc>https://haraka.github.io/plugins/greylist</loc>
-    </url>
-    <url>
-        <loc>https://haraka.github.io/plugins/headers</loc>
-    </url>
-    <url>
-        <loc>https://haraka.github.io/plugins/helo.checks</loc>
-    </url>
-    <url>
-        <loc>https://haraka.github.io/plugins/karma</loc>
-    </url>
-    <url>
-        <loc>https://haraka.github.io/plugins/limit</loc>
-    </url>
-    <url>
-        <loc>https://haraka.github.io/plugins/mail_from.is_resolvable</loc>
-    </url>
-    <url>
-        <loc>https://haraka.github.io/plugins/messagesniffer</loc>
-    </url>
-    <url>
-        <loc>https://haraka.github.io/plugins/p0f</loc>
     </url>
     <url>
         <loc>https://haraka.github.io/plugins/prevent_credential_leaks</loc>
@@ -163,40 +85,13 @@
         <loc>https://haraka.github.io/plugins/rcpt_to.in_host_list</loc>
     </url>
     <url>
-        <loc>https://haraka.github.io/plugins/rcpt_to.ldap</loc>
-    </url>
-    <url>
-        <loc>https://haraka.github.io/plugins/rcpt_to.qmail_deliverable</loc>
-    </url>
-    <url>
-        <loc>https://haraka.github.io/plugins/rcpt_to.routes</loc>
-    </url>
-    <url>
         <loc>https://haraka.github.io/plugins/record_envelope_addresses</loc>
-    </url>
-    <url>
-        <loc>https://haraka.github.io/plugins/redis</loc>
-    </url>
-    <url>
-        <loc>https://haraka.github.io/plugins/relay</loc>
     </url>
     <url>
         <loc>https://haraka.github.io/plugins/reseed_rng</loc>
     </url>
     <url>
-        <loc>https://haraka.github.io/plugins/rspamd</loc>
-    </url>
-    <url>
-        <loc>https://haraka.github.io/plugins/spamassassin</loc>
-    </url>
-    <url>
-        <loc>https://haraka.github.io/plugins/spf</loc>
-    </url>
-    <url>
         <loc>https://haraka.github.io/plugins/status</loc>
-    </url>
-    <url>
-        <loc>https://haraka.github.io/plugins/syslog</loc>
     </url>
     <url>
         <loc>https://haraka.github.io/plugins/tarpit</loc>
@@ -206,12 +101,6 @@
     </url>
     <url>
         <loc>https://haraka.github.io/plugins/toobusy</loc>
-    </url>
-    <url>
-        <loc>https://haraka.github.io/plugins/uribl</loc>
-    </url>
-    <url>
-        <loc>https://haraka.github.io/plugins/watch</loc>
     </url>
     <url>
         <loc>https://haraka.github.io/plugins/xclient</loc>
@@ -227,9 +116,6 @@
     </url>
     <url>
         <loc>https://haraka.github.io/plugins/auth/auth_bridge</loc>
-    </url>
-    <url>
-        <loc>https://haraka.github.io/plugins/auth/auth_ldap</loc>
     </url>
     <url>
         <loc>https://haraka.github.io/plugins/auth/auth_proxy</loc>
@@ -256,12 +142,6 @@
         <loc>https://haraka.github.io/plugins/queue/quarantine</loc>
     </url>
     <url>
-        <loc>https://haraka.github.io/plugins/queue/rabbitmq</loc>
-    </url>
-    <url>
-        <loc>https://haraka.github.io/plugins/queue/rabbitmq_amqplib</loc>
-    </url>
-    <url>
         <loc>https://haraka.github.io/plugins/queue/smtp_bridge</loc>
     </url>
     <url>
@@ -271,4 +151,4 @@
         <loc>https://haraka.github.io/plugins/queue/smtp_proxy</loc>
     </url>
 </urlset>
-<!-- XML Sitemap generated by @nuxtjs/sitemap v8.6.2 at 2026-11-12T04:14:37.300Z -->
+<!-- XML Sitemap generated by @nuxtjs/sitemap v8.6.2 at 2026-11-12T04:34:40.383Z -->
