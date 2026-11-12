@@ -10,7 +10,8 @@
     "qlty": "qlty smells --all"
   },
   "devDependencies": {
-    "@nuxt-themes/docus": "^1.15.1",
-    "nuxt": "^4.6.3"
+    "better-sqlite3": "^12.11.1",
+    "docus": "^5.15.0",
+    "nuxt": "^4.6.4"
   }
 }
