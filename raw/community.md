@@ -1,0 +1,23 @@
+---
+title: "Community"
+description: "Haraka has a strong community presence. Use the links below to talk with us."
+canonical_url: "https://haraka.github.io/community"
+---
+# Community
+
+> Haraka has a strong community presence. Use the links below to talk with us.
+
+## Mailing List
+
+Haraka has an active Mailing List which you can join by sending a mail to [haraka-sub@harakamail.com](mailto:haraka-sub@harakamail.com). We are working on providing list archives.
+
+## Github
+
+For everything else, we use Github. Post bug reports there on the issue tracker and feel free to browse the code and try and learn the structure of the project.
+
+Haraka can be found at [haraka/Haraka](https://github.com/haraka/Haraka) on Github.
+
+
+## Sitemap
+
+See the full [sitemap](https://haraka.github.io/sitemap.md) for all pages.
