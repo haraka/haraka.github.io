@@ -83,7 +83,7 @@ still have it correctly routed to `user@domain.com`. This is a few lines of
 code in Haraka.
 
 Plugins are provided for running mail through [SpamAssassin](https://github.com/haraka/haraka-plugin-spamassassin), validating
-[HELO](https://github.com/haraka/haraka-plugin-helo.checks) names, checking [DNS Blocklists](https://github.com/haraka/haraka-plugin-dns-list), and [many others](https://github.com/haraka/Haraka/tree/master/plugins).
+[HELO](https://github.com/haraka/haraka-plugin-helo.checks) names, checking [DNS Blocklists](https://github.com/haraka/haraka-plugin-dns-list), and [many others](https://haraka.github.io/plugins).
 
 ### Installing Haraka
 
